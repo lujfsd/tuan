@@ -1,1 +1,0 @@
-<?php exit;?>1406344906s:220:"你好，{$user_name}。感谢您团购“{$bond.goods_name}”！您的订单号：{$bond.order_sn}，ID:{$bond.id}，您的{$bond.name}序列号为{$bond.sn}，密码是{$bond.password}，消费时请出示此短信。";

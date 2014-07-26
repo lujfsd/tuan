@@ -383,9 +383,10 @@ if((!empty($_REQUEST['qid'])||!empty($_REQUEST['qname'])||!empty($_REQUEST['qmai
 		case 'ajax_gettypeattr':
 			require ROOT_PATH.'app/source/ajax.php';
 			break;
-		case 'coupon_index':
-			require ROOT_PATH.'app/source/coupon.php';
-			break;
+		//去掉底部的团购券验证接口
+		//case 'coupon_index':
+		//	require ROOT_PATH.'app/source/coupon.php';
+		//	break;
 		case 'ucmodify_index':
 		case 'ucgroupbond_index':
 		case 'ucorder_index':

@@ -81,6 +81,7 @@
 	
 	if($do==='coupon_bus2')
 	{
+	//判断商户是否登陆
 		header("Content-Type:text/html; charset=utf-8");
 		
 		$result = array("type"=>0,"msg"=>"");
