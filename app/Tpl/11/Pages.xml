@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<page>
+		<title>全部页面</title>
+		<file></file>
+	</page>
+	<page>
+		<title>首页</title>
+		<file>index_index</file>
+	</page>
+	<page>
+		<title>往期团购页</title>
+		<file>goods_index</file>
+	</page>
+	<page>
+		<title>团购详细页</title>
+		<file>goods_show</file>
+	</page>
+	<page>
+		<title>文章页</title>
+		<file>article_show</file>
+	</page>
+	<page>
+		<title>团购分类页</title>
+		<file>goods_showcate</file>
+	</page>
+</pages>

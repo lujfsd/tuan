@@ -1,0 +1,55 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/model.js" />
+
+<div id="main" class="main" >
+
+<script language="JavaScript">
+function import_start(obj)
+{
+  var frm = document.forms['theForm'];
+
+  var notice = document.getElementById('ECS_NOTICE');
+  notice.innerHTML = '正在导入用户到UCenter中...';
+  obj.disabled = true;
+  var url = "__APP__?m=Integrate&a=import_user&start=0&merge=1";
+
+  location.href= url;
+}
+
+function checkResponse(result)
+{
+  if (result.error > 0)
+  {
+    alert(result.message);
+  }
+  if (result.error == 0)
+  {
+    var notice = document.getElementById('ECS_NOTICE');
+    notice.innerHTML = result.message;
+    window.setTimeout(function ()
+    {
+        location.href='__APP__?m=Integrate&a=complete';
+    }, 1000);
+  }
+}
+</script>
+
+
+<div class="content" >
+<div class="title">会员数据导入到 UCenter</div>
+
+<div class="list" style="border:1px solid #9CB8CC;border-right:0">
+
+<div class="main-div" style="padding:5px;background:#fff">
+  <form action="integrate.php" method="post" name="theForm">
+  <h3>{$user_startid_intro}</h3>
+  <p id="ECS_NOTICE"></p>
+  <input type="button" value="开始导入" class="button" onclick="import_start(this)">
+  </form>
+</div>
+
+</div>
+</div>

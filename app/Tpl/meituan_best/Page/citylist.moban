@@ -1,0 +1,67 @@
+{include file="Inc/header.moban"}
+<style>
+	.city-list-box{ clear:both;padding:8px;}
+	.city-list-box .m_l{float:left;font-weight:bold;width:5%; padding-top:3px;}
+	.city-list-box .m_r{ float:left;width:95%; border-bottom:1px dashed #f1f1f1;}
+	.city-list-box .m_r li{ float:left; height:28px; line-height:28px;padding-right:15px}
+	.city-list-box .m_r .is_hot{ font-weight:bold}
+	.city-list-box .m_r li.is_news{ background:url({$CND_URL}/{$TMPL_PATH}Public/images/ico-newcity.gif) no-repeat right 2px;padding-right:22px}
+        .box-content{
+            background: none repeat scroll 0 0 #FFFFFF;
+            border: 2px solid #89B4D4;
+            padding: 18px 24px;
+        }
+	.shead{ margin:0 0px; font-size:16px; border-bottom:#C7B7B7 1px solid; padding-bottom:12px; padding-left:8px;}
+	.shead a.now{color:red;}
+</style>
+<?php
+$list = $this->_var['city_list'];
+$hotlist = array();
+foreach($list as $k => $v)
+{
+	if($v['is_hot'] == 1)
+		$hotlist[] = $v;
+}
+$GLOBALS['tpl']->assign('hotcitylist',$hotlist);
+?>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="user-vote">
+				<div class="box clear">
+					<div class="box-content cf">
+						<div class="shead">
+							<h2><a href='<?php echo a_u("Index/index","cityname-".$this->_var['currentCity']['py']) ?>' class="now">进入{$currentCity.name}站 &raquo;</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;热门城市：
+							{foreach from=$hotcitylist item="hotlist" name="hotlist"}
+								{if $smarty.foreach.hotlist.index < 10}
+								<a href="{$hotlist.url}">{$hotlist.name}</a>&nbsp;&nbsp;
+								{/if}
+							{/foreach}
+							</h2>
+						</div>
+						<div class="sect">
+						<div class="blank"></div>
+						<h2>&nbsp;&nbsp;按拼音首字母选择：</h2>
+						{foreach from="$citylist" item="list"}
+							<div class="city-list-box">
+								<div class="m_l">
+									{$list.py}：
+								</div>
+								<div class="m_r">
+									<ul>
+										{foreach from="$list.list" item="clist"}
+											<li class="{if $clist.status eq 1}is_hot{/if}{if $clist.is_new eq 1} is_news{/if}"><a href="{$clist.url}">{$clist.name}</a></li>
+										{/foreach}
+									</ul>
+									<div class="blank"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						{/foreach}
+						</div>
+					</div>
+				</div>
+			
+		</div>
+	</div>
+	<!-- bd end -->
+</div>

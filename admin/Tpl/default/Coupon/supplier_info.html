@@ -1,0 +1,8 @@
+
+	<td class="tRight">支持的分店：</td>
+	<td class="tLeft" >
+		<foreach name="depart_list" item="depart">
+		<label>{$depart.depart_name} <input type="checkbox" name="depart[]" value="{$depart.id}" align="absmiddle" <if condition="$depart['checked']">checked="checked"</if> /></label>
+		</foreach>
+	</td>
+

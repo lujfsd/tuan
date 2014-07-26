@@ -1,0 +1,65 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals">
+			<div id="content">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content" style="position:relative;">
+						<div class="head" id="coupons">
+							<h2>{$lang.JJ_DISCUSS_AREA}</h2>
+							<ul class="filter">
+								<li {if $smarty.request.my neq 1 || $smarty.session.user_id eq 0}class="current"{/if}><a href="{function name='a_u' a='Message/buyComment'}">全部评价</a></li>
+								{if $smarty.session.user_id eq 0}
+								<li><a href="{function name='a_u' a='User/login'}">登录</a>后可以单独查看您的评价买家评价</li>
+								{else}
+								<li {if $smarty.request.my eq 1}class="current"{/if}><a href="{function name='a_u' a='Message/buyComment' b='my-1'}">我的独家评价</a></li>
+								{/if}
+							</ul>
+						</div>
+						<div class="sect">
+							{if $comment_list}
+							{foreach from=$comment_list item=item name="item"}
+								<div class="comment_row">
+									<div class="img"><a href=<?php echo a_u('Message/commentList','id-'.$GLOBALS['tpl']->_var['item']['rec_id']); ?> ><img src="{$CND_URL}{$item.small_img}" /></a></div>
+									<div class="infos">
+									<div class="comment_author">
+									{if $item.content}{$item.user_name}&nbsp;{function name="sprintf" a="$lang.WHO_MSG_BUY" b="$SHOP_NAME"}&nbsp;<a href="<?php echo a_u('Goods/show','id-'.$GLOBALS['tpl']->_var['item']['rec_id']); ?>" >{if $item.goods_short_name}{else}{$item.name_1}{/if}{else}<?php echo sprintf($this->_var['lang']['JJ_NO_DISCUSSED'],a_u('Message/commentList','id-'.$GLOBALS['tpl']->_var['item']['rec_id'])); ?>{/if}</a>
+									</div>
+									{if $item.content}
+										<div style="padding:8px; padding-bottom:0">
+											{$item.content|nl2br}
+											<div class="blank"></div>
+										</div>
+									{/if}
+									</div>
+									<div class="clear"></div>
+								</div>
+							{/foreach}
+							</ul>
+								<div class="blank"></div>
+								<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+								</div>
+						{else}
+							<div class="notice">
+								{function name="sprintf" format="$lang.JJ_NO_BFGROUP" value="$currentCity.name"}<br />
+								{if $currentCity.name neq $default_city.name}
+									<?php echo sprintf($GLOBALS['lang']['JJ_LOOK_BFGROUP'],a_u("Goods/index",'cityname-'.$GLOBALS['tpl']->_var['default_city']['py']),$GLOBALS['tpl']->_var['default_city']['name']); ?>
+								{/if}
+							</div>
+						{/if}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id=sidebar>
+				{include file="Inc/side/side_referrals.moban"}
+				{include file="Inc/side/side_subscribe.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

@@ -1,0 +1,5 @@
+<ul class="filter">
+		<li class="label">{$lang.XY_CLASS_IFICATION} </li>
+		<li {if $caction eq 'comment'}class="current"{/if}><a href="<?php echo a_u('Message/comment');?>">{$lang.XY_GROUP_DISCUSS_AREA}</a></li>
+		<li {if $caction eq 'groupMessage' or $caction eq 'addGroupMessage'}class="current"{/if}><a href="<?php echo a_u('Message/groupMessage');?>">{$lang.XY_SENT_GROUP}</a></li>
+</ul>

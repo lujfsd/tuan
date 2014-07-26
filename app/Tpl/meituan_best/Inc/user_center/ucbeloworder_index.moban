@@ -1,0 +1,101 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.UCBELOWORDER_INDEX}</h2>
+						</div>
+						<div class="sect">
+							<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+								<tr>
+									<th width="auto">{$lang.XY_GROUP_PROJECT}</th>
+									<th width="40">{$lang.XY_TOTAL_NUNBER}</th>
+									<th width="80">{$lang.XY_TOTAL_DEPOSIT}</th>
+									<th width="70">{$lang.XY_ORDER_STATE}</th>
+									<th width="70">{$lang.XY_USER_OPERATE}</th>
+								</tr>
+								{foreach from="$order_list" item="order_item" name="order_item"}
+								<tr {if $smarty.foreach.order_item.index mod 2 eq 0}class="alt"{/if}>
+									<td style="text-align:left;">
+										<table class="deal-info">
+											<tr>
+												<td class="pic">
+												<a href="{$order_item.goods.url}" target="_blank" title="{$order_item.goods_name}"><img src="{$CND_URL}{$order_item.goods.small_img}" width="75" height="46" /></a></td>
+												<td class="text"><a class="deal-title" href="{$order_item.goods.url}" target="_blank">{$order_item.goods_name}</a></td>
+											</tr>
+										</table>
+										{if $order_item.attr}
+										<div style="padding:8px 0;">{$lang.XY_GOODS_ATTR}<?php echo str_replace("<br />","，",nl2br($this->_var['order_item']["attr"])); ?></div>
+										{/if}
+									</td>
+									<td>{$order_item.number}</td>
+									<td>
+									{if $order_item.order_total_price gt 0}
+									{$order_item.total_price_format}
+									{else}
+									{$lang.XY_FREE}
+									{/if}
+									</td>
+									<td>
+										{if $order_item.order_total_price gt 0}
+										{$order_item.money_status_format}
+										{/if}
+										<br/>{$order_item.order_status_format}
+									</td>
+									<td class="op">
+									<a href="<?php echo a_u("UcBelowOrder/view",'id-'.$this->_var['order_item']['id'])?>">{$lang.XY_VIEW}</a>
+									{if $order_item.money_status lt 2}
+									<br/><a href="<?php echo a_u("UcBelowOrder/pay",'id-'.$this->_var['order_item']['id'])?>">{$lang.XY_PAY_DEPOSIT}</a>
+									{/if}
+									{if $CFG.ALLOW_TK  eq 1}
+									{if $order_item.money_status  eq 1 or $order_item.money_status  eq 2 and  $order_item.order_total_price gt 0}
+									<br/><a href="<?php echo a_u("UcBelowOrder/view",'id-'.$this->_var['order_item']['id'])?>#OrderMessage">{$lang.XY_RETURN_DEPOSIT}</a>
+									{/if}
+									{/if}
+									{if $order_item.money_status eq 2}
+									<br/><a href="<?php echo a_u("UcBelowOrder/view",'id-'.$this->_var['order_item']['id'])?>#OrderMessage">{$lang.XY_BELOW_HAD_PAY}</a>
+									{/if}
+									
+									{if $order_item.is_clear eq 1}
+									 <br/><a class="order-cancel" href="<?php echo a_u("UcBelowOrder/del",'id-'.$this->_var['order_item']['id'])?>">{$lang.XY_DROP}</a>
+									{/if}
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_WHAY_NOT_GROUPBOTH}{$CFG.GROUPBOTH}？</h3>
+							<p>{function name="sprintf" a=$lang.XY_WHAY_NOT_GROUPBOTH_MSG b=$CFG.GROUPBOTH}</p>
+							<h3>{$lang.XY_WHAT_IS_EXPIRED_ORDER}</h3>
+							<p>{$lang.XY_WHAT_IS_EXPIRED_ORDER_MSG}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

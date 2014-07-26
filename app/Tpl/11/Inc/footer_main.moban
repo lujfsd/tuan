@@ -1,0 +1,136 @@
+<?php 
+$cate_ids = $GLOBALS['db']->getAllCached("select * from ".DB_PREFIX."article_cate where name_1='站内公告' or name_1='媒体报道' or name_1='常见问题'");
+foreach($cate_ids as $key=>$value){
+    $ids_arr[] = $value['id'];
+}
+$ids = implode(',',$ids_arr);
+$article_list = $GLOBALS['db']->getAllCached("select *, FROM_UNIXTIME(create_time,'%Y年%m月%d')as creation_date from ".DB_PREFIX."article where cate_id in(".$ids.") order by create_time desc");
+
+foreach($cate_ids as $cate_k=>$cate_v){
+    $i=0;
+    foreach($article_list as $article_k=>$article_v){
+        if($i<4 && $cate_v['id']==$article_v['cate_id']){
+            $article_arr[$cate_v['name_1']][] = $article_v;
+            $i++;
+        }
+    }
+}
+//站内公告
+$GLOBALS[tpl]->assign('zngg_list',$article_arr['站内公告'] );
+
+//媒体报道
+$GLOBALS[tpl]->assign('mebd_list',$article_arr['媒体报道']  );
+
+//常见问题
+$GLOBALS[tpl]->assign('cjwt_list',$article_arr['常见问题']  );
+?>
+<div class="main_960_gocn0511" id="footer-main">
+  <div class="border_dashed_gocn0627_1">
+    <div class="bg01 b_6">
+      <table width="100%" border="0" cellspacing="0" cellpadding="11">
+        <tbody><tr>
+          <td valign="top">
+              <div class="item">
+             <div class="bg05">：：站内公告：：</div>
+             {foreach from="$zngg_list" item = "article_list" name="zngg_list"}
+                     <div class="border_info">
+                    <div class="border_info_left">{$article_list.creation_date}</div>
+                    <div class="border_info_right"><a href="{if $article_list.ref_link}{$article_list.ref_link}{else}?m=Article&a=show&id={$article_list.id}{/if}" target="_blank">{$article_list.name_1}</a></div>
+                    <div class="d_k"></div>
+                  </div>
+             {/foreach}
+          
+          <div align="right">
+            <div class="b_3"></div>
+             </div>
+              </td>
+          <td valign="top">
+              <div class="item">
+              <div class="bg05">：：在线答疑：：</div>
+                   {insert name="getMessageList" limit=3}
+              </div>
+              </td>
+          <td valign="top">
+              <div class="item">
+                  <div class="bg05">：：客服专区：：</div>
+            <div class="border_info">
+              <div align="center" style="padding:3px;"><strong>{$CFG.TEL}</strong> {$CFG.WORK_TIMES}</div>
+            </div>
+            <div class="b_3"></div>
+            <div class="custom-service">
+				<p class=im >
+				{if $CFG.MSN_SERVICES}
+				<a id=service-msn-help href="msnim:chat?contact={$CFG.MSN_SERVICES}" target=_blank>
+					<img src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-msn.gif">
+				</a>
+				{/if}
+				{if $currentCity.qq_1 eq '' and $currentCity.qq_2 eq '' and $currentCity.qq_3 eq '' and $currentCity.qq_4 eq '' and $currentCity.qq_5 eq '' and $currentCity.qq_6 eq ''}
+				{if $CFG.QQ_SERVICES}
+				<a href="{$CFG.QQ_SERVICES}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+				{/if}
+				{else}
+					{if $currentCity.qq_1 neq ''}
+					<a href="{$currentCity.qq_1}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_2 neq ''}
+					<a href="{$currentCity.qq_2}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_3 neq ''}
+					<a href="{$currentCity.qq_3}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_4 neq ''}
+					<a href="{$currentCity.qq_4}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_5 neq ''}
+					<a href="{$currentCity.qq_5}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_6 neq ''}
+					<a href="{$currentCity.qq_6}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+				{/if}
+				</p>
+				
+			</div>
+              </div>
+              </td>
+        </tr>
+        <tr>
+          <td width="33%" valign="top">
+              <div class="item">
+                  <div class="bg05">：：媒体报道：：</div>
+           {foreach from="$mebd_list" item = "article_list" name="mtbd_list"}
+                     <div class="border_info">
+                    <div class="border_info_left">{$article_list.creation_date}</div>
+                    <div class="border_info_right"><a href="{if $article_list.ref_link}{$article_list.ref_link}{else}?m=Article&a=show&id={$article_list.id}{/if}" target="_blank">{$article_list.name_1}</a></div>
+                    <div class="d_k"></div>
+                  </div>
+             {/foreach}
+            <div align="right">
+              <div class="b_3"></div>
+              </div>
+              </td>
+          <td width="33%" valign="top">
+              <div class="item">
+              <div class="bg05">：：常见问题：：</div>
+           {foreach from="$cjwt_list" item = "article_list" name="cjwt_list"}
+                     <div class="border_info">
+                    <div class="border_info_left">{$article_list.creation_date}</div>
+                    <div class="border_info_right"><a href="{if $article_list.ref_link}{$article_list.ref_link}{else}?m=Article&a=show&id={$article_list.id}{/if}" target="_blank">{$article_list.name_1}</a></div>
+                    <div class="d_k"></div>
+                  </div>
+             {/foreach}
+            <div align="right">
+              <div class="b_3"></div>
+              </div>
+              </td>
+          <td width="33%" valign="top">
+              <div class="item">
+              <div class="bg05">：：金牌售后：：</div>
+              <a href="/index.php?m=gg" target="_blank"><img src=" http://css.go.cn/images/bz.gif" width="290" height="130" border="0" original=" http://css.go.cn/images/bz.gif" style="display: inline; "></a>
+              </div>
+              </td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+{if $goods_list}
+	<ul>
+	{foreach from=$goods_list item=goods_item}
+	<li>
+		<div class="date">
+			<div class="d_y">{function name="a_toDate" value="$goods_item.promote_end_time" format="Y-m-d" }</div>
+			<div class="d_d">{function name="a_toDate" value="$goods_item.promote_end_time" format="d" }</div>
+			<div class="d_r">{$lang.JJ_WEEK}{function name="a_getDateWeek" value="$goods_item.promote_end_time"}</div>
+		</div>
+		<div class="picture">
+			<div class="p-box">
+				{if $goods_item.is_none}
+					<div class="soldout"></div>
+				{/if}
+				<a class="soldoutlink" href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank">
+					{$goods_item.name_1}
+				</a>
+				<a href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank">
+					<img alt="{$goods_item.name_1}" src="{$CND_URL}/{$goods_item.small_img}" width="200" height="121">
+				</a>
+			</div>
+			<div class="p-button">
+				<a href="{$goods_item.url}"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/show.gif"></a>
+			</div>
+			<div class="p-comment">
+				<a href="<?php echo a_u('Message/commentList','id-'.$this->_var['goods_item']['id']) ?>">
+					{if $goods_item.messageCount gt 0}
+						{$lang.JJ_DISCUSSION}[{$goods_item.messageCount}] 
+					{else}
+						{$lang.JJ_SEIZE_THE_SOFA}
+					{/if}
+				</a>
+			</div>
+		</div>
+		<div class="info">
+			<div class="tit"><a href="{$goods_item.url}">{$goods_item.name_1}</a></div>
+			<div class="gmsll">
+				<p><span class="red">{$goods_item.buy_count}</span>&nbsp;{$lang.JJ_REGISTRATION_ORDER}&nbsp;&nbsp;&nbsp;</p>
+				<p><span class="red">&nbsp;</span>{$lang.JJ_ORIGINAL_PRICE}：<span class="bod">{$goods_item.market_price_format}</span>&nbsp;&nbsp;&nbsp;{$lang.JJ_SHOP_PRICE}：<span class="bod">{$goods_item.shop_price_format}</span><span class="red">&nbsp;</span>
+				{$lang.JJ_DISCOUNT}：<span class="bod">
+				{function name="sprintf" format="$lang.JJ_DISCOUNT_POINT" value="$goods_item.discountfb"}
+				</span>
+				</p>
+				<div class="clear"></div>
+			</div>
+			<div class="jiesheng">{$lang.JJ_GROUP_SAVE}
+			 <span class="red">
+			 	<?php echo a_formatPrice(($this->_var['goods_item']['market_price'] - $this->_var['goods_item']['shop_price']) * $this->_var['goods_item']['buy_count'])?>
+			 </span>
+			</div>
+			<div class="miaoshu">{$goods_item.brief_1}</div>
+		</div>
+		<div class="blank"></div>
+	</li>
+	{/foreach}								
+	</ul>
+		<div class="blank"></div>
+		<div style="padding:0 20px 0 0; text-align:right;">
+		{$pages}
+		</div>
+{else}
+	<div class="notice">
+	{if !$keywords}
+		{function name="sprintf" format="$lang.JJ_NO_BFGROUP" value="$currentCity.name"}<br />
+		{if $currentCity.name neq $default_city.name}
+			<?php echo sprintf($this->_var['lang']['JJ_LOOK_BFGROUP'],a_u('Goods/index','cityname-'.$this->_var['default_city']['py']),$this->_var['default_city']['name']) ?>
+		{/if}
+	{/if}
+	</div>
+{/if}
+
+
+
+

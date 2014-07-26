@@ -1,0 +1,50 @@
+{include file="Inc/header.moban"}
+<?php 
+if(($_REQUEST ['m'] == 'Goods' || $_REQUEST ['m'] == 'Index') && ($_REQUEST ['a'] == 'index' || $_REQUEST ['a'] == 'showcate')){
+	$index_type = $_REQUEST['index_type'];
+	$GLOBALS['tpl']->assign('index_type',$index_type);
+
+	function getUrl($type,$query_arr){
+	    $url = '?';
+	    foreach($query_arr as $key=>$value){
+	        if($value[0] != $type){
+	            $url .=$value[0].'='.$value[1].'&';
+	        }
+	    }
+	    return $url.$type.'=';
+	}
+}
+?>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="deal-default">
+				{if $goods_list || ($smarty.request.m eq 'Goods' && $smarty.request.a eq 'showcate') }
+                                    {if $smarty.request.index_type eq old && $goods_list}
+                                        {include file="Inc/goods/goods_listx.moban"}
+                                    {else}
+                                        {if $goods_list}
+                                            {include file="Inc/goods/goods_list.moban"}
+                                         {else}
+                                            {include file="Inc/goods/goods_subscribe.moban"}
+                                         {/if}
+                                    {/if}
+				{elseif $goods}
+				{include file="Inc/goods/goods_info.moban"}
+				{else}
+				{include file="Inc/goods/goods_subscribe.moban"}
+				{/if}
+			<div id="sidebar" style="padding-top:30px;">
+				{if $goods && !$goods_list || $smarty.request.index_type eq old }
+                                    {include file="Inc/right.moban"}
+                                    {insert name="advLayout" id="首页右侧广告位"}
+                                {else}
+                                     {insert name="advLayout" id="右侧无团购时的广告位"}
+                                {/if}
+			</div>
+		</div>
+                
+	</div>
+	<!-- bd end -->
+</div>
+
+{include file="Inc/footer.moban"}

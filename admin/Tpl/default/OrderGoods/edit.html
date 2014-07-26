@@ -1,0 +1,53 @@
+<include file="Public:header" />
+<script type="text/javascript">
+function countTotalPrice()
+{
+	var unit_price = parseFloat(document.getElementById("unit_price").value);
+	var number = parseInt(document.getElementById("number").value);
+	document.getElementById("total_price").value = unit_price*number;
+
+}
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u('Order/edit',$back_param)}">{$Think.lang.BACK_ORDER_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('OrderGoods/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+
+<tr> 
+	<td class="tRight tTop"  width="120">{$Think.lang.GOODS_NAME}：</td>
+	<td class="tLeft">
+	<input type="text" class="bLeft" value="{$vo.name}" name="name" />
+	</td>
+</tr>
+
+<tr> 
+	<td class="tRight tTop" >{$Think.lang.ORDER_UNIT_PRICE}：</td>
+	<td class="tLeft">
+	<input type="text" id="unit_price" class="bLeft" value="{$vo.unit_price}" name="unit_price" onblur="countTotalPrice();" />
+	</td>
+</tr>
+<tr> 
+	<td class="tRight tTop" >{$Think.lang.ORDER_NUMBER}：</td>
+	<td class="tLeft">
+	<input type="text" id="number" class="bLeft" value="{$vo.number}" name="number" onblur="countTotalPrice();" />
+	</td>
+</tr>
+<tr> 
+	<td class="tRight tTop" >{$Think.lang.ORDER_TOTAL_PRICE}：</td>
+	<td class="tLeft">
+	<input type="text" id="total_price" class="bLeft" value="{$vo.total_price}" name="total_price" />
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" class="huge bLeftRequire" name="id" value="{$vo.id}">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

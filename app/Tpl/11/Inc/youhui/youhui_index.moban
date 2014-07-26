@@ -1,0 +1,185 @@
+{include file="Inc/header.moban"}
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/coupon.js"></script>
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/coupon.css" />
+<script type="text/javascript">
+
+ 
+
+</script>
+<div id="bdw" style="background:none;" >
+	<div id="bd" class="cf">
+		<div class="blank"></div>
+		<div>
+			<div id="content">
+				<div id="dashboard" class="dashboard" style="padding-top:0px; bottom:-1px;">
+					<ul>
+						   <li class="current m_ct" style="font-size:12px; "><a href="{function name="a_U" value="Youhui/index"}" style="_padding-top:10px; _height:26px;"><img src='{$CND_URL}/{$TMPL_PATH}/Public/images/m-normal.png' align="absmiddle" />&nbsp;{$lang.YOUHUI_CT_MODEL}</a><span></span></li>
+      					   <li class="m_dt" style="font-size:12px;"><a href="{function name="a_U" value="Youhui/ditu"}"  style="_padding-top:10px; _height:26px;"><img src='{$CND_URL}/{$TMPL_PATH}/Public/images/m-map.png' align="absmiddle" />&nbsp;{$lang.YOUHUI_DT_MODEL}</a><span></span></li>
+					</ul>
+				</div>
+				
+					<div class="">
+				
+						<div class="clear"></div>
+						<div class="coupon_box cf" style="padding:0px;">
+							
+							<div class="brand">
+							<h3>品牌专区</h3>
+							<div id="brandMain" class="brand-content">
+								<ul>
+								{foreach from=$brand_coupon item=bcoupon}
+								<li>
+									<p class="figure">
+										<a href="<?php echo a_u("Youhui/show","id-".$this->_var['bcoupon']['id']);?>" title="{$bcoupon.name}">
+										<img src="{$CND_URL}/{$bcoupon.icon}" />
+										</a>
+									</p>
+									<p class="entr">
+										<a href="<?php echo a_u("Youhui/show","id-".$this->_var['bcoupon']['id']);?>" title="{$bcoupon.name}">[{$bcoupon.supplier_name}]{$bcoupon.name}</a>
+									</p>									
+								</li>														
+								{/foreach}	
+								</ul>							
+							</div>
+						<script type="text/javascript">
+						$(document).ready(function(){
+							
+							var t = 3000, st;
+							function slide(){
+								if($('#brandMain li').length <= 3) return;
+								
+								st = setTimeout(function(){
+									$('#brandMain ul').animate({
+										top:-160
+										},500,function(){
+										$('#brandMain ul li:lt(3)').appendTo($('#brandMain ul'));
+										$('#brandMain ul').css('top',0);
+									});
+									
+									slide();
+								},t);
+							}
+							$('#brandMain ul').mouseover(function(){
+							clearTimeout(st);
+							}).mouseout(function(){
+								slide();
+							});
+							slide();
+						});
+						</script>
+						</div>
+							
+							<!--<div id="bcoupon_box">
+							<ul>
+							{foreach from=$brand_coupon item=bcoupon}
+							<li class="bcoupon">
+								
+								<a href="<?php echo a_u("Youhui/show","id-".$this->_var['bcoupon']['id']);?>" title="{$bcoupon.name}">
+								<img src="{$CND_URL}/{$bcoupon.icon}" />
+								</a>
+								<div><a href="<?php echo a_u("Youhui/show","id-".$this->_var['bcoupon']['id']);?>" title="{$bcoupon.name}">{$bcoupon.name}</a></div>
+								
+							</li>							
+							{/foreach}
+							</ul>	
+							</div>-->		
+						</div>
+						
+					</div>
+				
+				
+				<div class="blank"></div>
+				
+					<div class="">
+				
+						<div class="clear"></div>
+						<div class="coupon_box cf">
+							<div class="filter_box">
+							<span class="filter_by">{$lang.YOUHUI_BY_REGION}：</span>
+							{foreach from=$region_list item=region}
+							<a href="{$region.url}" title="{$region.name}" {if $region.act eq 1} class="active"{/if}>{$region.name}{if $region.count neq 'none'}({$region.count}){/if}</a>							
+							{/foreach}
+							<div class="blank"></div>
+							<span class="filter_by">{$lang.YOUHUI_BY_CATE}：</span>
+							{foreach from=$cate_list item=cate}
+							<a href="{$cate.url}" title="{$cate.name}" {if $cate.act eq 1} class="active"{/if}>{$cate.name}{if $cate.count neq 'none'}({$cate.count}){/if}</a>							
+							{/foreach}		
+							</div>					
+						</div>
+						
+					</div>
+				
+				
+				<div class="blank"></div>
+				
+				<div class="box">
+					
+						<div class="clear"></div>
+					
+						<div class="coupon_box cf" style="background:#f2f2f2;padding-top:0px; width:703px; _overflow:hidden;">	
+							<div class="rc-hd" style="border-bottom:dotted #ccc 1px;">
+							<h3>{$lang.ALL_YOUHUI}</h3>
+							<div class="stat">{$lang.YOUHUI_CURRENT_VIEW}：<strong class="cp">{$current_cate}</strong> 共有 <span class="cp">{$coupon_total}</span>项优惠</div>
+							<div class="sort">
+								
+							<a class="down {if $sort_field eq 'count'}cur{/if}" href="javascript:void(0);" onclick="sort_by('count');" style="font-size:12px;">{$lang.HOT_YOUHUI_SORT}</a>
+							<a class="new {if $sort_field eq 'create_time'}cur{/if}" href="javascript:void(0);"  onclick="sort_by('create_time');" style="font-size:12px;">{$lang.NEW_YOUHUI_SORT}</a>	
+							</div>
+							
+							</div>
+							
+							<div class="youhui_list">
+							{if $coupon_list}	
+								{foreach from=$coupon_list item=coupon}
+								<div class="youhui_item" onmouseover="this.className='youhui_item_hover';" onmouseout="this.className='youhui_item';" style="position:relative;">
+									<div class="inner">
+									<div class="cut2"></div>
+									<a href="{$coupon.url}" title="{$coupon.name}" class="coupon_name">[{$coupon.sname}]{$coupon.name}</a>									
+									<a href="{$coupon.url}" title="{$coupon.name}"><img height="90" width="150" src="{$CND_URL}/{$coupon.icon}" alt="{$coupon.name}" /></a>
+									<div class="blank" style="height:5px;"></div>
+									<span class="coupon_end_time">{$lang.YOUHUI_END_TIME}：{if $coupon.end_time eq 0}{$lang.YOUHUI_NO_LIMIT}{else}{function name="a_toDate" value=$coupon.end_time format="Y-m-d"}{/if}</span>
+									<div class="blank" style="height:0px;"></div>
+									<span class="coupon_count">{$lang.YOUHUI_COUNT}：{$coupon.count}</span>
+									<div class="blank" style="height:5px;"></div>
+									<a href="<?php echo a_u("Youhui/print","id-".$this->_var['coupon']['id']);?>" target="_blank" class="coupon_print">{$lang.YOUHUI_PRINT}</a>
+									{if $coupon.is_sms eq 1}
+									<a class="coupon_sms" href="javascript:void(0);" rel="{$coupon.id}" >{$lang.YOUHUI_SMS_DOWN}</a>
+									{/if}	
+									</div>							
+								</div>
+								{/foreach}
+							{else}
+							{$lang.YOUHUI_NO_EXIST}
+							{/if}
+							</div>
+							<div class="blank"  style="border-bottom:dotted #ccc 1px; display:block;"></div>
+							<div class="pages">{$pages}</div>
+						</div>
+						
+					
+				</div>
+			
+			</div>
+			<div class="coupon_right">
+				{include file="Inc/side/side_youhui.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+
+<!--短信订阅的box-->
+<div class="coupon_sms_box">
+	<dl>
+		<dt><a href="javascript:;" class="close">关闭</a></dt>
+		<dd>
+			<div class="coupon_sms_form">
+
+			</div>
+		</dd>
+	</dl>
+</div>
+
+<!--end 短信订阅box-->
+{include file="Inc/footer.moban"}

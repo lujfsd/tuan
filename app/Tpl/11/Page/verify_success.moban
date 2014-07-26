@@ -1,0 +1,43 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="signuped">
+			<div id="content">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head success">
+							<h2>{$lang.XY_SENT_VERIFY_MAIL_SUCCESS}</h2>
+						</div>
+						<div class="sect">
+							<h3 class="notice-title">{$lang.XY_NEXT_VERIFY_EMAIL}</h3>
+							<div class="notice-content">
+								<p>
+									<?php echo sprintf($GLOBALS['Ln']['XY_WE_SENT_ONE_MAIL_TO'],'<span class="red">'.$this->_var['user']['email'].'</span>'); ?>
+								</p>
+							</div>
+							{if $gocheck_url neq ''}
+							<a class="gomailcheck" href="{$gocheck_url}" target="_blank">{$lang.XY_IMM_TO_VERIFY}</a>
+							{/if}
+							<div class="help-tip">
+								<h3 class="help-title">{$lang.XY_NOT_SENT_MAIL}</h3>
+								<ul class="help-list">
+									<li>{$lang.XY_MAY_IS_BAD_MAIL}</li>
+									<li>
+										{function name="sprintf" a="$lang.XY_USE_MAIL_1" b=$user.email}
+										{$CFG.REPLY_ADDRESS}{$lang.XY_USE_MAIL_2}.
+									</li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar"> </div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

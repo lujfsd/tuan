@@ -1,0 +1,61 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+<div class="operate" >
+<!-- 查询区域 -->
+<div class="fRig">
+<form method='get' action="{:u('Goods/search')}">
+<div class="fLeft"><span id="key">&nbsp;&nbsp;&nbsp;&nbsp;
+	{%_SEARCH_DATA}：
+	<select name="cate_id" class="bLeft">
+		<option value="0">{$Think.lang.NO_CATE_SELECT}</option>
+		<foreach name="cate_list" item="cate_item" >
+			<option value="{$cate_item.id}" <if condition="$cate_id eq $cate_item['id']">selected="selected"</if>>{$cate_item[$select_dispname]}</option>
+		</foreach>
+	</select>
+	<input type="text" name="name" title="{$Think.lang.GOODS_NAME}" class="medium" ></span></div>
+	<input type="hidden" name="SEARCH_TYPE" value="like" />
+	<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+	</div>
+	
+	</div>
+	<!-- 高级查询区域 -->
+	<div  id="searchM" class=" none search cBoth" >
+	</div>
+	<input type="hidden" name="status" value="1" />
+	<input type="hidden" name="{:c('VAR_MODULE')}" value="Goods" />
+	<input type="hidden" name="{:c('VAR_ACTION')}" value="search" />
+</form>
+</div>
+<!-- 功能操作区域结束 -->
+
+<!-- 列表显示区域  -->
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="goods_spec" 
+	style="list" 
+	checkbox="true" 
+	datasource="list" 
+	child="false" 
+	show="id:{$Think.lang.ID}|8%,goods_sn:{$Think.lang.GOODS_SN},specname:{$Think.lang.SPEC_NAME},shop_price:{$Think.lang.SHOP_PRICE},goods_stock:{$Think.lang.GOODS_STOCK}" 
+	/> 
+</div>
+<!--  分页显示区域 -->
+<div class="page">{$page}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

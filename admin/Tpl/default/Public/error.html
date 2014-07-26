@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html>
+<head>
+<title>{$Think.lang.ERROR_MSG}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="{$publicCss}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div style="width:100%;text-align:center" style="border-top:1px solid #ccc;border-right:1px solid #ccc">
+<table class="error"  cellpadding=0 cellspacing=0 >
+	<tr class="row" >
+		<th  class="tCenter red"><img SRC='../Public/Images/update.gif' class='img' align='absmiddle' BORDER='0'> {$error|htmlspecialchars|nl2br}</th>
+	</tr>
+	<tr>
+		<td height='5'  class="topTd" ></td>
+	</tr>
+	<tr>
+		<td class="tCenter row" >
+		{$Think.lang.YOU_CAN_CHOOSE} [ <a href="{$FCS.SERVER.PHP_SELF}">{$Think.lang.RETRY}</a> ] [ <a href="javascript:history.back()">{$Think.lang.BACK}</a> ] {$Think.lang.OR} [ <a href="{:u('Index/index')}">{$Think.lang.BACK_TO_INDEX}</a> ]</td>
+	</tr>
+	
+</table>
+</div>
+</body>
+</html>

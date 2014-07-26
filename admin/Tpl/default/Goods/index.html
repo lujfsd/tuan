@@ -1,0 +1,113 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<php>
+	function get_is_score($score_goods)
+	{
+		if($score_goods == 1)
+		{		
+			return "积分兑换";
+		}
+		else
+		{
+			return "普通团购";
+		}
+	}
+</php>
+<div id="main" class="main" >
+<script type="text/javascript">
+	function showGoods(id){
+		window.open('index.php?m=Goods&a=show&preview=true&id=' + id);
+	}
+	function hao123api(id){
+		window.open(APP+'?m=Goods&a=hao123api&id='+id);
+	}
+	function batchUncharge(id){
+		if (window.confirm('确定要进行批量退款到会员帐户中？')) {
+			location.href = APP+'?m=Order&a=batch_uncharge&goods_id='+id;
+		}
+	}	
+	function statistics(id){
+		location.href = APP+'?m=Goods&a=statistics&id='+id;
+	}	
+	
+	function del2(id){
+		var keyValue;
+		if (id)
+		{
+			keyValue = id;
+		}else {
+			keyValue = getSelectCheckboxValues();
+		}
+		if (!keyValue)
+		{
+			alert(SELECT_DEL_ITEM);
+			return false;
+		}
+		if (window.confirm(CONFIRM_DELETE))
+		{
+			location.href = APP+'?m=Goods&a=foreverdelete&id='+keyValue;
+			/*ThinkAjax.send(APP+'?m=Goods&a=foreverdelete&id='+keyValue+'&ajax=1','',doDelete);*/
+		}
+}	
+</script>
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<div class="operate" >
+<fanwe:imageBtn name="add" value="{$Think.lang._ADD_DATA}" click="addData()" style="impBtn hMargin fLeft shadow" />
+<fanwe:imageBtn name="edit" value="{$Think.lang._EDIT_DATA}" click="editData()" style="impBtn hMargin fLeft shadow" />
+<fanwe:imageBtn name="delete" value="{$Think.lang._DELETE_DATA}" click="delData()" style="impBtn hMargin fLeft shadow" />
+<!-- <input type="button" id="" name="sendMail" value="邮件通知" onclick="sendMail()" class="sendemail imgButton" >
+时间：<input type="text" class="bLeft" id="sendTime" value="{:toDate(gmtTime())}" /> -->
+<form method='get' action="__APP__">
+<select name="cate_id">
+	<option value="0">{$Think.lang.NO_CATE_SELECT}</option>
+	<foreach name="cate_list" item="cate_item" >
+		<option value="{$cate_item.id}" <if condition="$cate_id eq $cate_item['id']">selected</if>>{$cate_item[$select_dispname]}</option>
+	</foreach>
+</select>
+<select name="city_id">
+	<option value="0">==城市列表==</option>
+	<foreach name="city_list" item="city_item" >
+		<option value="{$city_item.id}" <if condition="$city_id eq $city_item['id']">selected</if>>{$city_item.name}</option>
+	</foreach>
+</select>
+<select name="suppliers_id">
+	<option value="0">==供货商列表==</option>
+	<foreach name="suppliers_list" item="suppliers_item" >
+		<option value="{$suppliers_item.id}" <if condition="$suppliers_id eq $suppliers_item['id']">selected</if>>{$suppliers_item.name}</option>
+	</foreach>
+</select>
+<select name="is_group_fail">
+	<option value="3" <if condition="$_REQUEST['is_group_fail'] eq 3">selected="selected"</if> >==所有状态==</option>
+	<option value="0" <if condition="$_REQUEST['is_group_fail'] eq 0">selected="selected"</if> >团购未成功</option>
+    <option value="2" <if condition="$_REQUEST['is_group_fail'] eq 2">selected="selected"</if> >团购已成功</option>
+    <option value="1" <if condition="$_REQUEST['is_group_fail'] eq 1">selected="selected"</if> >团购已失败</option>
+</select>
+<input type="text" name="name" title="{$Think.lang.GOODS_NAME}" class="medium" value = "{$goods_name}">&nbsp;&nbsp;
+<input type="hidden" name="SEARCH_TYPE" value="like" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+<select name="score_goods" onchange="window.location.href=window.location.href +'&score_goods='+ this.value">
+ 	<option value="0" <php>if($_REQUEST['score_goods'] == '0'){</php>selected<php>}</php>>普通团购</option>
+	<option value="1" <php>if($_REQUEST['score_goods'] == '1'){</php>selected<php>}</php>>积分兑换</option>
+	<option value="2" <php>if($_REQUEST['score_goods'] == '2'){</php>selected<php>}</php>>抽奖商品</option>
+ </select>
+<input type="hidden" name="status" value="1" />
+<input type="hidden" name="{:c('VAR_MODULE')}" value="Goods" />
+<input type="hidden" name="{:c('VAR_ACTION')}" value="index" />
+</form>
+</div>
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="goods" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|40,name|msubstr:{$Think.lang.GOODS_NAME}:edit,score_goods|get_is_score:支付方式,cate_id|getGoodsCateName:{$Think.lang.GOODS_CATE},shop_price|priceFormat:{$Think.lang.SHOP_PRICE},promote_end_time|toDate:{$Think.lang.PROMOTE_END_TIME},group_user:最低人数,buy_count|A('Goods')->showOrderList=$goods['id']:团购人数,virtual_count:虚拟人数,suppliers_id|A('Suppliers')->getSuppliersName:供货商,city_id|A('GroupCity')->getGroupCityName:{$Think.lang.GROUPCITY},quan_id|getCouponRegion:{$Think.lang.COUPON_REGION},sort|getSort=$goods['id']:{$Think.lang.SORT},id|A('Goods')->getOrderEditLink:订单操作,type_id|A('Goods')->getGroupBondLink=$goods['id']:团购券" 
+	actionlist="statistics:统计:id, showGoods:预览:id, edit:{$Think.lang._EDIT_DATA}:id, delData:{$Think.lang._DELETE_DATA}:id" /> 
+</div>
+<div class="page">{$page}</div>
+</div>
+</div>

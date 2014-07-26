@@ -1,0 +1,60 @@
+<tagLib name="fanwe" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="reset">
+			<div id="content">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_MODIFY_DATA}</h2>
+						</div>
+						<div class="sect">
+							<form name="reg_form" action="{$POST_URL}" method="post" >
+								<div class="field email">
+									<label class="f-label" for="reset-password">{$lang.XY_CODE_STYLE}</label>
+									<select name="codebar" size="1" onchange="" style="width: 300px">
+										<option value="BCGcodabar" <if condition="$suppliers.codebar eq BCGcodabar"> selected</if> >Codabar</option>
+										<option value="BCGcode11" <if condition="$suppliers.codebar eq BCGcode11"> selected</if> >Code 11</option>
+										<option value="BCGcode39" <if condition="$suppliers.codebar eq BCGcode39"> selected</if> >Code 39</option>
+										<option value="BCGcode39extended" <if condition="$suppliers.codebar eq BCGcode39extended"> selected</if> >Code 39 Extended</option>
+										<option value="BCGcode93" <if condition="$suppliers.codebar eq BCGcode93"> selected</if> >Code 93</option>
+										<option value="BCGcode128" <if condition="$suppliers.codebar eq BCGcode128"> selected</if> >Code 128</option>
+										<option value="BCGean8" <if condition="$suppliers.codebar eq BCGean8"> selected</if> >EAN-8</option>
+										<option value="BCGean13" <if condition="$suppliers.codebar eq BCGean13"> selected</if> >EAN-13</option>
+										<option value="BCGisbn" <if condition="$suppliers.codebar eq BCGisbn"> selected</if> >ISBN-10 / ISBN-13</option>
+										<option value="BCGi25" <if condition="$suppliers.codebar eq BCGi25"> selected</if> >Interleaved 2 of 5</option>
+										<option value="BCGs25" <if condition="$suppliers.codebar eq BCGs25"> selected</if> >Standard 2 of 5</option>
+										<option value="BCGmsi" <if condition="$suppliers.codebar eq BCGmsi"> selected</if> >MSI Plessey</option>
+										<option value="BCGupca" <if condition="$suppliers.codebar eq BCGupca"> selected</if> >UPC-A</option>
+										<option value="BCGupce" <if condition="$suppliers.codebar eq BCGupce"> selected</if> >UPC-E</option>
+										<option value="BCGupcext2" <if condition="$suppliers.codebar eq BCGupcext2"> selected</if> >UPC Extension 2 Digits</option>
+										<option value="BCGupcext5" <if condition="$suppliers.codebar eq BCGupcext5"> selected</if> >UPC Extension 5 Digits</option>
+										<option value="BCGpostnet" <if condition="$suppliers.codebar eq BCGpostnet"> selected</if> >PostNet</option>
+										<option value="BCGothercode" <if condition="$suppliers.codebar eq BCGothercode"> selected</if> >Other Barcode</option>
+									</select>
+								</div>
+								<div class="field email">
+									<label class="f-label" for="reset-password-confirm">{$lang.XY_CODE_SIZE}</label>
+									<select name="resolution" size="1" onchange="" style="width: 300px">
+										<option value="1" <if condition="$suppliers.resolution eq 1"> selected</if> >1{$lang.XY_CODE_POINT}</option>
+										<option value="2" <if condition="$suppliers.resolution eq 2"> selected</if> >2{$lang.XY_CODE_POINT}</option>
+										<option value="3" <if condition="$suppliers.resolution eq 3"> selected</if> >3{$lang.XY_CODE_POINT}</option>
+									</select>									
+								</div>
+								<div class="act">
+									<input type="hidden" name="m" value="Suppliers" />
+									<input type="hidden" name="a" value="doEdit" />
+									<input type="submit" class="formbutton" id="reset-submit" value="{$lang.XY_SAVE}" />
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar"> </div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>

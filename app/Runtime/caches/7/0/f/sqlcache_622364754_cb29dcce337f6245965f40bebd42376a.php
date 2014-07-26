@@ -1,0 +1,1 @@
+<?php exit;?>1406344906a:5:{s:16:"goods_short_name";s:0:"";s:12:"suppliers_id";s:1:"2";s:12:"is_order_sms";s:1:"1";s:16:"promote_end_time";s:10:"1407612000";s:18:"promote_begin_time";s:10:"1406316000";}

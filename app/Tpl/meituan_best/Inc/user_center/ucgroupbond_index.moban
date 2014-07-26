@@ -1,0 +1,240 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}						
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_MY}<?php echo a_fanweC('GROUPBOTH') ?></h2>
+							<ul class="filter">
+								<li class="label">{$lang.XY_CLASS_IFICATION} </li>
+								<li {if $status eq 1}class="current"{/if}><a href="<?php echo a_u('UcGroupBond/index','status-1') ?>">{$lang.XY_NO_USE}</a></li>
+								<li {if $status eq 2}class="current"{/if}><a href="<?php echo a_u('UcGroupBond/index','status-2') ?>">{$lang.XY_HAD_USE}</a></li>
+								<li {if $status eq 3}class="current"{/if}><a href="<?php echo a_u('UcGroupBond/index','status-3') ?>">{$lang.XY_BAD_USE}</a></li>
+								<li {if $status eq 0}class="current"{/if}><a href="<?php echo a_u('UcGroupBond/index','status-0') ?>">{$lang.XY_ALL}</a></li>
+							</ul>
+						</div>
+						<div class="sect">
+							
+							{if $groupbond_list}
+							<table id="coupons-table" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+								<tr>
+									<th width="auto">{$lang.XY_GROUP_PROJECT}</th>
+									<th width="80">{$GROUPBOTH}</th>
+									<th width="80">{$lang.XY_BUY_DATE}</th>
+									<th width="80">{$lang.XY_EXPIRED_TIMES}</th>
+									<th width="80">{$lang.XY_USE_TIMES}</th>
+									<th width="50">{$lang.XY_USER_OPERATE}</th>
+								</tr>
+								{foreach from=$groupbond_list item=groupbond key=key}
+								<tr {if $key mod 2 eq 0}class="alt"{/if}>
+									<td style="text-align:left;">
+										<table class="deal-info">
+											<tr>
+												<td class="pic">
+												<a href="{$groupbond.goods.url}" target="_blank" title="{$order_item.goods_name}"><img src="{$CND_URL}{$groupbond.goods.small_img}" width="75" height="46" /></a></td>
+												<td class="text"><a class="deal-title" href="{$groupbond.goods.url}" target="_blank">{$groupbond.goods_name}</a></td>
+											</tr>
+										</table>
+									</td>
+									<td>SN:{$groupbond.sn}<br/>PW:{$groupbond.password}</td>
+									<td>{$groupbond.buy_time_format}</td>
+									<td>
+										
+										{if $groupbond.end_time_format}
+										{$groupbond.end_time_format}
+										{else}
+										{$lang.XY_NO_EXPIRED_TIMES}
+										{/if}
+									</td>
+									<td>
+										{if $groupbond.use_time_format}
+										{$groupbond.use_time_format}
+										{else}
+										{$lang.XY_NO_USE}
+										{/if}
+									</td>
+									<td class="op">									
+										{if $groupbond.is_edit}		
+											{if $GROUPBOND_PRINTTYPE eq 0}
+											<a href="javascript:void(0);" target="_blank" class="print_btn" rel="{$groupbond.id}">{$lang.XY_PRINT}</a>
+											{else}
+											<a href="javascript:void(0);" target="_blank" class="print_btn" rel="{$groupbond.id}">{$lang.XY_PRINT}</a>
+											<a href="javascript:void(0);" target="_blank" class="down_btn" rel="{$groupbond.id}">{$lang.DOWNLOAD}</a>
+											{/if}
+											{if $IS_SMS eq 1 and $groupbond.goods.allow_sms eq 1}
+											<a href="javascript:void(0);" class="sms_btn" rel="{$groupbond.id}" >{$lang.XY_SMS}</a>
+											{/if}
+										{/if}
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+							{else}
+							<div class="notice">{$lang.XY_NOW_NO_USER}{$GROUPBOTH}</div>
+							{/if}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_WHAT_IS}{$CFG.GROUPBOTH}？</h3>
+							<p><?php echo a_fanweC('GROUPBOTH') ?>{$lang.XY_WHAT_IS_GROUPBOTH}</p>
+							<h3>{$lang.XY_HOW_TO_USE}<?php echo a_fanweC('GROUPBOTH') ?>？</h3>
+							<p><?php echo sprintf(a_L('XY_HOW_TO_USE_GROUPBOTH'),a_fanweC('GROUPBOTH'),a_fanweC('GROUPBOTH')) ?></p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+<div class="groupbond_sms_box">
+		<div style="text-align:right;"><a href="javascript:void(0);" class="close">{$lang.CLOSE}</a></div>
+		<select id="departs"></select>
+		{if a_fanweC('SMS_SEND_OTHER') eq 1}<span>{$lang.MOBILE_PHONE}：</span>{/if}<input {if a_fanweC('SMS_SEND_OTHER') eq 1}type="text"{/if} {if a_fanweC('SMS_SEND_OTHER') eq 0}type="hidden"{/if} name="mobile_phone" id="gb_mobile_phone">
+		<input type="button" value="{$lang.UCGROUPBOND_SMS}" onclick="send_sms_gb();" />
+		<input type="hidden" id="gb_id" value="" />
+</div>
+
+
+<div class="groupbond_down_box">
+		<div style="text-align:right;"><a href="javascript:void(0);" class="close">{$lang.CLOSE}</a></div>
+		<select id="departs_list"></select>
+		<input type="button" value="{$lang.DOWNLOAD}" onclick="down_gb();" />
+		<input type="hidden" id="gb_down_id" value="" />
+</div>
+
+<div class="groupbond_print_box">
+		<div style="text-align:right;"><a href="javascript:void(0);" class="close">{$lang.CLOSE}</a></div>
+		<select id="departs_list_print"></select>
+		<input type="button" value="{$lang.XY_PRINT}" onclick="print_gb();" />
+		<input type="hidden" id="gb_print_id" value="" />
+</div>
+
+<script type="text/javascript">
+window.onload=function(){
+	$(".sms_btn").click(function(){
+		var gb_id = $(this).attr("rel");
+		$.ajax({
+			  url: ROOT_PATH+"/services/ajax.php?run=getGbDownData&gb_id="+gb_id,
+			  dataType: "json",
+			  success:function(data)
+			  {
+				  $("#departs").empty();
+				  var departs = data.departs;
+				  for(var i=0;i<departs.length;i++)
+				  {
+				  	 $("#departs").append("<option value='"+departs[i].id+"'>"+departs[i].depart_name+"</option>");
+				  }
+			  	  $("#gb_mobile_phone").val(data.mobile);
+			  	  $("#gb_id").val(gb_id);
+			　 	  $.ShowDialog({"dialog":"groupbond_sms_box"});
+				},
+				error:function(a,b,c)
+				{
+					alert(a.responseText);
+				}
+		});
+		return false;
+	});
+	
+	$(".down_btn").click(function(){
+		var gb_id = $(this).attr("rel");
+		$.ajax({
+			  url: ROOT_PATH+"/services/ajax.php?run=getGbDownData&gb_id="+gb_id,
+			  dataType: "json",
+			  success:function(data)
+			  {
+				  $("#departs_list").empty();
+				  var departs = data.departs;
+				  for(var i=0;i<departs.length;i++)
+				  {
+				  	 $("#departs_list").append("<option value='"+departs[i].id+"'>"+departs[i].depart_name+"</option>");
+				  }
+			  	  $("#gb_down_id").val(gb_id);
+			　 	  $.ShowDialog({"dialog":"groupbond_down_box"});
+				},
+				error:function(a,b,c)
+				{
+					alert(a.responseText);
+				}
+		});
+		return false;
+	});
+	
+	
+	$(".print_btn").click(function(){
+		var gb_id = $(this).attr("rel");
+		$.ajax({
+			  url: ROOT_PATH+"/services/ajax.php?run=getGbDownData&gb_id="+gb_id,
+			  dataType: "json",
+			  success:function(data)
+			  {
+				  $("#departs_list_print").empty();
+				  var departs = data.departs;
+				  for(var i=0;i<departs.length;i++)
+				  {
+				  	 $("#departs_list_print").append("<option value='"+departs[i].id+"'>"+departs[i].depart_name+"</option>");
+				  }
+			  	  $("#gb_print_id").val(gb_id);
+			　 	  $.ShowDialog({"dialog":"groupbond_print_box"});
+				},
+				error:function(a,b,c)
+				{
+					alert(a.responseText);
+				}
+		});
+		return false;
+	});
+}
+
+
+function send_sms_gb()
+{
+	var gb_id = $("#gb_id").val();
+	var mobile = $("#gb_mobile_phone").val();
+	var depart_id = $("#departs").val();
+	{if a_fanweC('SMS_SEND_OTHER') eq 1}
+	if(!$.checkMobilePhone(mobile))
+	{
+	   alert("{$lang.JS_MOBILE_ERROR}");
+	   return false;			
+	}
+	{/if}
+	location.href = ROOT_PATH+"/index.php?m=UcGroupBond&a=sms&id="+gb_id+"&mobile="+mobile+"&depart_id="+depart_id;
+}
+
+function down_gb()
+{
+	var gb_id = $("#gb_down_id").val();
+	var depart_id = $("#departs_list").val();
+	location.href = ROOT_PATH+"/index.php?m=UcGroupBond&a=download&id="+gb_id+"&depart_id="+depart_id;
+}
+
+function print_gb()
+{
+	var gb_id = $("#gb_print_id").val();
+	var depart_id = $("#departs_list_print").val();
+	window.open(ROOT_PATH+"/index.php?m=UcGroupBond&a=printbond&id="+gb_id+"&depart_id="+depart_id);
+}
+</script>
+{include file="Inc/footer.moban" }

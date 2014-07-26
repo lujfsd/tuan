@@ -1,0 +1,242 @@
+<script language="javascript" type="text/javascript"> 
+
+var FCUR_RATE = 1;
+/*
+<th>类型</th>
+<th>商品货号</th>
+<th>商品名称</th>
+<th>当前库存</th>
+<th>购买数量</th>
+<th>已发货</th>
+<th>此单发货</th>
+*/
+ //类型（goods_type: 0：商品规格；1：添加捆绑商品; 2:赠品），ID，货号，商品名称)
+ function newTr(goods_type, id, goods_sn, goods_name, goods_price, goods_weight, goods_number, goods_num, send_num, cd_num,total_price) {
+
+	 goods_price = round(goods_price,3);
+	 
+	     var html = '<tr class="row" onmouseover="over(event)" onmouseout="out(event)"  id="tr' + goods_type + '_' + id+'">';
+	
+	     html += '<td>';
+	     html += '<input type="hidden" name="goods_type_list[]" id="goods_type_'+goods_sn+'" value="'+goods_type+'" />';
+	     html += '<input type="hidden" name="order_goods_id_list[]" id="order_goods_id_'+goods_sn+'" value="'+id+'" />';
+		 
+		html += '<input type="hidden" name="cd_num_list[]" id = "cd_num_'+goods_sn+'" value="'+cd_num+'" />';
+		
+		html += '<input type="hidden" name="send_num_list[]" id = "send_num_'+goods_sn+'" value='+send_num+'" />';
+		
+	     html += goods_sn+'</td>';
+
+	     html += '<td>'+goods_name+'</td>';
+	     
+	     html += '<td >'+goods_price+ '<input size="3" type="hidden" name="goods_price_list[]" id = "goods_price_'+goods_sn+'" value='+goods_price+ ' </td>';
+	     
+	     html += '<td >'+goods_weight+ '<input size="3" type="hidden" name="goods_weight_list[]" id = "goods_weight_'+goods_sn+'" value='+goods_weight+ ' </td>';
+	     
+	     html += '<td >'+goods_number+ '<input size="3" type="hidden" name="goods_number_list[]" id = "goods_number_'+goods_sn+'" value='+goods_number+ ' </td>';
+	     
+	     html += '<td>'+goods_num+ '<input size="3" type="hidden" name="goods_num_list[]" id = "goods_num_'+goods_sn+'" value='+goods_num+' </td>';
+		 html += '<td>'+total_price+ '<input size="3" type="hidden" name="goods_num_list[]" id = "goods_num_'+goods_sn+'" value='+goods_num+' </td>';
+	     
+	     html += '</tr>';
+		  //alert(html);
+	     $("#checkList").append(html);
+}
+
+ function sum_goods_weight(changeFreightMode){
+		var goods_weight_list = document.getElementsByName('goods_weight_list[]');
+		var goods_price_list = document.getElementsByName('goods_price_list[]');
+		var goods_sum_list = document.getElementsByName('cd_num_list[]');
+		var total_weight = 0;
+		var total_money = 0;
+		for (var j=0;j< goods_weight_list.length;j++)
+		{
+			total_weight = total_weight + strToFloat(goods_weight_list[j].value) * strToFloat(goods_sum_list[j].value);
+			total_money = total_money + strToFloat(goods_price_list[j].value) * strToFloat(goods_sum_list[j].value);
+		}		
+		$('#order_weight').attr("value", round(total_weight,3));
+		$('#total_money').attr("value", round(total_money,3));
+
+		if (changeFreightMode == true){
+			selectFreightMode();
+		}
+	}
+
+ function save_old_value(id){
+		$("#" + id + "_old").attr("value", $("#" + id).val());
+	}	
+
+//选择，取消  是否要保价
+ function protectChange(checked){
+ 	//alert(checked);
+ 	//alert($("#protect_fee").val());
+ 	if (checked){
+ 		$("#protect_fee").attr("value",$("#protect_fee_original").val());
+ 		$("#protect_fee_old").attr("value",$("#protect_fee_original").val());		
+ 	}else{
+ 		$("#protect_fee").attr("value",0);
+ 		$("#protect_fee_old").attr("value",0);
+ 	}
+
+ 	//sum_money(true, '');
+ }
+//=====================================================================
+ function FillOptions(select, url, firstName, selectIndex, changeFreightMode){
+
+		//alert(url);
+		$.ajax({
+			  //type: "get",
+			  url: url,
+			  success:function(data)
+			  {
+				dataList = $.evalJSON(data);
+				if (dataList != null && dataList != "" && dataList != "-1" && isdigit(dataList) == false){
+					//alert(dataList);
+					$('#' + select).empty();
+					for (var i=0; i< dataList.length; i++){
+						$("<option value=" +dataList[i].id + ">" + dataList[i].name + "</option>").appendTo('#' + select);
+					}
+					if (firstName != ""){
+						AddOption(select, firstName,"-1",true,0);
+					}
+					
+					if (selectIndex != null){
+						$('#' + select).val(selectIndex);
+					}
+				}
+				if (changeFreightMode == true){
+					selectFreightMode(null);
+				}	
+			  }
+			});
+		
+	}
+
+	function AddOption(select, text, value, selected, index) {
+		var obj = document.getElementById(select);
+		option = new Option(text, value);
+		obj.options.add(option, index);
+		obj.options[index].selected = selected;
+	}
+
+
+	function region_lv1Change(region_lv1, region_lv2, changeFreightMode){
+
+		$('#region_lv3').empty();
+		AddOption("region_lv3", "请选择地市...","-1",true,0);
+		$('#region_lv4').empty();
+		AddOption("region_lv4", "请选择区县...","-1",true,0);
+
+		FillOptions('region_lv2', "__APP__?m=Order&a=getRegion3&pid="+region_lv1, "请选择省份...", region_lv2, changeFreightMode);
+		
+	}
+
+	function region_lv2Change(region_lv2, region_lv3, changeFreightMode){
+
+		$('#region_lv4').empty();
+		AddOption("region_lv4", "请选择区县...","-1",true,0);
+		
+		FillOptions('region_lv3', "__APP__?m=Order&a=getRegion3&pid="+region_lv2, "请选择地市...", region_lv3, changeFreightMode);
+			
+		
+	}
+
+	function region_lv3Change(region_lv3, region_lv4, changeFreightMode){
+		FillOptions('region_lv4', "__APP__?m=Order&a=getRegion3&pid="+region_lv3, "请选择地市...", region_lv4, changeFreightMode);	
+
+	}
+
+	function region_lv4Change(address, changeFreightMode){
+		//alert($("#address").attr("value"));
+		//alert($("#address").val());
+		var address = "";
+		if (address != null && address != ""){
+			address = address;
+		}else{
+			address = $('#region_lv1 option:selected').text()+$('#region_lv2 option:selected').text()+$('#region_lv3 option:selected').text()+$('#region_lv4 option:selected').text();
+		}	
+		
+		$("#address").attr("value",address);//填充内容 
+		//document.getElementById('address').value = address;
+
+		if (changeFreightMode == true){
+			selectFreightMode(null);
+		}
+	}
+
+	//配送方式
+	//保价费率(商品价格的2% ，不足￥10.00按￥10.00计算)。
+	function selectFreightMode(id, region_lv1, region_lv2, region_lv3, region_lv4){
+		if (id == "" || id == null)
+		  id = $("#delivery").val();
+
+		var weight = $("#order_weight").val();
+		var money = $("#total_price").val();
+
+		if (region_lv1 == "" || region_lv1 == null)
+		  region_lv1 = $('#region_lv1 option:selected').val();
+		if (region_lv2 == "" || region_lv2 == null)  
+		  region_lv2 = $('#region_lv2 option:selected').val();
+		if (region_lv3 == "" || region_lv3 == null)  
+		  region_lv3 = $('#region_lv3 option:selected').val();
+		if (region_lv4 == "" || region_lv4 == null)  
+		  region_lv4 = $('#region_lv4 option:selected').val();
+
+		var url = "__APP__?m=Delivery&a=getDelivery&id="+id+"&weight="+weight+"&money="+money+"&region_lv1="+region_lv1+"&region_lv2="+region_lv2+"&region_lv3="+region_lv3+"&region_lv4="+region_lv4;
+		//alert(url);
+		$.ajax({
+			  //type: "get",
+			  url: url,
+			  success:function(data)
+			  {
+				data = $.evalJSON(data); 
+				if (data != null && data != "" && data != false){
+					data.freight_fee = data.freight_fee * FCUR_RATE;
+					
+					$("#delivery_fee").attr("value",data.freight_fee);
+					$("#delivery_fee_old").attr("value",data.freight_fee);
+
+					//alert(url);
+					
+					var has_protect = data.protect;
+					//alert(has_protect);
+					//0:不支持物流保价；1：支持物流保价
+					if (has_protect == 1){
+						$("#protect_fee").attr("readonly",'');
+						$("#protect").attr("disabled",'');
+
+						data.protect_fee = data.protect_fee * FCUR_RATE;
+						$("#protect_fee_original").attr("value",data.protect_fee);
+
+						if($("#protect").attr('checked')==true){
+							$("#protect_fee").attr("value",data.protect_fee);
+							$("#protect_fee_old").attr("value",data.protect_fee);
+							$("#protect_fee_original").attr("value",data.protect_fee);
+						}
+					}else{
+						$("#protect_fee").attr("readonly",true);
+						$("#protect_fee").attr("value",0);
+						$("#protect_fee_original").attr("value",0);
+						$("#protect_fee_old").attr("value",0);
+											
+						$("#protect").attr("disabled",true);
+						$("#protect").attr("checked",'');
+					}
+					
+				}else{
+					$("#delivery_fee").attr("value",0);
+					$("#delivery_fee_old").attr("value",0);
+				}
+
+				//sum_money(true,'');
+			  }
+			});	
+	}
+
+function postForm(){
+	
+	document.getElementById('form1').submit();
+	return true;
+}
+
+</script>

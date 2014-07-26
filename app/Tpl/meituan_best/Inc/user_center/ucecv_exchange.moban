@@ -1,0 +1,131 @@
+{include file="Inc/header.moban" }
+<script type="text/javascript">
+	function exchange_ecv(id)
+	{
+		if(confirm("{$lang.CONFIRM_EXCHANGE}"))
+		{
+			$.ajax({
+			  url: ROOT_PATH+"/index.php?m=UcEcv&a=doExchange&id="+id,
+			  cache: false,
+			  type: "POST",
+			  dataType: "json",
+			  success:function(data)
+			  {			  		
+			　 		if(data.status==1)
+					{
+						alert(data.info);
+						location.href=location.href;
+					}
+					else
+					{
+						$.showErr(data.info);
+					}
+			  },
+				error:function(a,b,c)
+				{
+					alert(a.responseText);
+				}
+			});
+		}
+	}
+</script>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}		
+					</ul>
+				</div>
+				
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.UCECV_EXCHANGE}</h2>
+							<ul class="filter">
+								<li class="label">{$lang.XY_CLASS_IFICATION}</li>
+								<li><a href="<?php echo a_u('UcEcv/index','status-1') ?>">{$lang.XY_NO_USE}</a></li>
+								<li><a href="<?php echo a_u('UcEcv/index','status-2') ?>">{$lang.XY_HAD_USE}</a></li>
+								<li><a href="<?php echo a_u('UcEcv/index','status-0') ?>">{$lang.XY_ALL}</a></li>
+								<li {if $is_exchange eq 1}class="current"{/if}><a href="<?php echo a_u('UcEcv/exchange') ?>">{$lang.EXCHANGE_ECV}</a></li>
+							</ul>
+						</div>
+						{include file="Inc/user_center/uc_center_money.moban"}
+						<div class="sect">
+							<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+								<tr>
+									<th width="100">{$lang.NAME}</th>
+									<th width="80">{$lang.TYPE}</th>
+									<th width="80">{$lang.MONEY_VALUE}</th>
+									<th width="120">{$lang.EXCHANGE_SCORE}</th>
+									<th width="120">{$lang.XY_STARTEND_TIMES}</th>
+									<th width="80">{$lang.XY_USE_COUNT}</th>
+									<th width="180">{$lang.EXCHANGE_LIMIT}</th>
+									<th width="">{$lang.DO_EXCHANGE}</th>
+								</tr>
+								
+								{foreach from=$ecv_list item=ecv_item key=key}
+								<tr {if $key mod 2 eq 0}class="alt"{/if}>
+									<td width="100">{$ecv_item.name}</td>
+									<td width="80"><?php echo $GLOBALS['Ln']['ECV_TYPE_'.$this->_var['ecv_item']['type']]; ?></td>
+									<td width="80"> <?php echo a_formatprice($this->_var['ecv_item']['money']); ?></td>
+									<td width="120">{$ecv_item.exchange_score}{$lang.SCORE_UNIT}</td>
+									<td width="120">
+								
+									{if $ecv_item.use_start_data}										
+										<?php echo a_toDate($this->_var['ecv_item']['use_start_date']);?>
+										{else}
+										{$lang.XY_NOLIMIT}
+									{/if}<br/>{$lang.XY_TO}<br/>
+										
+										{if $ecv_item.use_end_date}
+										<?php echo a_toDate($this->_var['ecv_item']['use_end_date']);?>
+										{else}
+										{$lang.XY_NOLIMIT}
+										{/if}
+									</td>
+									<td width="">{$ecv_item.use_count}</td>
+									<td width="">
+										
+										{if $ecv_item.exchange_limit eq 0}
+										{$lang.XY_NOLIMIT}
+										{else}										
+										<?php echo sprintf($GLOBALS['Ln']['EXCHANGE_LIMIT_MEMO'],$this->_var['ecv_item']['exchange_limit']);?>
+										{/if}
+										
+									</td>
+									<td width="">
+										<a href="javascript:void(0);" onclick="exchange_ecv({$ecv_item.id})">{$lang.DO_EXCHANGE}</a>
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_WHAY_NOT_GROUPBOTH}<?php echo a_fanweC('GROUPBOTH') ?>？</h3>
+							<p><?php echo sprintf(a_L('XY_WHAY_NOT_GROUPBOTH_MSG'),a_fanweC('GROUPBOTH')) ?></p>
+							<h3>{$lang.XY_WHAT_IS_EXPIRED_ORDER}</h3>
+							<p>{$lang.XY_WHAT_IS_EXPIRED_ORDER_MSG}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

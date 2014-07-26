@@ -1,0 +1,103 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}	
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$page_title}</h2>
+						</div>
+						<div class="sect">
+							<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+								<tr>
+									<th width="auto">{$lang.XY_GROUP_PROJECT}</th>
+									<th width="40">{$lang.XY_ORDER_PAY}</th>
+									<th width="80">{$lang.XY_TOTAL_PRICE}</th>
+									<th width="80">{$lang.XY_ORDER_STATE}</th>
+									<th width="50">{$lang.XY_USER_OPERATE}</th>
+								</tr>
+								
+								{foreach from=$order_list item=order_item key=key}
+								<tr {if $key mod 2 eq 0}class="alt"{/if}>
+									<td style="text-align:left;">
+										<table class="deal-info">
+											<tr>
+												<td class="pic">
+												<a href="{$order_item.goods.url}" target="_blank" title="{$order_item.goods_name}"><img src="{$CND_URL}{$order_item.goods.small_img}" width="75" height="46" /></a></td>
+												<td class="text"><a class="deal-title" href="{$order_item.goods.url}" target="_blank">{$order_item.goods_name}</a></td>
+											</tr>
+										</table>
+
+										{if $order_item.attr}
+										<div style="padding:8px 0;">{$lang.XY_GOODS_ATTR}{$order_item.attr}</div>
+										{/if}
+										
+										{if $order_item.orderConsignment}
+											{foreach from=$order_item.orderConsignment item=consignment_item}
+											<div>{$lang.XY_LOGISTICS_SN}<a href="{$consignment_item.express_url}" target="_blank"> {$consignment_item.express_name},{$consignment_item.delivery_code}</a></div>
+											{/foreach}
+										{/if}
+									</td>
+									<td>{$order_item.number}</td>
+									<td>{$order_item.total_price_format}</td>
+									<td style="line-height:20px; text-align:center;">{$order_item.money_status_format}<br/>{$order_item.goods_status_format}<br/>{$order_item.order_status_format}</td>
+									<td class="op">
+									
+									{if $order_item.is_lottery eq 1}
+										<a href="{$__ROOT__}/index.php?m=Lottery&a=view&id={$order_item.goods_id}">{$lang.XY_VIEW}</a>
+									{else}	
+										<a href="{$__ROOT__}/index.php?m=UcOrder&a=view&id={$order_item.id}">{$lang.XY_VIEW}</a>
+									{/if}
+									
+									{if ($order_item.is_lottery eq 0) and (($order_item.money_status < 2 and $order_item.stock_is_over <> 1) or $order_item.money_status eq 4)}
+									<br/> <a href="{$__ROOT__}/index.php?m=Order&a=pay&id={$order_item.id}&pay=1">{$lang.XY_PAY}</a>
+									{/if}
+									
+									{if ($order_item.is_lottery eq 0) and ($CFG.ALLOW_TK eq 1)}
+									
+									{if $order_item.money_status eq 1 or $order_item.money_status eq 2}
+									<a href="{$__ROOT__}/index.php?m=UcOrder&a=view&id={$order_item.id}#OrderMessage">{$lang.XY_REFUND}</a>
+									{/if}
+									{/if}
+									
+									{if $order_item.is_clear eq 1}
+									 <a class="order-cancel" href="{$__ROOT__}/index.php?m=UcOrder&a=del&id={$order_item.id}">{$lang.XY_ABOLISH}</a>
+									{/if}
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_WHAY_NOT_GROUPBOTH}<?php echo a_fanweC('GROUPBOTH') ?>？</h3>
+							<p><?php echo sprintf(a_L('XY_WHAY_NOT_GROUPBOTH_MSG'), a_fanweC('GROUPBOTH'))?></p>
+							<h3>{$lang.XY_WHAT_IS_EXPIRED_ORDER}</h3>
+							<p>{$lang.XY_WHAT_IS_EXPIRED_ORDER_MSG}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

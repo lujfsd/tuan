@@ -1,0 +1,73 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/'.$back_action,$param_back)}">{$Think.lang.BACK_LIST}</a> ]  
+
+<if condition="$vo['rec_module'] neq 'Seller' and $vo['rec_module'] neq 'Payment' and $vo['rec_module'] neq 'Feedback'">
+	<if condition="$vo['rec_id'] neq 0 and $vo['rec_module'] neq 'UcMessage'">
+		<if condition="$vo['rec_module'] eq 'Order' or $vo['rec_module'] eq 'OrderReConsignment' or $vo['rec_module'] eq 'OrderUncharge'">
+			[ <a href="{:u('Order/show',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		<elseif condition="$vo['rec_module'] eq 'Forum'" />
+			[ <a href="{:u('Message/forumReply',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		<else />
+			[ <a href="{:u($vo['rec_module'].'/edit',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		</if>
+		
+	</if>
+</if>
+
+		<if condition="$vo['rec_module'] eq 'Payment'">
+			[ <a href="{:u('Order/show',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		</if>
+		
+</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u($module_name.'/updateForum')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="200">留言标题：</td>
+	<td class="tLeft" >
+	<script type="text/javascript">KE.show({id : 'title',skinType: 'tinymce',allowFileManager : false,resizeMode : 0,items : ['source','fontname', 'fontsize', 'textcolor', 'bold', 'italic', 'underline','removeformat']});</script>
+	<textarea type="text" name="title" id="title"  style="width:80%; height:100px">{$vo.title}</textarea></td>
+</tr>
+
+<tr> 
+	<td class="tRight tTop">{$Think.lang.MESSAGE_USER}：</td>
+	<td class="tLeft">
+		{$vo.user_id|getUserName}
+	</td>
+</tr>
+
+
+
+<tr> 
+	<td class="tRight tTop">{$Think.lang.IS_TOP}：</td>
+	<td class="tLeft">
+		<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_top" <if condition="$vo['is_top'] eq 1">checked="checked"</if> /></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_top" <if condition="$vo['is_top'] eq 0">checked="checked"</if> /></label>
+	</td>
+</tr>
+
+<tr> 
+	<td class="tRight tTop">{$Think.lang.MESSAGE_CONTENT}：</td>
+	<td class="tLeft">
+	
+	<fanwe:editor  name="content" id="content" type="KindEditor"  style="width:80%;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+
+
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

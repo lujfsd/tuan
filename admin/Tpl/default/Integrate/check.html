@@ -1,0 +1,94 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/model.js" />
+
+<div id="main" class="main" >
+
+<div class="content" >
+<div class="title">本页将检测商城已有用户和论坛用户是否有重名，点击“开始检查前”，请为商城重名用户选择一个默认处理方法</div>
+
+<div class="list" >
+
+<div class="main-div" style="padding:5px;">
+  <form action="integrate.php" method="post" name="theForm">
+  <h3>{$lang_total}</h3>
+  <ul>
+    <li style="list-style-type:none;">每次检查用户个数&nbsp;&nbsp;<input type="text" name="size" size="5" value="{$size}" id="ECS_SIZE"></li>
+  </ul>
+  <h3>如果检测出商城有重名用户，请为这些用户选择一个默认处理方法</h3>
+  <ul>
+    <li style="list-style-type:none;"><label><input type="radio" name="method" value="2" />商城重名用户加后缀&nbsp;&nbsp;<input type="type" name="domain" value="{$domain}" /></label></li>
+    <li style="list-style-type:none;"><label><input type="radio" name="method" value="3" />删除商城的重名用户及相关数据</label></li>
+    <li style="list-style-type:none;"><label><input type="radio" name="method" value="4" />保留商城重名用户，论坛同名用户视为同一用户</label></li>
+  </ul>
+  <h3 id="ECS_LOADING" style="display:none">正在检查...(请不要关闭浏览器)</h3>
+  <p id="ECS_NOTICE"></p>
+  <input type="button" value="开始检查" class="button" onclick="check_start(this)">
+  </form>
+</div>
+
+</div>
+</div>
+
+<script language="JavaScript">
+
+function check_start(obj)
+{
+  var frm = document.forms['theForm'];
+  var method = -1;
+  for (var i=0; i<frm.elements['method'].length; i++)
+  {
+    if (frm.elements['method'][i].checked)
+    {
+      method = frm.elements['method'][i].value;
+    }
+  }
+  if (method < 0)
+  {
+    alert(no_method);
+    return;
+  }
+
+  var size = parseInt(frm.elements['size'].value)
+  var domain = frm.elements['domain'].value;
+
+  var loading = document.getElementById('ECS_LOADING');
+  loading.style.display = '';
+  obj.disabled = true;
+
+  var url = "__APP__?m=Integrate&a=check_user" + '&start=0&size=' + size + '&method=' + method + '&domain=' + domain;
+
+  location.href = url;
+}
+
+function checkResponse(result)
+{
+  if (result.message.length > 0)
+  {
+    alert(result.message);
+  }
+  if (result.error == 0)
+  {
+    var notice = document.getElementById('ECS_NOTICE');
+    notice.innerHTML = result.content;
+    if (result.is_end == 0)
+    {
+      var url = "__APP__?m=Integrate&a=check_user" + '&start=' + result.start + '&size=' + result.size + '&method=' + result.method + '&domain=' + result.domain;
+	  	$.ajax({
+	  		  url: url,
+	  		  success:function(data)
+	  		  {
+	  			data = $.evalJSON(data); 
+	  			checkResponse(data);
+	  		  }
+	  		});      
+    }
+    else
+    {
+      location.href = result.href;
+    }
+  }
+}
+</script>

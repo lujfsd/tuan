@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{$shop_title}</title>
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/style.css" />
+</head>
+<body>
+<div class="nav">
+	<span>{$CFG.GROUPBOTH}{$lang.GROUPBOND_VERYFY_TIT}&nbsp;</span><span>|</span> <a href="./m.php">{$lang.REBACK}</a>
+</div>
+<div class="blank"></div>
+{if $act eq 'index'}
+<div class="tipmsg">
+{function name="str_replace" a="%s" b="$CFG.GROUPBOTH" c="$lang.GROUPBOND_VERYFY_TIP"}
+</div>
+<div class="blank"></div>
+{if $err}
+<div class="errmsg">{$err}</div>
+{/if}
+<div class="blank"></div>
+
+<div class="lg-form">
+	<form action="m.php?m=Coupon&a=check" method="post">
+		<p class="lgt"><strong>{$lang.GROUPBOND_SN}：</strong></p>
+		<p class="ipt"><input id="sn" name="sn" class="f-input" value=""></input>
+		<p class="lgt"><strong>{$lang.PASSWORD}：</strong></p>
+		<p class="ipt"><input id="pwd" name="pwd" class="f-input" value=""></input>
+	
+		<p class="sbm">
+		<input type="submit" class="ibtn" value="{$lang.GROUPBOND_VERYFY_TIT}" />
+		</p>
+	</form>
+</div>
+{elseif $act eq 'result'}
+	{if $msg}
+		{if $type eq 0}
+			{$lang.GROUPBOND_SN}:{$smarty.request.sn}{$msg}
+		{else}
+			{$lang.GROUPBOND_SN}:{$smarty.request.sn} {$lang.JS_GROUP_BOND_005}<br>{$msg};
+		{/if}
+	{else}
+		{$lang.GROUPBOND_SN}:{$smarty.request.sn} {$lang.JS_GROUP_BOND_003}
+	{/if}
+	<p><br><a href="./m.php?m=Coupon&a=index">{$lang.REBACK}{$lang.GROUPBOND_VERYFY_TIT}</a></p>
+{/if}
+</body>
+</html>

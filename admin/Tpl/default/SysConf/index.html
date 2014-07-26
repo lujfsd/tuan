@@ -1,0 +1,157 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/tabs.js" />
+<script type="text/javascript">
+	var session_id = '{:session_id()}';
+	function sendDemo()
+	{
+		var from_address = $(".FROM_ADDRESS").val();
+		var mail_address = $("#mail_address").val();
+		var smtp_server = $(".SMTP_SERVER").val();
+		var smtp_account = $(".SMTP_ACCOUNT").val();
+		var smtp_password = $(".SMTP_PASSWORD").val();
+		var smtp_port = $(".SMTP_PORT").val();
+		var smtp_auth = $(".SMTP_AUTH").val();
+		var is_ssl = $(".IS_SSL:checked").val();
+		
+		var form_param = "mail_address="+mail_address+"&from_address="+from_address+"&smtp_server="+smtp_server+"&smtp_account="+smtp_account+"&smtp_password="+smtp_password+"&smtp_port="+smtp_port+"&smtp_auth="+smtp_auth+"&is_ssl="+is_ssl;
+
+		$.ajax({
+		  url: APP+"?"+VAR_MODULE+"=Email&"+VAR_ACTION+"=sendDemo&"+form_param,
+		  cache: false,
+		  success:function(data)
+		  {
+			alert(data);
+		  }
+		}); 
+	}
+	
+</script>
+<style type="text/css">
+	.conf_btns{ padding:0px; height:29px; overflow:hidden; margin:0px; clear:both; border:1px solid #9CB8CC; border-right:0; background:#fff}
+	.conf_btns li{ font-size:12px; display:inline-block; width:80px; height:23px; line-height:23px; float:left;
+		background:#f1f1f1; margin:1px; text-align:center; padding:2px 5px; cursor:pointer;
+	}
+	.conf_btns li.current{ background:#3D5B9A; color:#fff;}
+	.conf_tabs {}
+	.conf_tabs table.conf_table{ margin:0px auto; }
+</style>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.SYSCONF}</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('SysConf/update')}"  enctype="multipart/form-data">
+
+<ul class="conf_btns">
+<foreach name="conf_list" item="vo" >
+	<li class="{$key}">{$key}</li>
+</foreach>
+</ul>
+<div style=" height:0px; overflow:hidden; visibility:visible; clear:both; width:100%; display:block"></div>
+<div class="conf_tabs">
+<foreach name="conf_list" item="vo" >
+
+<table cellpadding=0 cellspacing=0 class="conf_table dataEdit" >
+	<foreach name="vo" item="vo_item" >
+	<tr>
+		<td class="tRight" width="250">{:sysConfL("TITLE_".$vo_item['name'])}：</td>
+		<td class="tLeft" >
+			<if condition="$vo_item['list_type'] eq 0"><!-- 手动输入 -->
+				<input type="text" name="{$vo_item.name}" class="{$vo_item.name}" style="width:300px" value="{$vo_item.val}" <if condition="$vo_item['name'] eq 'SYS_ADMIN'">onblur="checkAdm(this);"</if> <if condition="$vo_item['name'] eq 'ADMIN_FILE_NAME'">onblur="checkFile(this);"</if> />
+			</if>
+			<if condition="$vo_item['list_type'] eq 1">
+				<foreach name="vo_item['val_arr']" item="val_item" ><!-- 单选 -->
+				<label>{:sysConfL("TITLE_".$vo_item['name']."_".$val_item)}：<input type="radio" name="{$vo_item.name}" class="{$vo_item.name}" value="{$val_item}" <if condition="$vo_item['name'] eq 'IS_SSL'">onclick="checkSSL(this);"</if> <if condition="$val_item eq $vo_item['val']">checked="checked" </if> /></label>
+				</foreach>
+			</if>
+			<if condition="$vo_item['list_type'] eq 2">
+				<if condition="$vo_item['name'] eq 'DEFAULT_USER_GROUP'">
+					<select name="{$vo_item.name}" class="{$vo_item.name}">
+						<foreach name="vo_item['val_arr']" item="val_item" ><!-- 下拉 -->
+						<option value="{$val_item}" <if condition="$val_item eq $vo_item['val']">selected="selected"</if>>{:userGroupName($val_item)}</option>
+						</foreach>
+					</select>
+				<else />
+					<select name="{$vo_item.name}" class="{$vo_item.name}">
+						<foreach name="vo_item['val_arr']" item="val_item" ><!-- 下拉 -->
+						<option value="{$val_item}" <if condition="$val_item eq $vo_item['val']">selected="selected"</if>>{:sysConfL("TITLE_".$vo_item['name']."_".$val_item)}</option>
+						</foreach>
+					</select>
+				</if>
+			</if>
+			<if condition="$vo_item['list_type'] eq 3"><!-- 文本域 -->
+				<textarea rows="4" cols="80" name="{$vo_item.name}" class="{$vo_item.name}">{:stripslashes($vo_item['val'])}</textarea>
+			</if>
+						
+			<if condition="$vo_item['list_type'] eq 5"><!-- 编辑器 -->
+            	<if condition="$vo_item['name'] eq 'CLOSE_NOTICE'">
+                <textarea id="CLOSE_NOTICE" name="CLOSE_NOTICE" style="height:250px;visibility: hidden; display: none;">{$vo_item.val}</textarea> 
+                <elseif condition="$vo_item['name'] eq 'PAGE_BOTTOM'"/>
+                <textarea id="PAGE_BOTTOM" name="PAGE_BOTTOM" style="height:250px;visibility: hidden; display: none;">{$vo_item.val}</textarea>
+                </if>
+				
+			</if>
+			
+			<if condition="$vo_item['list_type'] eq 4"><!-- 图片域 -->
+				<input type="file"  name="{$vo_item.name}" class="{$vo_item.name}" /> 
+				<if condition="$vo_item['val'] neq ''">
+					<a href="__ROOT__{$vo_item.val}" target="_blank" >{:sysConfL("VIEW")}</a>
+				</if>
+			</if>
+		</td>
+	</tr>
+	</foreach>
+	<if condition="$vo_item['group_id'] eq 7">
+	<tr>
+	<td class="tRight" >发送测试邮件：</td>
+	<td class="tLeft" >
+		邮箱地址：<input type="text" name="mail_address" id="mail_address" class="bLeft" /> <input type="button" value="发送测试邮件" onclick="sendDemo();" />
+	</td>
+	</tr> 
+	</if>
+</table>
+
+</foreach>
+</div>
+
+<table cellpadding=3 cellspacing=3 width=100% class="act">
+<tr>
+	<td width=250>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> &nbsp; <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+<literal>
+<script type="text/javascript">
+if($("#CLOSE_NOTICE")){
+var close_editor;
+$("#CLOSE_NOTICE").css("width","80%");
+	KindEditor.ready(function(C) {
+	close_editor = C.create("#CLOSE_NOTICE", {
+		uploadJson :ROOT_PATH+'/'+admin_file+'?m=FileUpload&a=doUpload',
+		cssPath : '__TMPL__/ThemeFiles/Css/style.css',
+		allowFileManager : true
+		});
+});
+}
+
+if ($("#PAGE_BOTTOM")) {
+	var page_editor;
+	$("#PAGE_BOTTOM").css("width", "80%");
+	KindEditor.ready(function(C){
+		page_editor = C.create("#PAGE_BOTTOM", {
+			uploadJson :ROOT_PATH+'/'+admin_file+'?m=FileUpload&a=doUpload',
+			cssPath: '__TMPL__/ThemeFiles/Css/style.css',
+			allowFileManager: true
+		});
+	});
+}
+</script>
+</literal>
+</div>
+</div>

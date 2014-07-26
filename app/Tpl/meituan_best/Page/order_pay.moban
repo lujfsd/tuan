@@ -1,0 +1,64 @@
+{include file="Inc/header.moban"}
+<load href='{$TMPL_PATH}Public/js/jquery.bgiframe.js' />
+<div class="order-pay-dialog-box">
+	<div id="order-pay-dialog">
+		<div class="order-pay-dialog-shadow"></div>
+		<div class="bd">
+			<div class="order-pay-dialog-c">
+				<h3>
+					<span id="order-pay-dialog-close" class="close">{$lang.JJ_Close}</span>
+				</h3>
+				<p class="info">
+					{$lang.JJ_PAID_ON_NEW_WINDOWS}
+				</p>
+				<p class="notice">
+					{$lang.JJ_PAID_DONT_CLOSE_WINDOWS}
+				</p>
+				<p class="act">
+					<input id="order-pay-dialog-succ" class="formbutton" value="{$lang.JJ_SMS_PAID}" type="submit" />
+					<input id="order-pay-dialog-fail" class="formbutton" value="{$lang.JJ_PAID_WITH_PROBLEM}" type="submit" style="width:128px;" />
+				</p>
+				<p class="retry"><a href="{$order_check_url}"><font color="#339999">» {$lang.JJ_BACK_SELECT}</font></a></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="content">
+			<div id="deal-buy" class="box">
+				<div class="box-top"></div>
+				<div class="box-content">
+					<div class="head">
+						<h2>{$lang.JJ_ORDER_INFO}</h2>
+					</div>
+					{include file="Inc/cart/order_pay_info.moban"}
+				</div>	
+				<div class="box-bottom"></div>
+			</div>
+		</div>
+	</div>
+	<!-- bd  end -->
+</div>
+<script type="text/javascript">
+
+function dialogClose()
+{
+	location.href= "{$order_pay_url}";
+}
+
+jQuery(function($){
+	$("form").attr({"target":"_blank"});
+	
+	$(".formbutton").click(function(){
+		dialogClose();
+	});
+	
+	$(".paybutton,.payLink").click(function(){
+		$.ShowDialog({"dialog":"order-pay-dialog-box","html":$(".order-pay-dialog-box").html(),"closeFun":dialogClose});
+	});
+});
+
+</script>
+{include file="Inc/footer.moban"}

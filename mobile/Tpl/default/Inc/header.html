@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{$shop_title}</title>
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/style.css" />
+</head>
+<body>
+<div id="city_list">
+
+		{foreach from="$city_list" item="city_item"}
+			<span {if $city_item.id eq $currentCity.id}class="current"{/if}><a href="m.php?m=Index&a=index&cityname={$city_item.py}&s={$s}">{$city_item.name}</a></span><span>|</span>
+		{/foreach}
+</div>
+<div class="blank"></div>
+<div class="nav">
+	<a href="./m.php?s={$s}"><strong>{$lang.TODAY_GROUP}</strong></a><span>|</span><a href="./m.php?m=Goods&a=other&s={$s}">{$lang.SAME_GROUP}</a><span>|</span><a href="./m.php?m=Goods&a=index&s={$s}">{$lang.HISTORY_GROUP}</a><span>|</span>
+	{if $user_info.id neq 0}
+		<span class="s-nav"><a href="m.php?m=UserCenter&a=index&{$s}"}">{$user_info.user_name}{$lang.USER_CENTER}</a> </span>
+	{else}
+		<span class="s-nav"><a href="m.php?m=User&a=login&s={$sd}">{$lang.LOGIN}</a> </span>
+	{/if}
+</div>
+<div class="blank"></div>
+<div id="datetime">{$datetime}</div>

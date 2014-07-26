@@ -1,0 +1,1 @@
+<?php exit;?>1406344903a:1:{i:0;a:6:{s:2:"id";s:1:"1";s:10:"region_ids";s:3:"292";s:11:"first_price";s:6:"5.0000";s:14:"continue_price";s:6:"2.0000";s:9:"allow_cod";s:1:"0";s:11:"delivery_id";s:1:"2";}}

@@ -1,0 +1,85 @@
+{include file="Inc/header.moban"}
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/calendar.php?lang=zh-cn" ></script>
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/sp_coupon.js" ></script>
+<link rel="stylesheet" type="text/css" href="{$TMPL_PATH}Public/js/calendar/calendar.css" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals">
+			<div id="content">
+			{include file="Inc/common/goods_cate.moban"}		
+			<div {if $inc_page eq 'goods_belowline_list'}id="g_recent"{/if} class="box">
+				<div class="box">
+					<div class="clear"></div>
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>
+								<span class="h2_st">{$info_title}</span>
+								
+							</h2>
+                                <form action="{$__ROOT__}/index.php"  method="POST" class="search_form" onsubmit="return search(this)">
+								<label>关键字</label><input type="text" value="{$keywords}" name="keywords" class="f-input" />
+								<label>时间</label><input type="text" value="{function name="a_toDate" a=$key_begin_time b="Y-m-d"}" name="key_begin_time" id="key_begin_time" class="f-input" onfocus="this.blur();" onclick="return showCalendar('key_begin_time', '%Y-%m-%d', false, false, 'key_begin_time');" />-<input type="text" value="{function name="a_toDate" a=$key_end_time b="Y-m-d"}" name="key_end_time" id="key_end_time" class="f-input" onfocus="this.blur();" onclick="return showCalendar('key_end_time', '%Y-%m-%d', false, false, 'key_end_time');" />								
+								<input type="submit" value="{$lang.XY_SEARCH}" name="submit" class="formbutton" />
+								<input type="hidden" value="{$rec_module}" name="m" />
+								<input type="hidden" value="{$rec_action}" name="a" />
+								<input type="hidden" value="{$smarty.request.id}" name="id" />
+								<input type="hidden" value="{$smarty.request.sc}" name="sc" />
+								</form>
+							<div class="clear"></div>
+						</div>
+						<div class="sect">
+							{if $inc_page eq 'goods_belowline_list'}
+							{include file="Inc/common/goods_belowline_list.moban"}
+							{elseif $inc_page eq 'goods_index_list'}
+							{include file="Inc/common/goods_index_list.moban"}
+							{elseif $inc_page eq 'goods_score_list'}
+							{include file="Inc/common/goods_score_list.moban"}	
+							{elseif $inc_page eq 'goods_advance_list'}
+							{include file="Inc/common/goods_advance_list.moban"}
+							{/if}
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div class="box-bottom"></div>
+			<div id="sidebar">
+				{include file="Inc/right.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+<script>
+function search(o)
+{
+	if(o.keywords.value!="" || o.key_begin_time.value!="" || o.key_end_time !="")
+	{
+		var url="{$__ROOT__}/index.php";
+		url +='?m='+o.m.value+'&a='+o.a.value;
+		if(o.id.value!="")
+		{
+			url +='&id='+o.id.value;
+		}
+		if(o.key_begin_time.value!="")
+		{
+			url +='&key_begin_time='+o.key_begin_time.value;
+		}
+		if(o.key_end_time.value!="")
+		{
+			url +='&key_end_time='+o.key_end_time.value;
+		}
+		if(o.sc.value!="")
+		{
+			url +='&sc='+o.sc.value;
+		}
+		
+		url +='&keywords='+o.keywords.value;
+		o.action=url;
+		return true;
+	}
+	return false;
+}
+</script>
+{include file="Inc/footer.moban"}

@@ -1,0 +1,73 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="user-vote">
+			<div id="content">
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$vote.title}</h2>
+						</div>
+						<div class="sect">
+							<p class="welcome">{$vote.desc}</p>
+							<form method="post" action="{function name="a_u" a="Vote/add"}">
+								<ol class="vote-list">
+									{foreach from="$vote.items" item="vote_item"} 
+									<li id="vote-list-{$i}">
+										<h4>{$vote_item.title}</h4>
+										<div class="choices">
+											{foreach from="$vote_item.groups" item="vote_group" name="vote_group"}
+											{foreach from="$vote_group.options" item="vote_option"}
+											{if $vote_item.is_multi eq 1}
+											<input class="choice" type="checkbox" id="label-{$vote_option.id}" name="items[{$vote_item.id}][]" value="{$vote_option.id}" />
+											{else}
+											<input class="choice" type="radio" id="label-{$vote_option.id}" name="items[{$vote_item.id}][]" value="{$vote_option.id}" />
+											{/if}
+											<label class="text" for="label-{$vote_option.id}">
+											{$vote_option.title}
+											{if $vote_option.is_input eq 1 and $vote_option.separator neq ''}
+											（请填写，多个之间 {if $vote_option.separator eq ' '}空格{else}{$vote_option.separator}{/if} 分隔）
+											{/if}
+											</label>
+											{if $vote_option.is_input eq 1}
+											<input type="text" class="f-text disabled" id="input-{$vote_option.id}" name="options[{$vote_option.id}][text]" value="" disabled="disabled" rel="label-{$vote_option.id}" />
+											{/if}
+											{/foreach}
+											{if $smarty.foreach.vote_group.iteration < $vote_item.groups}
+											<br />
+											{/if}
+											{/foreach}
+										</div>
+									</li>
+									{/foreach}
+								</ol>
+								<div class="commit">
+									<input type="hidden" name="vote_id" value="{$vote.id}" />
+									<input type="submit" class="formbutton" name="submit" value="{$lang.JJ_SUBMIT}" />
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+<script type="text/javascript">
+jQuery(function($){
+	$(".vote-list .choices").click(function(){
+		$(".vote-list .choice").each(function(i){
+			if(this.checked)
+			{
+				$("input[rel='"+this.id+"']").attr("disabled",false).removeClass("disabled");
+			}
+			else
+				$("input[rel='"+this.id+"']").attr("disabled",true).addClass("disabled");
+		});
+	});
+});
+</script>
+{include file="Inc/footer.moban"}

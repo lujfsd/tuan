@@ -1,0 +1,59 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA}
+ [ <a href="{:u($module_name.'/index',$param_back)}">{$Think.lang.BACK_LIST}</a> ]  
+ <if condition="$vo['pid'] eq 0">
+ [ <a href="{:u($module_name.'/index',array("pid"=>$vo['id']))}">查看评论</a> ]  
+</if>
+</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u($module_name.'/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">发起团购标题：</td>
+	<td class="tLeft" ><input type="text" name="tg_title" value="{$vo.tg_title}" style="width:450px" /> 
+	 <if condition="$vo['pid'] eq 0">
+	 	&nbsp;&nbsp;&nbsp;&nbsp;[{$vo.follows}人跟随过]
+	 </if>
+	</td>
+</tr>
+<tr> 
+	<td class="tRight tTop">{$Think.lang.MESSAGE_USER}：</td>
+	<td class="tLeft">
+		{$vo.user_id|getUserName}
+	</td>
+</tr>
+	 <if condition="$vo['pid'] eq 0">
+<tr> 
+	<td class="tRight tTop">城市：</td>
+	<td class="tLeft">
+		<select name="city_id" class="bLeftRequire">
+		<foreach name="city_list" item="city_item" >
+			<option value="{$city_item.id}" <if condition="$vo['city_id'] eq $city_item['id']">selected="selected" </if>>{$city_item.name}</option>
+		</foreach>
+		</select>
+	</td>
+</tr>
+	 </if>
+<tr> 
+	<td class="tRight tTop">内容：</td>
+	<td class="tLeft">
+	<fanwe:editor  name="tg_content" type="KindEditor"  style="width:670px;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+
+
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

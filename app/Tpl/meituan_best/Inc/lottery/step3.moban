@@ -1,0 +1,70 @@
+{include file="Inc/header.moban"}
+						<style>
+						#referrals .refers .blk{border: none;padding:8px;}
+						#referrals .refers .share-list { background:none}
+						#referrals #deal-share .deal-share-links{ width:480px}
+						</style>
+						<script>
+						function share_url(o)
+						{
+							$.copyText("#share_url");
+						};
+						</script>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="referrals"  class="cf">
+			<div id="content" class="refers">
+				<div class="box">
+					<div class="box-top"></div>
+						<div class="box-content">
+						<div class="head">
+						<h2><img src="{$TMPL_PATH}/Public/images/yan-3.jpg"></h2>
+						</div>
+						<div class="sect islogin">
+							<div class="share-list">
+								<div class="blk im">
+									<div class="logo"><img src="{$TMPL_PATH}/Public/images/logo_msn.png" /></div>
+									<div class="info">
+										<h4>{$lang.JJ_SEND_YOUR_URL}</h4>
+										<input id="share-copy-text" type="text" value="{$referrals_text}" size="30" class="f-input" onfocus="this.select()" />
+										<input id="share-copy-button" type="button" value="{$lang.JJ_COPY}" class="formbutton" />
+									</div>
+								</div>
+								<div class="clear"></div>
+								{if $goods}
+								<div class="blk last">
+									<div class="logo"><img src="{$TMPL_PATH}/Public/images/logo_share.gif" /></div>
+									<div class="info">
+										<h4>分享该商品给好友，可获得抽奖号！</h4>
+										<div class="deal-info">
+											<p class="pic"><a href="{$goods.url}" target="_blank"><img src="{function name="a_fanweC" a="SHOP_URL"}{$goods.small_img}" width="150" height="90" /></a></p>
+											<p class="deal-title">{$goods.name_1}</p>
+										</div>
+										<div id="deal-share" >
+											<div class="deal-share-links">
+												<h4>{$lang.JJ_Share}</h4>
+												<ul class="cf">
+													{include file="Inc/others/referrals_url.moban"}
+												</ul>
+											</div>
+										</div>
+										{/if}
+									</div>
+								</div>
+								<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				{include file="Inc/side/side_notice.moban"}
+				{include file="Inc/side/side_subscribe.moban"}
+				{include file="Inc/side/side_aboutus.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>						
+{include file="Inc/footer.moban"}						

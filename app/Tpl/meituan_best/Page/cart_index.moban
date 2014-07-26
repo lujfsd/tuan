@@ -1,0 +1,21 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="content">
+			{if $cart_list}
+			{include file="Inc/cart/goods_cart_list.moban" /}
+			{include file="Inc/cart/cart_other_goods_list.moban"}
+			{else}
+			{include file="Inc/cart/goods_cart_empty.moban" /}
+			{/if}
+		</div>
+		<div id=sidebar>
+			<!--START-->
+			{include file="Inc/side/side_referrals.moban"}
+			{include file="Inc/side/side_subscribe.moban"}
+			<!--END-->
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}	

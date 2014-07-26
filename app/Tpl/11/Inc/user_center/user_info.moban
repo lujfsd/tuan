@@ -1,0 +1,22 @@
+<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_MEMBER_INFO_T}</h3>
+							<p>{$lang.USER_GROUP}：{$user_group_name}</p>
+							<p>{$lang.USER_SCORE}：{$user_score_format}</p>
+							<p>{$lang.USER_MONEY}：{$user_money_format}</p>
+							<p>{$lang.XY_MEMBER_REC_NUMBER}{$referrals_user_count}</p>
+							<p>{$lang.LAST_IP}：{$user_info.last_ip}</p>
+							<p>{$lang.EMAIL_SUBSCRIBE}：
+								
+								{if $mail_exist > 0}
+								<a href="{$__ROOT__}/index.php?m=UserCenter&a=unSubScribe&id={$user_info.id}">{$lang.SUBSCRIBE_BACK}</a>
+								{else}
+								<a href="{$__ROOT__}/index.php?m=UserCenter&a=subScribe&id={$user_info.id}">{$lang.SUBSCRIBE}</a>
+								{/if}
+							</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>

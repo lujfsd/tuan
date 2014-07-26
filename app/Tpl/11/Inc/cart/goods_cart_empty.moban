@@ -1,0 +1,17 @@
+<div id="deal-buy" class="box">
+	<div class="box-top"></div>
+	<div class="box-content">
+		<div class="head">
+			<h2>{$lang.JJ_SUBMIT_ORDER}</h2>
+		</div>
+			<div class="sect">
+				<div class="cart_empty">
+					{$cart_empty}
+					<p><input type="button" onclick="window.location.href='./'" value="{$lang.JJ_STILL_BUY}" class="formbutton"/></p>
+				</div>
+			</div>
+	</div>
+	<div class="box-bottom"></div>
+	<div class="blank"></div>
+	{include file="Inc/cart/cart_other_goods_list.moban"}
+</div>

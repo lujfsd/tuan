@@ -1,0 +1,49 @@
+<div class="deal-consult sbox">
+	<div class=sbox-bubble></div>
+	<div class=sbox-top></div>
+	<div class=sbox-content>
+		<div class=deal-consult-tip>
+			<H2>{$lang.MESSAGE_BOARD}</H2>
+			{insert name="getMessageList" limit=3}
+			<div class=custom-service>
+				<p class=im >
+				{if $CFG.MSN_SERVICES}
+				<a id=service-msn-help href="msnim:chat?contact={$CFG.MSN_SERVICES}" target=_blank>
+					<img src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-msn.gif">
+				</a>
+				{/if}
+				{if $currentCity.qq_1 eq '' and $currentCity.qq_2 eq '' and $currentCity.qq_3 eq '' and $currentCity.qq_4 eq '' and $currentCity.qq_5 eq '' and $currentCity.qq_6 eq ''}
+				{if $CFG.QQ_SERVICES}
+				<a href="{$CFG.QQ_SERVICES}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+				{/if}
+				{else}
+					{if $currentCity.qq_1 neq ''}
+					<a href="{$currentCity.qq_1}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_2 neq ''}
+					<a href="{$currentCity.qq_2}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_3 neq ''}
+					<a href="{$currentCity.qq_3}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_4 neq ''}
+					<a href="{$currentCity.qq_4}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_5 neq ''}
+					<a href="{$currentCity.qq_5}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+					{if $currentCity.qq_6 neq ''}
+					<a href="{$currentCity.qq_6}" target=_blank><img alt="" src="{$CND_URL}/{$TMPL_PATH}Public/images/button-custom-qq.gif"></a>
+					{/if}
+				{/if}
+				</p>
+				<p class="tel">
+					{$CFG.TEL}
+					<span class=time>{$CFG.WORK_TIMES}</span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class=sbox-bottom></div>
+</div>
+<div class="blank"></div>

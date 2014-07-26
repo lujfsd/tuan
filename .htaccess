@@ -1,0 +1,65 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule ^([^\/]*)\.html$ index.php/$1 [QSA,PT,L]
+# RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+
+RewriteRule ^index\.html$    index\.php [L]
+RewriteRule ^Index\.html$    index\.php [L]
+
+
+#RewriteRule ^(\w+)$    index\.php\?m=Index&a=index&cityname=$1 [L]
+RewriteRule ^(\w+)$    index\.php\?m=Index&a=index&id=1%sc=1 [L]
+
+RewriteRule ^&p=(\w+)$    index\.php\?p=$1 [L]
+RewriteRule ^index.php&p=(\w+)$    index\.php\?p=$1 [L]
+RewriteRule ^index.html&p=(\w+)$    index\.php\?p=$1 [L]
+
+RewriteRule ^c\.html(.*)$  index\.php\?m=Goods&a=index$1 [QSA,L]
+RewriteRule ^c-sc-1\.html(.*)$  index\.php\?m=Goods&a=index&sc=1$1 [QSA,L]
+
+RewriteRule ^c-([0-9]+)(.*)\.html(.*)$  index\.php\?m=Goods&a=index&id=$1$3 [QSA,L]
+
+RewriteRule ^gi-(.*)-sc-1\.html(.*)$  index\.php\?m=Goods&a=index&py=$1&sc=1$2 [QSA,L]
+RewriteRule ^go-(.*)-sc-1\.html(.*)$  index\.php\?m=Goods&a=other&py=$1&sc=1$2 [QSA,L]
+RewriteRule ^ai-(.*)-sc-1\.html(.*)$  index\.php\?m=Advance&a=index&py=$1&sc=1$2 [QSA,L]
+
+
+RewriteRule ^gi-(.*)(.*)\.html(.*)$  index\.php\?m=Goods&a=index&py=$1$3 [QSA,L]
+RewriteRule ^go-(.*)(.*)\.html(.*)$  index\.php\?m=Goods&a=other&py=$1$3 [QSA,L]
+RewriteRule ^ai-(.*)(.*)\.html(.*)$  index\.php\?m=Advance&a=index&py=$1$3 [QSA,L]
+
+
+RewriteRule ^ac\.html$  index\.php\?m=Article&a=index [QSA,L]
+RewriteRule ^ac-([0-9]+)(.*)\.html(.*)$  index\.php\?m=Article&a=index&id=$1$3 [QSA,L]
+
+RewriteRule ^Rss-(.*)\.html$  index\.php\?m=Rss&a=index&cityname=$1 [QSA,L]
+RewriteRule ^tg-([0-9]+)\.html(.*)$  index\.php\?m=Goods&a=show&id=$1$2 [QSA,L]
+RewriteRule ^tg-([0-9]+)-ru-([0-9]+)\.html$  index\.php\?m=Goods&a=show&id=$1&ru=$2 [QSA,L]
+RewriteRule ^tg-([0-9]+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=Goods&a=show&id=$1&$2=$3&$4 [QSA,L]
+RewriteRule ^tg-([0-9]+)-(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=Goods&a=show&id=$1&$2=$3&$4=$5&$6 [QSA,L]
+RewriteRule ^wz-([0-9]+)(.*)\.html(.*)$  index\.php\?m=Article&a=show&id=$1$3 [QSA,L]
+
+RewriteRule ^z-(\w+)(.*)\.html(.*)$  index\.php\?m=Index&a=index&cityname=$1$3 [QSA,L]
+
+RewriteRule ^sp\.html$  index\.php\?m=Suppliers&a=index [QSA,L]
+
+RewriteRule ^a-(\w+)(.*)\.html(.*)$  index\.php\?m=Article&a=showByUname&uname=$1$3 [QSA,L]
+RewriteRule ^g-(\w+)(.*)\.html(.*)$  index\.php\?m=Goods&a=showByUname&uname=$1$3 [QSA,L]
+
+RewriteRule ^Goods-(\w+)-keywords-([^\-.]*)\.html(.*)$  index\.php\?m=Goods&a=$1&keywords=$2$3 [QSA,L]
+RewriteRule ^Goods-(\w+)-keywords-([^\-.]*)-p-(\w+)\.html(.*)$  index\.php\?m=Goods&a=$1&keywords=$2&p=$3$4 [QSA,L]
+RewriteRule ^Goods-(\w+)-sc-1-keywords-([^\-.]*)-p-(\w+)\.html(.*)$  index\.php\?m=Goods&a=$1&keywords=$2&p=$3&sc=1$4 [QSA,L]
+
+RewriteRule ^Goods-(\w+)-sc-1-id-(\w+)-keywords-([^\-.]*)-p-(\w+)\.html(.*)$  index\.php\?m=Goods&a=$1&id=$2&keywords=$3&p=$4&sc=1$5 [QSA,L]
+
+RewriteRule ^(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2$3 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3$4 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3=$4$5 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3=$4&$5=$6$7 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3=$4&$5=$6&$7=$8$9 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3=$4&$5=$6&$7=$8&$9=$10$11 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3=$4&$5=$6&$7=$8&$9=$10&$11=$12$13 [QSA,L]
+RewriteRule ^(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)-(\w+)\.html(.*)$  index\.php\?m=$1&a=$2&$3=$4&$5=$6&$7=$8&$9=$10&$11=$12&$13=$14$15 [QSA,L]
+</IfModule>

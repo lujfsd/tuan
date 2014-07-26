@@ -1,0 +1,1 @@
+<?php exit;?>1406344910a:6:{s:2:"id";s:1:"1";s:6:"name_1";s:12:"普通会员";s:10:"min_points";s:1:"0";s:10:"max_points";s:4:"2000";s:8:"discount";s:6:"1.0000";s:6:"status";s:1:"1";}

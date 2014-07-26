@@ -1,0 +1,87 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<script type="text/javascript">
+	function showScope(obj)
+	{
+		if(obj.value==1)
+		{
+			document.getElementById("val_scope").style.display = "";
+		}
+		else
+		{
+			document.getElementById("val_scope").style.display = "none";
+		}
+	}
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/field_list')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('User/updateUserField')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">字段名称：</td>
+	<td class="tLeft" >
+		<input type="text" name="field_name" class="bLeftRequire" value="{$vo.field_name}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >字段显示名称：</td>
+	<td class="tLeft" >
+		<input type="text" name="field_show_name" class="bLeftRequire" value="{$vo.field_show_name}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >字段备注说明：</td>
+	<td class="tLeft" >
+		<input type="text" name="field_show_desc" class="bLeftRequire" value="{$vo.field_show_desc}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >显示类型：</td>
+	<td class="tLeft" >
+		<select name="type" onchange="showScope(this);">
+			<option value="0" <if condition="$vo['type'] eq 0">selected="selected"</if>>文本框</option>
+			<option value="1" <if condition="$vo['type'] eq 1">selected="selected"</if>>单选框</option>
+		</select>
+		<label id="val_scope" <if condition="$vo['type'] neq 1">style="display:none;"</if> >取值获围以半角逗号分隔：<input type="text" name="val_scope" class="bLeft" value="{$vo.val_scope}" /></label>
+	</td>
+</tr>
+ <tr>
+	<td class="tRight" >排序：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$vo.sort}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >是否显示：</td>
+	<td class="tLeft" >
+		<select name="is_show">
+			<option value="1" <if condition="$vo['is_show'] eq 1">selected="selected"</if>>显示</option>
+			<option value="0" <if condition="$vo['is_show'] eq 0">selected="selected"</if>>不显示</option>
+		</select>
+		
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >是否必选：</td>
+	<td class="tLeft" >
+		<select name="is_must">
+			<option value="0" <if condition="$vo['is_must'] eq 0">selected="selected"</if>>否</option>
+			<option value="1" <if condition="$vo['is_must'] eq 1">selected="selected"</if>>是</option>
+		</select>
+		
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+ 	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

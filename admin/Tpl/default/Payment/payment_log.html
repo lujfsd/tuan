@@ -1,0 +1,92 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<script type="text/javascript">
+	function deleteLog(id)
+	{
+		if(confirm("删除记录如为未支付,有可能导致相应在线支付返回确认失败。确定删除吗？"))
+		{
+			location.href = "__APP__?m=Payment&a=deleteLog&id="+id;
+		}
+	}
+</script>
+<!-- 菜单区域  -->
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}&nbsp;&nbsp;{$payment_vo.name_1}&nbsp;&nbsp;会员付款日志</div>
+<!--  功能操作区域  -->
+<form method='get' action="__APP__">
+<div class="operate" >
+<!-- 查询区域 -->
+
+支付单号：<INPUT TYPE="text"  name="payment_log_sn"   class="bLeft" style="width:100px;" value="{:trim($_REQUEST['payment_log_sn'])}">
+订单号：<INPUT TYPE="text"  name="order_sn"   class="bLeft" style="width:100px;" value="{:trim($_REQUEST['order_sn'])}">
+用户名：<INPUT TYPE="text"  name="user_name"   class="bLeft" style="width:100px;" value="{:trim($_REQUEST['user_name'])}">
+团购ID：<INPUT TYPE="text"  name="group_id"   class="bLeft" style="width:100px;" value="{:trim($_REQUEST['group_id'])}">
+
+<input type="hidden" name="is_paid" value="{$is_paid}" />
+支付状态：<select name="is_paid">
+	<option value="-1" <if condition="$is_paid eq -1">selected="selected"</if>>全部</option>
+	<option value="0" <if condition="$is_paid eq 0">selected="selected"</if>>未支付</option>
+	<option value="1" <if condition="$is_paid eq 1">selected="selected"</if>>已支付</option>
+</select>
+<input type="hidden" name="payment_id" value="{$payment_id}" />
+<input type="hidden" name="m" value="Payment" />
+<input type="hidden" name="a" value="payment_log" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+<a href="{:u("Payment/clearlog",array("payment_id"=>$payment_id))}">清空已过期团购的支付日志</a>
+</div>
+</form>
+
+<!-- 功能操作区域结束 -->
+
+<!-- 列表显示区域  -->
+<div class="list" >
+		<table id="money_log_list" class="list" cellpadding=0 cellspacing=0>
+			<tr>
+				<th width="60">支付单号</th>
+				<th width="60">回执单号</th>
+				<th width="60">订单号</th>
+				<th>团购名称</th>
+				<th width="80">订单总额</th>
+				<th width="80">已收金额</th>
+				<th width="80">订单状态</th>
+				<th width="80">购买人</th>
+				<th width="80">生成时间</th>
+				<th width="80">支付金额</th>
+				<th width="80">支付状态</th>
+				<th width="80">操作</th>
+			</tr>
+			<volist name="list" id="log_item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+					<td>{$log_item.pay_code}</td>
+					<td>{$log_item.pay_back_code}&nbsp;</td>
+					<td>{$log_item.payment_order_sn}</td>
+					<td>{$log_item.payment_goods_name}</td>
+					<td>{$log_item.payment_order_price|formatPrice}</td>
+					<td>{$log_item.payment_incharge_money|formatPrice}</td>
+					<td>{$log_item.payment_money_status|getOrderMoneyStatus}</td>
+					<td>{$log_item.payment_user_name}</td>
+					<td>{$log_item.create_time|toDate}</td>
+					<td>{$log_item.money|formatPrice}</td>
+					<td>{$log_item.payment_is_paid|getIsPaid}</td>
+					<td><a href="javascript:void(0);" onclick="deleteLog({$log_item.id});">删除</a></td>
+				</tr>
+			</volist>
+		</table>
+</div>
+<!--  分页显示区域 -->
+
+<div class="page">{$pages}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

@@ -1,0 +1,143 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<script type="text/javascript">
+	function export_groupbond()
+	{
+		var sn = document.getElementById("c_sn").value;
+		var order_sn = document.getElementById("c_order_sn").value;
+		var user_name = document.getElementById("c_user_name").value;
+		var goods_id = document.getElementById("c_goods_id").value;;
+		var is_used=  document.getElementById("c_is_used").value;
+		var begintime = document.getElementById("c_begintime").value;
+		var endtime = document.getElementById("c_endtime").value;
+		var url = APP+'?m=GroupBond&a=exportcsv&sn='+sn+'&order_sn='+order_sn+'&user_name='+user_name+'&goods_id='+goods_id+'&is_used='+is_used+'&begintime='+begintime+'&endtime='+endtime;
+		location.href = url;
+	}
+	function export_groupbond_xls()
+	{
+		var sn = document.getElementById("c_sn").value;
+		var order_sn = document.getElementById("c_order_sn").value;
+		var user_name = document.getElementById("c_user_name").value;
+		var goods_id = document.getElementById("c_goods_id").value;
+		var is_used=  document.getElementById("c_is_used").value;
+		var begintime = document.getElementById("c_begintime").value;
+		var endtime = document.getElementById("c_endtime").value;
+		var url = APP+'?m=GroupBond&a=export&sn='+sn+'&order_sn='+order_sn+'&user_name='+user_name+'&goods_id='+goods_id+'&is_used='+is_used+'&begintime='+begintime+'&endtime='+endtime;
+		location.href = url;
+	}
+
+	function sendsms_groupbond()
+	{
+		if(confirm("确定发送短信吗？"))
+		{
+			var sn = document.getElementById("c_sn").value;
+			var order_sn = document.getElementById("c_order_sn").value;
+			var user_name = document.getElementById("c_user_name").value;
+			var goods_id = document.getElementById("c_goods_id").value;
+			var is_used=  document.getElementById("c_is_used").value;
+			var begintime = document.getElementById("c_begintime").value;
+			var endtime = document.getElementById("c_endtime").value;
+			var url = APP+'?m=GroupBond&a=sendsmsall&sn='+sn+'&order_sn='+order_sn+'&user_name='+user_name+'&goods_id='+goods_id+'&is_used='+is_used+'&begintime='+begintime+'&endtime='+endtime;
+			location.href = url;
+		}
+	}
+
+	function sendmail_groupbond()
+	{
+		if(confirm("确定发送邮件吗？"))
+		{
+			var sn = document.getElementById("c_sn").value;
+			var order_sn = document.getElementById("c_order_sn").value;
+			var user_name = document.getElementById("c_user_name").value;
+			var goods_id = document.getElementById("c_goods_id").value;
+			var is_used=  document.getElementById("c_is_used").value;
+			var begintime = document.getElementById("c_begintime").value;
+			var endtime = document.getElementById("c_endtime").value;
+			var url = APP+'?m=GroupBond&a=sendmailall&sn='+sn+'&order_sn='+order_sn+'&user_name='+user_name+'&goods_id='+goods_id+'&is_used='+is_used+'&begintime='+begintime+'&endtime='+endtime;
+			location.href = url;
+		}
+	}
+	function showOrder(id){
+		window.open(APP+"?m=Order&a=show&id=" + id);
+	}
+	
+</script>
+<!-- 菜单区域  -->
+<php>
+function getOrderId($sn)
+{
+	$id = M('Order')->where("sn='".$sn."'")->getField('id');
+	return "<a href='javascript:showOrder(".$id.");'>".$sn."</a>";
+}
+</php>
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+<form method='get' action="__APP__">
+<div class="operate" >
+<input type="button" id="" name="add" value="{$Think.lang._ADD_DATA}" class="add imgButton" onclick="location.href='{:u('GroupBond/add',array('goods_id'=>$goods_id))}'">
+<input type="button" id="" name="add" value="批量{$Think.lang._ADD_DATA}" class="add imgButton" onclick="location.href='{:u('GroupBond/batchAdd',array('goods_id'=>$goods_id))}'" >
+<input type="button" id="" name="add" value="批量更新" class="add imgButton" onclick="location.href='{:u('GroupBond/batchEdit',array('goods_id'=>$goods_id))}'" >
+<input type="button" id="" name="import" value="导入" class="add imgButton" onclick="location.href='{:u('GroupBond/import',array('goods_id'=>$goods_id))}'">
+<input type="button" id="" name="export" value="导出csv" class="add imgButton" onclick="export_groupbond()">
+<input type="button" id="" name="export" value="  发送短信" class="add imgButton" onclick="sendsms_groupbond()">
+<input type="button" id="" name="export" value="  发送邮件" class="add imgButton" onclick="sendmail_groupbond()">
+<fanwe:imageBtn name="delete" value="{$Think.lang._DELETE_DATA}" click="foreverdel()" />
+
+<div class="blank"></div>
+商品ID：
+<input type="text" name="goods_id" id="c_goods_id" value="{$goods_id}"  style="width:50px;" >
+序列号：
+<input type="text" name="sn" class="medium" style="width:80px;" value="{:trim($_REQUEST['sn'])}" id="c_sn" />
+订单号：
+<input type="text" name="order_id" class="medium" style="width:80px;" value="{:trim($_REQUEST['order_id'])}" id="c_order_sn" />
+会员名：
+<input type="text" name="user_name" class="medium" style="width:80px;" value="{:trim($_REQUEST['user_name'])}" id="c_user_name" />
+是否使用：
+<select name="is_used" id="c_is_used">
+	<option value="-1" <if condition="$is_used eq '-1'">selected</if>>全部</option>
+	<option value="0" <if condition="$is_used eq '0'">selected</if>>未使用</option>
+	<option value="1" <if condition="$is_used eq '1'">selected</if>>已使用</option>
+</select>
+过期时间：<input type="text" name="begintime" id="c_begintime" value="{$begintime}" style="width:90px;"  onfocus="return showCalendar('c_begintime', '%Y-%m-%d', false, false, 'c_begintime');" />
+到
+<input type="text" name="endtime" id="c_endtime" value="{$endtime}" style="width:100px;" onfocus="return showCalendar('c_endtime', '%Y-%m-%d', false, false, 'c_endtime');" />
+
+<input type="hidden" name="SEARCH_TYPE" value="like" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" />
+<input type="hidden" name="status" value="1" />
+<input type="hidden" name="{:c('VAR_MODULE')}" value="GroupBond" />
+<input type="hidden" name="{:c('VAR_ACTION')}" value="index" />
+</div>
+</form>
+
+<!-- 功能操作区域结束 --
+<!-- 列表显示区域  -->
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="bond" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|6%,goods_id:团购编号,goods_name:团购名称|200,sn:序列号,password:密码,end_time|toDate:过期时间,use_time|toDate:使用时间,order_id|getOrderId=$goods['order_id']:订单号,user_id|getUserName:会员名,is_valid|getStatus:已发放给会员,send_count:短信发送次数|80,depart_id|getDepartName:确定部门名称" 
+	actionlist="edit:{$Think.lang._EDIT_DATA}:id,foreverdel:{$Think.lang._DELETE_DATA}:id,send_sms:发送短信:id,send_mail:发送邮件:id" /> 
+</div>
+<!--  分页显示区域 -->
+<div class="page">{$page}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

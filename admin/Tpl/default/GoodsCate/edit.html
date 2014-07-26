@@ -1,0 +1,63 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA}[ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('GoodsCate/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.CATE_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >拼音：</td>
+	<td class="tLeft" >
+		<input type="text" name="py" class="bLeft" value="{$vo.py}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$vo.sort}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >分类：</td>
+	<td class="tLeft" >
+		<select name="pid">
+			<option value="0" <if condition="$vo['pid'] eq 0">selected="selected"</if>>顶级分类</option>
+			<foreach name="cate_list" item="cate_item">
+				<option value="{$cate_item.id}" <if condition="$vo['pid'] eq $cate_item['id']">selected="selected"</if>>{$cate_item.name_1}</option>
+			</foreach>
+		</select>
+	</td>
+</tr>
+<tr> 
+	<td class="tRight tTop">{$Think.lang.SEO_KEYWORD}：</td>
+	<td class="tLeft">
+	<textarea rows="3" cols="80" name="seokeyword_1">{$vo.seokeyword_1}</textarea>
+	</td>
+</tr> 
+<tr> 
+	<td class="tRight tTop">{$Think.lang.SEO_CONTENT}：</td>
+	<td class="tLeft">
+	<textarea rows="3" cols="80" name="seocontent_1">{$vo.seocontent_1}</textarea> 
+	</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="status" value="1" />
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

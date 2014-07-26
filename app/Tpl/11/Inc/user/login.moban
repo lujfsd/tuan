@@ -1,0 +1,124 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="login">
+			<div id="content" class="login-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_USER_LOGIN}</h2>
+							<span>&nbsp;{$lang.XY_OR} <a href="{function name='a_u' value='User/register'}">{$lang.XY_USER_REG}</a></span></div>
+						<div class="sect">
+							<form name="reg_form" action="{$POST_URL}" method="post" >
+								<div class="field email">
+									<label for="login-email-address">{$lang.LOGIN_EMAIL}</label>
+									<input tabindex="1" type="text" size="30" name="email" id="login-email-address" class="f-input" value="{$user.email}"/>
+								</div>
+								<div class="field password">
+									<label for="login-password">{$lang.XY_PASS}</label>
+									<input tabindex="2" type="password" size="30" name="user_pwd" id="login-password" class="f-input" value="{$password}" />
+									<span class="lostpassword"><a href="{function name='a_u' value='User/resetreq'}">{$lang.XY_FORGET_PASS}</a></span> </div>
+								{if a_fanweC('REGISTER_VERIFY') eq 1}
+								<div class="field verify">
+										<label for="signup-verify">{$lang.XY_VERIFY}</label>
+										<input type="text" size="20" name="login_verify" id="login_verify" class="f-input" style="width:100px;" />
+										<img id="login-verify-img" style="cursor:pointer;height:auto; float:left; margin:3px 2px 3px 6px;" align="absmiddle" title="{$lang.XY_VERIFY_RESET}" onclick="this.src='{$HTTP_URL}/index.php?m=Ajax&a=verify&rand='+ Math.random();" src='{$HTTP_URL}/index.php?m=Ajax&a=verify&rand='+ Math.random();/>
+								</div>
+								{/if}	
+								<div class="field autologin">
+									<input tabindex="3" type="checkbox" value="1" name="auto_login" id="autologin" class="f-check"/>
+									<label for="autologin">{$lang.XY_AUTO_LOGIN}</label>
+								</div>
+								<div class="act">
+									<input type="hidden" name="redirect" value="{$redirect}" />
+									<input type="hidden" name="goods_id" value="{$goods_id}" />
+									<input type="hidden" name="m" value="User" />
+									<input type="hidden" name="a" value="doLogin" />
+									<input type="submit" value="{$lang.XY_USER_LOGIN}" name="commit" id="login-submit" class="formbutton"/>
+																
+								</div>
+ 								{if (a_fanweC('SINA_KEY') neq '')||(a_fanweC('QQ_KEY') neq '')||(a_fanweC('360_KEY') neq '')||(a_fanweC('ALIAPY_PARTNER') neq '')||(a_fanweC('800_KEY') neq '')||(a_fanweC('TXQQ_KEY') neq '')||(a_fanweC('2345_KEY') neq '')||(a_fanweC('APP_KEY_baidu') neq '')}
+                                <div style="width:400px; margin-top:8px; padding-left:110px;">
+                               		<div style="border-top:1px solid #ccc;">
+                       				   <p style="padding:8px 0;">您也可以用合作网站账号登录(新浪、360.cn、QQ)</p>
+                     				   {if a_fanweC('SINA_KEY') neq ''}
+	                       					<a href="{$__ROOT__}/index.php?m=user&a=login_sina&oauth_sina=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/sina.png" /></a>
+									   {/if}	
+											{if a_fanweC('QQ_KEY') neq ''}
+			                                 	<a href="{$__ROOT__}/index.php?m=user&a=login_qq&oauth_qq=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/qq.png" /></a>
+											{/if}
+	                                   {if a_fanweC('360_KEY') neq ''}
+	                                       <a href="{$__ROOT__}/index.php?m=user&a=login_360&oauth_360=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/360.gif" /></a>
+									   {/if}
+		                                    {if a_fanweC('ALIAPY_PARTNER') neq ''}
+		                                       <a href="{$__ROOT__}/index.php?m=user&a=login_alipay&oauth_alipay=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/act_zfb.gif" /></a>
+											{/if}
+	                                   {if a_fanweC('800_KEY') neq ''}
+					        		   		<a href="{$__ROOT__}/index.php?m=user&a=login_800&oauth_800=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/800.png" /></a>									
+									   {/if}
+											
+									   {if a_fanweC('2345_KEY') neq ''}
+	                                 		<a href="{$__ROOT__}/index.php?m=user&a=login_2345&oauth_2345=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/login_2345.gif" /></a>
+									   {/if}
+											{if a_fanweC('APP_KEY_baidu') neq ''}
+			                                	 <a href="{$__ROOT__}/index.php?m=user&a=login_baidu&oauth_baidu=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/login-baidu.gif" /></a>
+											{/if}
+									   {if a_fanweC('TXQQ_KEY') neq ''}
+			                                 	<a href="{$__ROOT__}/index.php?m=user&a=login_txqq&oauth_txqq=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/txqq.png" /></a>
+									   {/if}
+                         		    </div>
+                         		</div>
+ {/if}  
+							</form>
+						</div>
+                        
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h2>{$lang.XY_NO_ACCOUNT}</h2>
+							<p>{$lang.XY_PROMPTLY}<a href="{function name='a_u' value='User/register'}">{$lang.XY_USER_REG}</a>{$lang.XY_ONLY_THRITY}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}
+<script type="text/javascript">
+jQuery(function($){
+	$("#login-submit").click(function(){
+		
+		if($.trim($("#login-email-address").val()).length == 0)
+		{
+			$.showErr("{$lang.XY_PLEASE_MAIL}");
+			$("#login-email-address").focus();
+			return false;
+		}
+		
+		/*del by chenfq 2010-06-26 可以支持用户名登陆
+		if(!$.checkEmail($("#login-email-address").val()))
+		{
+			$.showErr("{$lang.XY_ERROR_MAIL}");
+			$("#login-email-address").focus();
+			return false;
+		}
+		*/
+		if(!$.minLength($("#login-password").val(),4,false))
+		{
+			$.showErr("{$lang.XY_PLEASE_ENTER_TRUE_PASS}");
+			$("#login-password").focus();
+			return false;
+		}
+	});
+});
+</script>

@@ -1,0 +1,109 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('User/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.USER_NAME}：</td>
+	<td class="tLeft" >
+		{$vo.user_name}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.NEW_USER_PWD}：</td>
+	<td class="tLeft" >
+		<input type="password" name="new_user_pwd" class="bLeft" />
+	</td>
+</tr>
+
+ <tr>
+	<td class="tRight" >{$Think.lang.NEW_USER_PWD_CONFIRM}：</td>
+	<td class="tLeft" >
+		<input type="password" name="new_user_pwd_confirm" class="bLeft" />
+	</td>
+</tr> 
+
+<tr>
+	<td class="tRight" >{$Think.lang.USER_GROUP}：</td>
+	<td class="tLeft" >
+		<select name="group_id" class="bLeft">
+		<foreach name="group_list" item="group_item">
+			<option value="{$group_item.id}" <if condition="$vo['group_id'] eq $group_item['id']">selected="selected" </if> >{$group_item[$select_dispname]}</option>
+		</foreach>			
+		</select>
+	</td>
+</tr> 
+
+<tr>
+	<td class="tRight" >{$Think.lang.EMAIL}：</td>
+	<td class="tLeft" >
+		<input type="text" name="email" class="bLeftRequire" value="{$vo.email}" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.MOBILE_PHONE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="mobile_phone" class="bLeft" value="{$vo.mobile_phone}" />
+	</td>
+</tr>
+
+
+<tr>
+	<td class="tRight" >地区：</td>
+	<td class="tLeft" >
+		<select name="city_id">
+		<foreach name="city_list" item="city_item">
+		<option value="{$city_item.id}" <if condition="$vo['city_id'] eq $city_item['id']">selected="selected"</if>>{$city_item.name}</option>
+		</foreach>
+		</select>
+	</td>
+</tr>
+
+<foreach name="extend_fields" item="field_item">
+	<tr>
+		<td class="tRight" >{$field_item.field_show_name}：</td>
+		<td class="tLeft" >
+			<if condition="$field_item['type'] eq 0">
+				<input type="text" name="{$field_item.field_name}" class="bLeft" value="{$field_item.value}" />
+			</if>
+			<if condition="$field_item['type'] eq 1">
+				<select name="{$field_item.field_name}">
+				<foreach name="field_item.val_scope" item="val">
+					<option value="{$val}" <if condition="$field_item['value'] eq $val">selected="selected"</if>>{$val}</option>
+				</foreach>
+				</select>
+			</if>
+		</td>
+	</tr>	
+</foreach>
+
+<tr>
+	<th colspan=2>{%ACCOUNT_INFO}	</th>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.USER_SCORE}：</td>
+	<td class="tLeft" >
+		{$vo.score}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.USER_MONEY}：</td>
+	<td class="tLeft" >{$vo.money|priceVal}{:sprintf(fanweC("BASE_CURRENCY_UNIT"),"")}
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</table>
+</form>
+</div>
+</div>

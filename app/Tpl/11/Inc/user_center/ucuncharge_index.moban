@@ -1,0 +1,97 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}		
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						
+						<div class="head">
+							<h2>{$page_title}</h2>
+							<ul class="filter">
+								<li class="label">{$lang.XY_CLASS_IFICATION} </li>
+								<li {if $current_page eq 'UCLOG_INDEX'}class="current"{/if}><a href="<?php echo a_u('UcLog/index') ?>">{$lang.XY_PRICE_LOG}</a></li>
+								<li {if $current_page eq 'UCLOG_LOGINDEX'}class="current"{/if}><a href="<?php echo a_u('UcLog/logIndex') ?>">{$lang.XY_INTEGRAL_LOG}</a></li>
+								{foreach from="$user_money_menu" item="menu_item"}
+									<li {if $menu_item.act eq 1} class="current"{/if}><a href="{$menu_item.url}" >{$menu_item.name}</a><li>
+								{/foreach}
+								{foreach from="$user_uncharge_menu" item="menu_item"}
+									<li {if $menu_item.act eq 1} class="current"{/if}><a href="{$menu_item.url}" >{$menu_item.name}</a><li>
+								{/foreach}
+							</ul>
+						</div>
+						{include file="Inc/user_center/uc_center_money.moban"}
+						<!--开头-->	
+						<div class="sect">
+				
+				        	<table width="650"  id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+				        	<tr>
+				        		<th>{$lang.MONEY_SN}</th>
+				        		<th>{$lang.XY_BILLING_ACCOUNT}</th>
+				        		<th>{$lang.MONEY_VALUE}</th>
+				        		<th>{$lang.MONEY_CREATE_TIME}</th>
+				        		<th>{$lang.MONEY_UPDATE_TIME}</th>
+								<th>{$lang.OPERATE}</th>
+				        	</tr>
+				
+							{foreach from=$uncharge_list item=uncharge_item key=key}
+							<tr {if $key mod 2 eq 0}class="alt"{/if}>
+				        		<td>{$uncharge_item.sn}</td>
+				        		<td>{$uncharge_item.memo_format}</td>
+				        		<td>{$uncharge_item.money_format}</td>
+				        		<td>{$uncharge_item.create_time_format}</td>
+				        		<td>{$uncharge_item.update_time_format}</td>
+								<td>
+				
+								{if $uncharge_item.status eq 0}
+								<a href="{$__ROOT__}/index.php?m=UcUncharge&a=modify&id={$uncharge_item.id}">{$lang.MODIFY}</a>
+								{else}
+								{$lang.USER_MONEY_1}
+								{/if}
+								</td>
+				        	</tr>
+							{/foreach}
+							</table>
+				
+				    </div><!--模块样式3-->
+					<div class="blank"></div>
+					<div style="padding:0 20px 0 0; text-align:right;">
+					{$pages}
+					</div>
+	<div class="blank"></div>
+	<div class="sect">
+    	<div style="text-align:right; padding:10px;">
+        	<form name="uncharge" action="<?php echo a_u('UcUncharge/insert') ?>" method="post" id="uncharge-form" >        	
+	        	<table  class="coupons-table">
+		        	<tr>
+		        		<td>{$lang.XY_ACCOUNT}</td>
+		        		<td><textarea name="memo" class="f-textarea" id="memo"></textarea></td>
+		        		<td>{$lang.XY_AMOUNT}</td>
+		        		<td>
+		        			<input type="text" name="money" class="f-input" id="money" />        			
+		        		</td>
+		        		<td><input type="submit" value="{$lang.UNCHARGE}" class="formbutton" /></td>
+		        	</tr>
+	        	</table> 
+			</form>
+		</div>
+    </div><!--模块样式3-->
+						<!--结束-->
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

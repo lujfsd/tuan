@@ -1,0 +1,52 @@
+{include file="Inc/header.moban"}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/coupon_ditu.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/coupon.js"></script>
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/coupon.css" />
+<div id="bdw" style="background:none;" >
+	<div id="bd" class="cf">
+		<div class="blank"></div>
+		<div>
+			<div>
+				<div id="dashboard" class="dashboard" style="padding-top:0px; bottom:-1px;">
+					<ul>
+						   <li class="m_ct" style="font-size:12px; "><a href="{function name="a_U" value="Youhui/index"}" style="_padding-top:10px; _height:26px;"><img src='{$CND_URL}/{$TMPL_PATH}/Public/images/m-normal.png' align="absmiddle" />&nbsp;{$lang.YOUHUI_CT_MODEL}</a><span></span></li>
+      					   <li class="m_dt current" style="font-size:12px;"><a href="{function name="a_U" value="Youhui/ditu"}"  style="_padding-top:10px; _height:26px;"><img src='{$CND_URL}/{$TMPL_PATH}/Public/images/m-map.png' align="absmiddle" />&nbsp;{$lang.YOUHUI_DT_MODEL}</a><span></span></li>
+					</ul>
+				</div>
+				<div class="">
+					<div class="">
+						<div class="clear"></div>
+						
+						<div class="coupon_box" style="padding-left:20px; position:relative;">	
+							<div class="coupon_side_dite">
+								{include file="Inc/side/side_ditu_cate.moban"}
+							</div>			
+							<div id="map_canvas" style="width: 930px; height: 500px"></div>
+						</div>
+					
+					</div>
+				</div>
+			
+			</div>
+			
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+
+<!--短信订阅的box-->
+<div class="coupon_sms_box">
+	<dl>
+		<dt><a href="javascript:;" class="close">{$lang.CLOSE}</a></dt>
+		<dd>
+			<div class="coupon_sms_form">
+
+			</div>
+		</dd>
+	</dl>
+</div>
+
+<!--end 短信订阅box-->
+{include file="Inc/footer.moban"}

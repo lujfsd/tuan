@@ -1,0 +1,41 @@
+{include file="Inc/header.moban"}
+{if $jumpUrl eq 'javascript:history.back()'}
+<script>
+	setTimeout("history.back()",3000);
+</script>
+{else}
+<meta http-equiv="refresh" content="3;URL={$jumpUrl}" />
+{/if}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="signuped">
+			<div id="content" class="signup-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						
+						<div class="head error">
+							<h2>{$fail_title}</h2>
+						</div>
+						<div class="sect">
+							<div class="notice">
+								<p>{$error_msg}</p>
+								
+							</div>
+						
+						<notpresent name="closeWin" >
+							<div class="notice">
+								<p>{$lang.SYS_WILL} <span style="color:blue;font-weight:bold">3</span> {$lang.PAGE_JUMP_TIP}<a href="{$jumpUrl}">{$lang.HERE}</a> {$lang.JUMP}</p>
+							</div>
+						</div>
+						</notpresent>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar"> </div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

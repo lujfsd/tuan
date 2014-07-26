@@ -1,0 +1,74 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="consult">
+			<div class="consult-bd consult-no-deal">
+				<div id="content">		
+				<!--开始-->	
+					<div id="deal-share">
+					<div class="deal-share-top">
+						<div class="deal-share-links">
+							<h4>{$lang.XY_SHARE_TO}</h4>
+							<ul class="cf">
+								{include file="Inc/others/referrals_url.moban"}
+							</ul>
+						</div>
+					</div>
+					<div class="deal-share-fix"></div>
+					<div id="deal-share-im-c">
+						<div class="deal-share-im-b">
+							<h3>{$lang.XY_SHARE_TO_FREAND}</h3>
+							<p>
+								<input id="share-copy-text-{$goods_item.id}" class="f-input" value="{$goods.ref_urllink}" size="30">
+								<input onclick="copy_text({$goods_item.id});" class="formbutton" value="{$lang.XY_COPY}" type="button">
+							</p>
+						</div>
+					</div>
+				</div>
+				<div id="deal-intro" class="cf">
+					<div style="height:100px;">
+						<div class="deal-price-tag"></div>
+							<p class="deal-price">
+								<strong>
+								{if $goods.type_id eq 2}
+								{$goods.earnest_money_format}
+								{else}
+								{$goods.shop_price_format}
+								{/if}
+								</strong>
+								{if $goods.is_none}
+								<span class="deal-price-soldout"></span>
+								{elseif $goods.is_end}
+								<span class="deal-price-expire"></span>
+								{else}
+								<span>
+									<a href="<?php echo a_u("Cart/index","id-".$GLOBALS['tpl']->_var['goods']['id']) ?>">
+									{if $goods.type_id eq 2}
+									{if $goods.earnest_money gt 0}
+									<img src="{$TMPL_PATH}Public/images/button-deal-buy-b.gif">
+									{else}
+									<img src="{$TMPL_PATH}Public/images/button-deal-buy-b1.gif">
+									{/if}
+									{else}
+									<img src="{$TMPL_PATH}Public/images/button-deal-buy.gif">
+									{/if}
+									</a>
+								</span>
+								{/if}
+							</p>
+							<span class="comment_goods_name" title="{$goods.name_1}">{$goods.name_1}</span>
+					</div>
+				</div>
+				<!--结束-->
+				{include file="Inc/common/message_commentList_data.moban"}
+				<div id="sidebar" style="padding:30px 0 0 0;">
+					{include file="Inc/side/side_referrals.moban"}
+					{include file="Inc/side/side_subscribe.moban"}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+{include file="Inc/footer.moban"}

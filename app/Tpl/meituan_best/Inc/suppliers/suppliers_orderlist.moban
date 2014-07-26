@@ -1,0 +1,56 @@
+{include file="Inc/suppliers/suppheader.moban"}
+
+
+<div id="bdw" class="bdw" >
+	<div id="bd" class="cf">
+		
+			<div id="content" class="login-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.PAID_ORDER}</h2>
+						</div>
+						<div class="sect">
+						<table cellspacing="0" cellpadding="0" border="0" class="coupons-table" id="coupons-table" width="97%">
+								<tr>
+									<th>{$lang.GROUP_NAME}</th>
+									<th width="80">{$lang.ORDER_SN}</th>
+									<th width="80">{$lang.ORDER_CREATE_TIME}</th>						
+									<th width="45">{$lang.YOUHUI_OP}</th>
+								</tr>
+								{foreach from=$order_list item=order key=key}
+								<tr {if $key%2 eq 1}class="alt"{/if}>
+									<td style="text-align: left;">
+										<a href="{$order.goods.url}" target="_blank" title="{$order.goods_name}">{$order.name}{if $order.attr}[{$order.attr}]{/if}({$lang.NUMBER_SHOW}{$order.number})</a>
+										
+										{if $order.orderConsignment}
+											{foreach from=$order.orderConsignment item=consignment_item}
+											<div>{$lang.XY_LOGISTICS_SN}<a href="{$consignment_item.express_url}" target="_blank"> {$consignment_item.express_name},{$consignment_item.delivery_code}</a></div>
+											{/foreach}
+										{/if}
+									</td>									
+									<td>{$order.sn}</td>
+									<td>{function name="a_toDate" value=$order.create_time}</td>						
+									<td class="op">
+										
+										<a href="<?php echo a_u("Suppliers/dealorder","id-".$this->_var['order']['id']);?>">{if $order.goods_status eq 0}处理订单{else}查看订单{/if}</a>
+										
+										
+									</td>
+								</tr>
+								{/foreach}								
+																
+						</table>
+						<div class="blank"></div>
+						<div style="text-align:right;">{$pages}</div>
+						</div><!--end sect-->
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

@@ -1,0 +1,62 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="referrals"  class="cf">
+			<div id="content" class="refers">
+				<div class="box">
+					<div class="box-top"></div>
+						<div class="box-content">
+							<div class="infos-t">{$title}</div>
+							<div class="blank"></div>
+							 <div class="ref-infos">
+							 	<div class="l-box">您一共成功邀请了<b class="red">{$invite_num}</b>人，有<b class="red">{$lottery_num}</b>个抽奖号</div>
+							 	<div class="r-box"><input value="继续邀请好友购买" type="button" class="formbutton" onclick="window.open('index.php?m=Lottery&a=step3&id={$goods.id}')" />&nbsp;&nbsp;<a href="./index.php"><b>>>返回首页</b></a></div>
+								<div class="clear"></div>
+							 </div>
+							 <div class="blank"></div>
+							 <hr>
+							<div class="blank"></div>
+							<table class="nolist">
+								<tr>
+									<th class="k">&nbsp;</th>
+									<th>我的邀请人</th>
+									<th>我的抽奖号</th>
+								</tr>
+								{foreach from="$lottery_no_list" item="nolist" name="nolist"}
+								<tr>
+									<th>{$smarty.foreach.nolist.iteration}</th>
+									<td>{$nolist.user_name}</td>
+									<td class="l"><b class="red">{$nolist.sn}</b></td>
+								</tr>
+								{/foreach}
+							</table>
+							<div class="blank"></div>
+							<div class="blank"></div>
+							<div class="blank"></div>
+							<div class="blank"></div>
+						</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				{include file="Inc/side/side_notice.moban"}
+				{include file="Inc/side/side_subscribe.moban"}
+				{include file="Inc/side/side_aboutus.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+<style>
+	#infos-t{clear:both;margin:0;; padding:0;}
+	hr{ width:98%; margin:0 auto;}
+	.l-box{ float:left;padding:8px 15px;background:#f1f1f1; margin-left:30px;width:320px;}
+	.r-box{ float:right;width:280px;padding:8px;}
+	.red{ font-size:14px;}
+	.nolist{ border-right:1px solid #ccc; width:93%;margin:0 auto;border-bottom:1px solid #ccc;}
+	.nolist th{ background:#f1f1f1;text-align:center; border-left:1px solid #ccc;border-top:1px solid #ccc;padding:8px;}
+	.nolist th.k{width:100px; }
+	.nolist td{border-left:1px solid #ccc;border-top:1px solid #ccc;padding:8px;}
+</style>
+{include file="Inc/footer.moban"}

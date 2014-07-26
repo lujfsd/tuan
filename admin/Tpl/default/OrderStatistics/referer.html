@@ -1,0 +1,49 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/tabs.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<script type="text/javascript">
+//function aaa(obj){
+//    
+//        window.open("__APP__?m=Order&a=index&referer=" + obj);
+//        
+//}
+</script>
+
+<div id="main" class="main" >
+
+<div class="title">订单来路统计信息</div>
+<div class="operate">
+<form method="get">
+订单号：<input type="text" class="medium" name="referer"  style="width:100px;" value="{:trim($_REQUEST['referer'])}" id="c_sn" />&nbsp;&nbsp
+下单时间：<input type="text" name="begintime" id="c_begintime" value="{$_REQUEST['begintime']}" style="width:90px;"  onfocus="return showCalendar('c_begintime', '%Y-%m-%d', false, false, 'c_begintime');" />
+ 到 
+<input type="text" name="endtime" id="c_endtime" value="{$_REQUEST['endtime']}" style="width:100px;" onfocus="return showCalendar('c_endtime', '%Y-%m-%d', false, false, 'c_endtime');" />
+ <fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+<input type="hidden" value="OrderStatistics" name="m" />
+<input type="hidden" value="referer" name="a" />
+<input type="hidden" value="search" name="do" />
+</form>
+</div>
+<div class="tabItem">
+    <table id="list" class="list" cellpadding="0" cellspacing="0">
+        <tr>
+            <th>订单来路</th>
+            <th>下单总数</th>
+        </tr>
+        <foreach name="list" item="list">
+        <tr>
+            <td style="vertical-align: middle;"><a href="__APP__?m=Order&a=index&referer={$list.referer}">{$list.referer}</a></td>
+             <td style="vertical-align: middle;text-align: center">{$list.ct}</td>     
+        </tr>
+        </foreach>
+  </table>
+</div>
+<div class="page"><!--{$Think.lang.ORDER_COST}: {$total_cost}; {$Think.lang.ORDER_ORDER_PROFIT}: {$total_profit}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->{$page}</div>
+
+<style>
+    hr{border:none;border-top:1px solid #ccc;clear:both;margin: 1px 0;padding:0}
+</style>

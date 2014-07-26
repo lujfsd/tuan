@@ -1,0 +1,17 @@
+{if $vote}
+<div class="sbox side-vote-tip">
+	<div class="sbox-top"></div>
+	<div class="sbox-content">
+		<div class="tip">
+			<h2>{$lang.XY_VOTE_TIT}</h2>
+			<div class="text">
+				<p class="mark"><a href="{function name="a_u" a="Vote/index"}" target="_blank">{$vote.title}</a></p>
+				<p>{$vote.desc}</p>
+			</div>
+			<div class="link"><a href="{function name="a_u" a="Vote/index"}" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/button-deal-vote.gif" /></a></div>
+		</div>
+	</div>
+	<div class="sbox-bottom"></div>
+</div>
+<div class="blank"></div>
+{/if}

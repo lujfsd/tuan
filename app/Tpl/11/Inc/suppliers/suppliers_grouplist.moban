@@ -1,0 +1,50 @@
+{include file="Inc/suppliers/suppheader.moban"}
+
+
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		
+			<div id="content" class="login-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.SUPPLIERS_GROUP_LIST}</h2>&nbsp;&nbsp;<a href="{function name="a_u" value="Suppliers/addgroup"}">发布团购</a>
+						</div>
+						<div class="sect">
+						<table cellspacing="0" cellpadding="0" border="0" class="coupons-table" id="coupons-table" width="97%">
+								<tr>
+									<th>{$lang.GROUP_NAME}</th>
+									<th width="80">{$lang.GROUP_PRICE}</th>
+									<th width="80">{$lang.PROMOTE_BEGIN_TIME}</th>
+									<th width="80">{$lang.PROMOTE_END_TIME}</th>
+									<th width="80">{$lang.IS_PUBLIC}</th>
+									<th width="45">{$lang.YOUHUI_OP}</th>
+								</tr>
+								{foreach from=$group_list item=group key=key}
+								<tr {if $key%2 eq 1}class="alt"{/if}>
+									<td style="text-align: left;">{$group.name}</td>
+									<td>{function name="a_formatPrice" value=$group.shop_price}</td>
+									<td>{if $group.promote_begin_time eq 0}不限{else}{function name="a_toDate" value=$group.promote_begin_time format="Y-m-d H:i:s"}{/if}</td>		
+									<td>{if $group.promote_end_time eq 0}不限{else}{function name="a_toDate" value=$group.promote_end_time format="Y-m-d H:i:s"}{/if}</td>								
+									<td>{if $group.is_public}是{else}否{/if}</td>
+									<td class="op">
+										{if $group.is_public eq 0}<a href="<?php echo a_u("Suppliers/editgroup","id-".$this->_var['group']['id']);?>">修改</a>{/if}
+								
+									</td>
+								</tr>
+								{/foreach}								
+																
+						</table>
+						<div class="blank"></div>
+						<div style="text-align:right;">{$pages}</div>
+						</div><!--end sect-->
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

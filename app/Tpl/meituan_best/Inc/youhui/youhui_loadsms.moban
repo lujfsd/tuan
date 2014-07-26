@@ -1,0 +1,16 @@
+<div class="coupon_form">
+	<span>{$lang.YOUHUI_RECIVE}：</span>
+	<br />
+	<div class="sms_content">[{$coupon.supplier_name}]{if $coupon.sn neq ''}@{$coupon.sn}：{/if}{$coupon.txt}
+		<br />
+		<div style="text-align:right;">{$lang.YOUHUI_END_TIME}：{if $coupon.end_time eq 0}{$lang.YOUHUI_NO_LIMIT}{else}{function name="a_toDate" value=$coupon.end_time format="Y-m-d"}{/if}</div>
+	</div>
+	<input type="hidden" name="id" value="{$coupon.id}" />
+	<input type="hidden" value="[{$coupon.supplier_name}]{if $coupon.sn neq ''}@{$coupon.sn}：{/if}{$coupon.txt}|有效期：{if $coupon.end_time eq 0}不限{else}{function name="a_toDate" value=$coupon.end_time format="Y-m-d"}{/if}" name="sms_content" />
+	<span class="mobile_submit"><span>{$lang.YOUHUI_MOBILE_PLEASE}：</span><input type="text" class="txt" name="mobile" />
+		<input type="button" value="{$lang.SEND_YOUHUI}" class="btn" onclick="send_sms();" />
+	</span>
+	<div class="blank"></div>
+	<span class="sms_tip"> {function name="sprintf" value=$lang.YOUHUI_SMS_LIMIT p=$CFG.YOUHUI_LIMIT}</span>
+	<div class="blank"></div>
+</div>

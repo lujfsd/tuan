@@ -1,0 +1,170 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+<literal>
+function switch_template()
+{
+	var id = $("#template_id").val();
+	$.ajax({
+		  url: APP+"?"+VAR_MODULE+"=Email&"+VAR_ACTION+"=loadTemplate&id="+id,
+		  cache: false,
+		  success:function(data)
+		  {		  	 
+			  data = $.evalJSON(data);
+			  data = data.data;
+			  //$("#is_html").val(data.is_html);
+			  $("#mail_title").val(data.mail_title);
+
+			  $("#mail_content").val(data.mail_content);
+
+			  var description = '';
+			  
+			  if(data.name == "get_password")
+			  {
+			  	  description = "{$user.user_name}：会员名&nbsp;&nbsp;";
+				  description += "{$shop_name}：网站名称&nbsp;&nbsp;";
+				  description += "{$user.reset_url}：重置密码的链接&nbsp;&nbsp;";				  
+			  }
+			  if(data.name == "share")
+			  {
+			  	  description = "{$title}：分享的团购名称&nbsp;&nbsp;";			  
+			  }
+			  if(data.name == "user_active")
+			  {
+			  	  description = "{$user.user_name}：会员名&nbsp;&nbsp;";
+				  description += "{$shop_name}：网站名称&nbsp;&nbsp;";
+				  description += "{$user.active_url}：激活的URL地址&nbsp;&nbsp;";				  
+			  }
+			  if(data.name == "group_bond_sms")
+			  {
+			  	  description = "{$user_name}：会员名&nbsp;&nbsp;";
+				  description += "{$bond.goods_name}：团购名称&nbsp;&nbsp;";
+				  description += "{$bond.goods_short_name}：团购简称名称&nbsp;&nbsp;";
+				  description += "{$bond.order_sn}：订单号&nbsp;&nbsp;";		
+				  description += "{$bond.id}：团购券ID&nbsp;&nbsp;";	
+				  description += "{$bond.name}：团购券名称&nbsp;&nbsp;";		
+				  description += "{$bond.sn}：团购券序列号&nbsp;&nbsp;";	
+				  description += "{$bond.password}：团购券密码&nbsp;&nbsp;";	
+				  description += "{$bond.tel}：商家电话&nbsp;&nbsp;";	
+				  description += "{$bond.address}：商家地址&nbsp;&nbsp;";
+				  description += "{$bond.starttime}：团购券开始日期Ymd格式如:2011-12-31&nbsp;&nbsp;";
+				  description += "{$bond.endtime}：团购券有效期Ymd格式如:2011-12-31&nbsp;&nbsp;";	
+				  description += "{$bond.count}：团购券数量&nbsp;&nbsp;";			  
+			  }
+			  if(data.name == "payment_mail"||data.name == "payment_sms")
+			  {
+			  	  description = "{$payment_notify.order_sn}：订单号&nbsp;&nbsp;";
+				  description += "{$payment_notify.money} ：付款的金额&nbsp;&nbsp;";	  
+			  }
+			  if(data.name == "delivery_mail"||data.name == "delivery_sms")
+			  {
+			  	  description = "{$delivery_notify.order_sn}：订单号&nbsp;&nbsp;";
+				  description += "{$delivery_notify.delivery_code} ：配送单号&nbsp;&nbsp;";
+				  description += "{$delivery_notify.delivery_name} ：配送名称&nbsp;&nbsp;";	
+			  }
+			  if(data.name == "group_bond_mail")
+			  {
+			  	  description = "{$user_name}：会员名&nbsp;&nbsp;";
+				  description += "{$bond.goods_name}：团购名称&nbsp;&nbsp;";
+				  description += "{$bond.goods_short_name}：团购简称名称&nbsp;&nbsp;";
+				  description += "{$bond.order_sn}：订单号&nbsp;&nbsp;";		
+				  description += "{$bond.id}：团购券ID&nbsp;&nbsp;";	
+				  description += "{$bond.name}：团购券名称&nbsp;&nbsp;";		
+				  description += "{$bond.sn}：团购券序列号&nbsp;&nbsp;";	
+				  description += "{$bond.password}：团购券密码&nbsp;&nbsp;";	
+				  description += "{$bond.tel}：商家电话&nbsp;&nbsp;";	
+				  description += "{$bond.address}：商家地址&nbsp;&nbsp;";
+				  description += "{$bond.starttime}：团购券开始&nbsp;&nbsp;";
+				  description += "{$bond.endtime}：团购券截止&nbsp;&nbsp;";		  
+			  }
+
+			  if(data.name == "group_bond_use_sms")
+			  {
+			  	  description = "{$user_name}：会员名&nbsp;&nbsp;";
+				  description += "{$bond.goods_name}：团购名称&nbsp;&nbsp;";
+				  description += "{$bond.goods_short_name}：团购简称名称&nbsp;&nbsp;";
+				  description += "{$bond.order_sn}：订单号&nbsp;&nbsp;";		
+				  description += "{$bond.id}：团购券ID&nbsp;&nbsp;";	
+				  description += "{$bond.name}：团购券名称&nbsp;&nbsp;";		
+				  description += "{$bond.sn}：团购券序列号&nbsp;&nbsp;";	
+				  description += "{$bond.password}：团购券密码&nbsp;&nbsp;";	
+				  description += "{$bond.tel}：商家电话&nbsp;&nbsp;";	
+				  description += "{$bond.address}：商家地址&nbsp;&nbsp;";
+				  description += "{$time}：团购券消费时间&nbsp;&nbsp;";		  
+			  }
+			  
+			  if(data.name == "goods_sms")
+			  {
+			  	  description = "{$goods_name}：商品名称&nbsp;&nbsp;";
+				  description += "{$begin_time}：开始时间&nbsp;&nbsp;";				  
+			  }
+			  if(data.name == "sms_subscribe_code")
+			  {
+			  	  description = "{$code}：认识码&nbsp;&nbsp;";			  
+			  }
+			  if(data.name == "sms_unsubscribe_code")
+			  {
+			  	  description = "{$code}：退订码&nbsp;&nbsp;";			  
+			  }
+			  $("#mail_description").html(description);
+		  }
+		}); 
+}
+</literal>
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} </div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Email/updateTemplate')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.TEMPLATE_NAME}：</td>
+	<td class="tLeft" >
+		<select class="bLeft" onchange="switch_template();" name="id" id="template_id">
+			<foreach name="template_list" item="template_item">
+				<option value="{$template_item.id}">{:l(strtoupper($template_item['name'])."_NAME")}</option>
+			</foreach>
+		</select>
+	</td>
+</tr>
+<tr style="display:none;">
+	<td class="tRight" width="120">{$Think.lang.IS_HTML}：</td>
+	<td class="tLeft" >
+		<select class="bLeft" name="is_html" id="is_html">
+			<option value="1">{%IS_HTML_1}</option>
+			<option value="0">{%IS_HTML_0}</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">{$Think.lang.MAIL_TITLE}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" name="mail_title" id="mail_title" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">{$Think.lang.MAIL_CONTENT}：</td>
+	<td class="tLeft" >
+		<textarea rows="5" cols="70"  name="mail_content" id="mail_content"></textarea>
+		<div style="height:10px;"></div>
+		<div id="mail_description" style="color:#f30;"></div>
+	</td>
+</tr>
+
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+switch_template();
+</script>

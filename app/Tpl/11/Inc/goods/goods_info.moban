@@ -1,0 +1,231 @@
+<div id="contentW">
+				<div id="deal-share">
+					<div class="deal-share-top">
+						<div class="deal-share-links">
+							<h4>{$lang.XY_SHARE_TO}</h4>
+							<ul class="cf">
+								{include file="Inc/others/referrals_url.moban"}
+							</ul>
+						</div>
+					</div>
+					<div class="deal-share-fix"></div>
+					
+					<div id="deal-share-im-c" style="display:none; clear:both; width:483px; margin-left:24px;">
+						<div class="deal-share-im-b">
+							<h3>{$lang.XY_SHARE_TO_FREAND}</h3>
+							<p>
+								<input id="share-copy-text-{$goods.id}" class="f-input" value="{$goods.ref_urllink}" size="30">
+								<input onclick="copy_text({$goods.id});" class="formbutton" value="{$lang.XY_COPY}" type="button">
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="deal-intro-top"></div>
+				<div id="deal-intro" class="cf">
+					<h1>
+						{if $goods.promote_begin_time gt $TIME}
+						<span>{$cate_info.name_1}{$lang.XY_GROUP_FORECASE}</span>
+						{elseif !$goods.is_end}
+						{if $goods.score_goods eq 0}
+							{if $goods.type_id eq 2}
+							<span>{$cate_info.name_1}{$lang.XY_BELOW_GROUP}</span>
+							{else}
+							<span>{$cate_info.name_1}{$lang.XY_TODAY_GROUP}：</span>
+							{/if}
+						{elseif $goods.score_goods eq 1}
+						<span>{$cate_info.name_1}{$lang.SCORE_GOODS}：</span>
+						{/if}
+						{/if}{$goods.name_1}
+					</h1>
+					<div class="main">
+						<div class="deal-buy">
+							<div class="deal-price-tag"></div>
+							<p class="deal-price" id="deal-price">
+								{include file="Inc/common/goods_btn_info.moban"}
+							</p>
+						</div>
+						<table class="deal-discount">
+							<tbody>
+								<tr>
+									<th>{$lang.XY_MAKET_PRICE}</th>
+									<th>{$lang.XY_SHOP_DISCOUNT}</th>
+									<th>{$lang.XY_SHOP_SAVE}</th>
+								</tr>
+								<tr>
+									<td>{$goods.market_price_format}</td>
+									<td>{function name="sprintf" a="$lang.XY_SHOP_SAVE_POINT" b="$goods.discountfb"}</td>
+									<td>{$goods.save}</td>
+								</tr>
+							</tbody>
+						</table>
+						{include file="Inc/common/goods_date_info.moban" }				
+						<div id=deal-status class="deal-box deal-status deal-status-open">
+						{include file="Inc/common/goods_status_info.moban"}
+						</div>
+					</div>
+					<div class=side>
+						<div class="deal-buy-cover-img" id="goods_imgs">
+							<div class="mid">
+								<ul>
+								{foreach from="$goods.gallery" item="gallery_item"  name="gallery_item"}
+									<li {if $smarty.foreach.gallery_item.first}class="first"{/if}><img src="{$CND_URL}{$gallery_item.big_img}"></li>
+								{/foreach}
+								</ul>
+								<div id="img_list">
+									<?php if (count($GLOBALS['tpl']->_var['goods']['gallery']) > 1) {?>
+									{foreach from="$goods.gallery" item="gallery_item" name="gallery_item"}
+									<a ref="{$smarty.foreach.gallery_item.iteration}" {if $smarty.foreach.gallery_item.first}class="active"{/if}>{$smarty.foreach.gallery_item.iteration}</a>
+									{/foreach}
+									<?php } ?>
+								</div>
+							</div>
+						</div>						
+						<div class=digest>
+							<br/>{$goods.brief}
+						</div>
+					</div>
+				</div>
+				<div class="deal-intro-bottom"></div>
+				<div id=deal-stuff class=cf>
+					<div class="box box-split">
+						<div class=box-top></div>
+						<div class="box-content cf">
+							<div class=main>
+								<H2>{$lang.XY_GROUP_DESC}</H2>
+								<div class="blk detail">
+									{$goods.goods_desc_1}
+								</div>
+								{if $goods.suppliers.desc}
+								<H2>{$lang.XY_COMMER_INTRO}</H2>
+								<div class="blk detail">
+									{$goods.suppliers.desc}
+								</div>
+								{/if}
+								{if $goods.goods_reviews or $goods.reviews_list}
+								<H2>{$lang.XY_THEY_SAY}</H2>
+								<div class="blk review">
+									{if $goods.goods_reviews}
+									<p>{$goods.goods_reviews}</p>
+									{/if}
+									<ul class=review>
+										{foreach from="$goods.reviews_list" item="reviews"}
+										<li>{$reviews.content}
+										<span>
+											——<a href="{$reviews.url}" target="_blank">{$reviews.user_name}</a>
+											{if $reviews.webname}
+											（{$reviews.webname}）
+											{/if}
+										</span>
+										</li>
+										{/foreach}
+									</ul>
+								</div>
+								{/if}
+								{if $goods.web_reviews}
+								<H2>{$lang.XY_OWN_SAY}</H2>
+								<div class="blk voice">
+									{$goods.web_reviews}
+								</div>
+								{/if}
+                                                                <H2>{$goods.suppliers.name}</H2>
+									<ul>									
+										{if $goods.suppliers.web}
+										<li><a href="{$goods.suppliers.web}" target="_blank">{$goods.suppliers.web}</a>‎</li>
+										{/if}									
+										{if $goods.suppliers.brief}
+										<li>{$lang.XY_SURPLUS_BRIEF}{$goods.suppliers.brief}‎</li>
+										{/if}
+										{if $goods.map_img}
+										<li>
+										<span class="saler_map"><img src="{$goods.map_img}" />
+										<a href='javascript:void(0);' id="show_map">{$lang.VIEW_BIG_MAP}</a>
+										<span id="saler_id">{$goods.suppliers.id}</span>
+										</span>
+										</li>
+										{/if}
+										{foreach from="$goods.suppliers_list" item="depart" key=key}
+										{if $key eq 0}
+											{if $depart.address}
+											<li>{$depart.address}
+											{if $depart.map}
+											（<a href="{$depart.map}" target="_blank">{$lang.XY_VIEW_MAP}</a>）
+											{/if}
+											</li>
+											{/if}									
+											{if $depart.tel}
+											<li>{$depart.tel}‎</li>
+											{/if}
+											{if $depart.operating}
+											<li>{$lang.XY_SURPLUS_OPERTATIONG}{$depart.operating}‎</li>
+											{/if}
+											{if $depart.bus}
+											<li>{$lang.XY_SURPLUS_BUS}{$depart.bus}‎</li>
+											{/if}
+											<li>‎</li>
+										{/if}
+										{/foreach}
+										
+										{if $goods.suppliers.img}
+										<li style="text-align:center">
+											<br/><img src="{$CND_URL}{$goods.suppliers.img}" width="200">
+										</li>
+										{/if}
+										<li style="text-align:center">
+											<a href="<?php echo a_u("Supplier/show","id-".$GLOBALS['tpl']->_var['goods']['suppliers']['id']); ?>">{$lang.VIEW_SUPPLIER_INFO}</a>
+										</li>
+									</ul>
+							</div>
+						
+							<div class=clear></div>
+						</div>
+						<div class=box-bottom></div>
+					</div>
+				</div>
+			</div>
+			
+			<script type="text/javascript">
+				var endTime = {$goods.promote_end_time};
+				var beginTime = {$goods.promote_begin_time};
+				var system_time = {$TIME};
+				var sysSecond;
+				var interValObj;
+				var statusTimeout;
+				
+				{literal}
+				function setRemainTime()
+				{
+					if (sysSecond > 0)
+					{
+						var second = Math.floor(sysSecond % 60);              // 计算秒     
+						var minite = Math.floor((sysSecond / 60) % 60);       //计算分
+						var hour = Math.floor((sysSecond / 3600) % 24);       //计算小时
+						var day = Math.floor((sysSecond / 3600) / 24);        //计算天
+						var timeHtml = hour+LANG.JS_HOUR+minite+LANG.JS_MINUTE;
+						if(day > 0)
+							timeHtml =day+LANG.JS_DAY+"</li>" + timeHtml;
+						timeHtml+=second+LANG.JS_SECOND;
+						
+						try
+						{
+							$("#counter").html(timeHtml);
+							sysSecond--;
+						}
+						catch(e){}
+					}
+					else
+					{
+						window.clearTimeout(interValObj);
+						window.location.href=window.location.href;
+					}
+					interValObj = window.setTimeout("setRemainTime()", 1000); 	
+				}
+				{/literal}
+				{if $goods.is_end neq 1 and $goods.promote_begin_time <= $TIME and $goods.is_group_fail neq 1}
+					sysSecond = endTime - system_time;
+					setRemainTime();
+				{elseif $goods.is_end neq 1 and $goods.promote_begin_time > $TIME and $goods.is_group_fail neq 1}
+					var GOODS_BUY_URL = "";
+					sysSecond = beginTime - system_time;
+					setRemainTime();
+				{/if}
+			</script>

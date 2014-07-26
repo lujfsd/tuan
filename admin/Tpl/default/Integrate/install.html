@@ -1,0 +1,156 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/model.js" />
+
+<div id="main" class="main" >
+
+<script type="text/javascript">
+	function confirm_redirect(msg, url)
+	{
+	  if (confirm(msg))
+	  {
+	    location.href=url;
+	  }
+	}
+
+	function save_uc_config (save)
+	{
+	    var frm = document.forms['theForm'];
+	    frm.save.value = save;
+	    var url = "__APP__?m=Integrate&a=setup_ucenter&ucapi=" + frm.uc_url.value + "&" + "ucfounderpw=" + frm.uc_pass.value + "&" + "code=" + frm.code.value;
+		$.ajax({
+			  url: url,
+			  success:function(data)
+			  {
+				data = $.evalJSON(data); 
+				showSaveResponse(data);
+			  }
+			});	
+	}
+
+	function showSaveResponse (res)
+	{
+	    if (res.error !== 0)
+	    {
+	    	alert(res.info);
+	    }
+	    else
+	    {
+	        var frm = document.forms['theForm'];
+	        alert(res.info);
+	        frm.ucconfig.value = res.data;
+	        frm.submit();
+	    }
+	}	
+
+	function saveConfig(str)
+	{
+	  var save = document.getElementById('ECS_SAVE');
+	  if (confirm(str))
+	  {
+	    save.value = 1;
+	    document.forms['theForm'].submit();
+	  }
+	  else
+	  {
+	    save.value = 0;
+	  }
+	}	
+</script>
+<div class="content" >
+<div class="title">会员整合</div>
+
+<div class="list" >
+<if condition="$code eq 'ucenter'">
+  <if condition="$cfg.uc_id neq '' and $cfg.uc_key neq '' ">
+	    <form name="theForm" action="{:u('Integrate/save_uc_config')}" method="post">
+	        <table cellpadding=0 cellspacing=0 class="dataEdit" >
+	          <tr>
+	            <td class="tRight">UCenter 应用 ID:</td>
+	            <td class="tLeft"><input type="text" name="cfg[uc_id]" value="{$cfg.uc_id}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">UCenter 通信密钥:</td>
+	            <td class="tLeft"><input type="text" name="cfg[uc_key]" value="{$cfg.uc_key}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">UCenter 访问地址:</td>
+	            <td class="tLeft"><input type="text" name="cfg[uc_url]" value="{$cfg.uc_url}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">连接类型</td>
+	            <td><input type="radio" id="ucenter_connect_1" name="cfg[uc_connect]" value="mysql" <if condition="$cfg.uc_connect eq 'mysql' "> checked="checked"</if> /><label for="ucenter_connect_1">数据库直接连接</label><input type="radio" id="ucenter_connect_2" name="cfg[uc_connect]" value="post" <if condition="$cfg.uc_connect eq 'post' "> checked="checked"</if> /><label for="ucenter_connect_2">接口连接方式</label></td>
+	          </tr>	         
+			  <tr>
+			      <td class="tRight">数据库字符集：</td>
+			      <td class="tLeft">
+			      	<input type="text" name="cfg[db_charset]" value="{$cfg.db_charset}" />
+			      </td>
+		      </tr>	           
+	          <tr>
+	            <td class="tRight">UCenter 数据库服务器:</td>
+	            <td class="tLeft"><input type="text" name="cfg[db_host]" value="{$cfg.db_host}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">UCenter 数据库用户名:</td>
+	            <td class="tLeft"><input type="text" name="cfg[db_user]" value="{$cfg.db_user}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">UCenter 数据库密码:</td>
+	            <td class="tLeft"><input type="password" name="cfg[db_pass]" value="{$cfg.db_pass}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">UCenter 数据库名:</td>
+	            <td class="tLeft"><input type="text" name="cfg[db_name]" value="{$cfg.db_name}" /></td>
+	          </tr>
+	          <tr>
+	            <td class="tRight">UCenter 表前缀:</td>
+	            <td class="tLeft"><input type="text" name="cfg[db_pre]" value="{$cfg.db_pre}" /></td>
+	          </tr>
+		    <tr>
+		      <td colspan="2" align="center">
+		      	<input type="hidden" name="cfg[uc_lang][exchange]" value="{$cfg.uc_lang.exchange}" />
+	            <input type="submit" value="直接保存" class="button" />
+	            <input type="reset" value="重置" class="button" />
+	            <input type="hidden" name="code" value="{$code}" />
+		      </td>
+		    </tr>	          
+	        </table>
+	    </form>
+   <else/>
+	  <form action="{:u('Integrate/save_uc_config_first')}" method="post" name="theForm">
+		  <table cellspacing="1" class="dataEdit" cellpadding="3" width="100%">
+		  	<tr>
+		  		<td  colspan="2">
+		  			强烈要求合并会员前，先进行数据备份！
+		  		</td>
+		  	</tr>
+		    <tr>
+		      <td class="tRight" width="180">UCenter 的 URL:</td>
+		      <td class="tLeft"><input type="text" name="uc_url" value="" style="width:240px" /></td>
+		    </tr>
+		    <tr>
+		      <td class="tRight">UCenter 创始人密码:</td>
+		      <td class="tLeft"><input type="password" name="uc_pass" value="" /></td>
+		    </tr>		    
+		    <tr>
+			  <td class="tRight">&nbsp;</td>
+		      <td>
+		        <input type="button" value="下一步" onclick="save_uc_config(0)" class="button" />
+		        <input type="button" value="直接保存" onclick="save_uc_config(1)" class="button" />
+		        <input type="reset" value="重置" class="button" />
+		        <input type="hidden" name="code" value="{$code}" />
+		        <input type="hidden" name="save" value="0" />
+		        <input type="hidden" name="ucconfig" value="" />
+		      </td>
+		    </tr>
+		  </table>
+	  </form>  
+   </if> 
+</if>
+
+</div>
+</div>
+

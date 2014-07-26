@@ -1,0 +1,39 @@
+<tagLib name="fanwe" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">	
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		initialize('{$groupbond_api_address}');
+	}
+</script>
+</head>
+<body onclick="window.print();">
+
+	{$groupbond_html}
+	
+{if $groupbond_img}
+	<div style="width:100%; text-align:center;">
+	<img src="{$groupbond_img}" onclick="window.print();" style="cursor:pointer;" alt="{$lang.UCGROUPBOND_PRINTBOND}" title="{$lang.UCGROUPBOND_PRINTBOND}" />
+	</div>
+{/if}
+</body>
+</html>
+<script type="text/javascript">
+	var blue_point = "__ROOT__/global/blue_point.png";
+	var red_point = "__ROOT__/global/red_point.png";
+	var xpoint="{$suppliers.xpoint}";
+	var ypoint="{$suppliers.ypoint}";
+	var map = new BMap.Map("map_canvas"); //可以修改容器ID
+	        var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM }  
+	        map.addControl(new BMap.NavigationControl());  
+	        // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  
+	        // 创建地理编码服务实例  
+	        var point = new BMap.Point(xpoint,ypoint);
+	        
+	        // 将结果显示在地图上，并调整地图视野  
+	        map.centerAndZoom(point, 16);  
+	        map.addOverlay(new BMap.Marker(point));
+</script>

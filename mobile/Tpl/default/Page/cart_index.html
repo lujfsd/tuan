@@ -1,0 +1,14 @@
+{include file="Inc/header.html" }
+{if $err}
+<div class="errmsg">{$err}</div>
+{/if}
+<div class="order">
+<form action="m.php?m=Cart&a=check&s={$s}" method="post">
+<input type="hidden" name="goods_id" value="{$goods.id}" />
+<h3>{$goods.name_1}</h3>
+<p>{$lang.UNIT_PRICE}：<strong>{if $goods.type_id neq 2}{$goods.shop_price_format}{else}{$goods.earnest_money_format}{/if}</strong></p>
+<p>{$lang.NUMBER}：<input type="text" class="itxt" size="4" name="count" value="1" /></p>
+<p><input type="submit" class="ibtn" value="{$lang.CONFIRM_ORDER}" /></p>
+</form>
+</div>
+{include file="Inc/footer.html" }

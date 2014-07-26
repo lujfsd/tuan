@@ -1,0 +1,30 @@
+<div class="order-check-form ">	
+	<p class="choose-type">{$lang.XY_TOTAL_PRICES}<span class="red">{$cart_total.all_fee_format}</span>	
+
+	{if $cart_total.total_add_score neq 0}
+	&nbsp;&nbsp;{$lang.SCORE_UNIT}：{$cart_total.total_add_score} <br />		
+	{/if}	
+	</p>	
+	<p style="text-align:right; line-height:24px;">	
+	
+	{if $cart_total.goods_total_price gt 0}	
+	{$lang.XY_TOTAL_G_PRICES}{$cart_total.goods_total_price_format} <br />	
+	{/if}	
+	
+	{if $cart_total.delivery_fee neq 0}
+			+ {$lang.DELIVERY_FEE}：{$cart_total.delivery_fee_format} 
+			{if $cart_total.delivery_free eq 1}{$lang.DELIVERY_FREE}{/if}<br />	
+	{/if}	
+	
+	{if $cart_total.protect_fee neq 0}	+ {$lang.PROTECT_FEE}：{$cart_total.protect_fee_format} <br />		{/if}	
+	{if $cart_total.tax eq 1}	+ {$lang.TAX_MONEY}：{$cart_total.tax_money_format} <br />		{/if}		
+	{if $cart_total.payment_fee neq 0}	+ {$lang.PAY_AMOUNT}：{$cart_total.payment_fee_format} <br />		{/if}
+	{if $cart_total.discount_price neq 0}	- {$lang.XY_RANK_DISCOUNT}{$cart_total.discount_price_format} <br />		{/if}		
+	{if $cart_total.credit neq 0}	- {$lang.XY_BALANCE_PAY}{$cart_total.credit_format} <br />		{/if}		
+	{if $cart_total.ecvFee neq 0}	- {$lang.XY_VOUCHER}{$cart_total.ecvFee_format} <br />		{/if}		
+	{if $cart_total.incharge neq 0}	- {$lang.PAID_AMOUNT}：{$cart_total.incharge_format} <br />		{/if}		
+	= {$lang.XY_MUSE_TOTAL_PAY}<span class="red">{$cart_total.total_price_format}</span>&nbsp;	
+	{if $cart_total.payment_name and $cart_total.total_price  neq 0} {$lang.PAY_BY} [{$cart_total.payment_name}]{$lang.PAY}	{/if}	<br />	
+	</p>	
+	<div class="blank"></div>
+</div>

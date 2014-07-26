@@ -1,0 +1,38 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/tgemail')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Email/updateTmpl')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">名称：</td>
+	<td class="tLeft" >
+	{$name}	<input type="hidden" value="{$name}" name="name" />
+ 	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">内容：</td>
+	<td class="tLeft" >
+		<textarea name="content" cols=100 rows=30>{$content}</textarea>
+	</td>
+</tr>
+
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+switch_template();
+</script>

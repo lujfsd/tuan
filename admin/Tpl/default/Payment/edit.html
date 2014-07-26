@@ -1,0 +1,219 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<script type="text/javascript">
+function swpercent()
+{
+	var fee_type = $("#fee_type").val();
+	if(fee_type==0)
+	{
+		$("#percent").hide();
+	}	
+	else
+	{
+		$("#percent").show();
+	}
+}
+function swcostpercent()
+{
+	var fee_type = $("#cost_fee_type").val();
+	if(fee_type==0)
+	{
+		$("#costpercent").hide();
+	}	
+	else
+	{
+		$("#costpercent").show();
+	}
+}
+function get_alpayhref(obj)
+{
+	var alipay_service=obj.value;
+	
+	if(alipay_service==1)
+	{
+		$("#alipay_get").attr("href","https://b.alipay.com/order/pidKey.htm?pid=2088002980708493&product=escrow");
+	}
+	else if(alipay_service==2)
+	{
+		$("#alipay_get").attr("href","https://b.alipay.com/order/pidKey.htm?pid=2088002980708493&product=fastpay");
+	}
+	else
+	{
+		$("#alipay_get").attr("href","https://b.alipay.com/order/pidKey.htm?pid=2088002980708493&product=dualpay");		
+	}
+}
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Payment/update')}" enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{%PAYMENT_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{%DESCRIPTION}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="description" class="bLeft" cols="80" rows="3" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{%PAYMENT_LOGO}：</td>
+	<td class="tLeft" >
+		<input type="file" name="logo" />
+        <if condition="$vo['logo'] neq ''">
+            <a href="__ROOT__{$vo.logo}" target="_blank" >{%VIEW}</a>&nbsp;
+            <a href="{:u($module_name.'/deleteLogo',array('id' => $vo['id']))}">{%DELETE}</a>
+        </if>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >帐户余额：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.money}" name="money" />
+	</td>
+</tr>
+
+<if condition="$vo['class_name'] neq 'Accountpay'">
+<tr>
+	<td class="tRight" >{%FEE}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.fee}" name="fee" /> <span id="percent" <if condition="$vo['fee_type'] eq 0">style="display:none;"</if>>%</span>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{%FEE_TYPE}：</td>
+	<td class="tLeft" >
+		<select name="fee_type" class="bLeft" onchange="swpercent();" id="fee_type">
+			<option value="0" <if condition="$vo['fee_type'] eq 0">selected="selected"</if>>{%FEE_TYPE_0}</option>
+			<option value="1" <if condition="$vo['fee_type'] eq 1">selected="selected"</if>>{%FEE_TYPE_1}</option>
+		</select>
+	</td>
+</tr>
+</if>
+<tr>
+	<td class="tRight" >排序：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.sort}" name="sort" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" ></td>
+	<td class="tLeft" >
+		<div id="div" style="display: none" >
+			{%COST_FEE}：<input type="text" class="bLeft" value="{$vo.cost_fee}" name="cost_fee" /> <span id="costpercent" <if condition="$vo['cost_fee_type'] eq 0">style="display:none;"</if>>%</span>
+		{%COST_FEE_TYPE}：
+		<select name="cost_fee_type" class="bLeft" onchange="swcostpercent();" id="cost_fee_type">
+			<option value="0" <if condition="$vo['cost_fee_type'] eq 0">selected="selected"</if>>{%FEE_TYPE_0}</option>
+			<option value="1" <if condition="$vo['cost_fee_type'] eq 1">selected="selected"</if>>{%FEE_TYPE_1}</option>
+		</select>		
+		</div>
+	</td>
+</tr>
+
+<tr style="display:none;">
+	<td class="tRight" >{%PAYMENT_CURRENCY}：</td>
+	<td class="tLeft" >
+		<select name="currency" class="bLeft">
+			<foreach name="currency_list" item="currency_item">
+				<option value="{$currency_item.id}" <if condition="$currency_item['id'] eq $vo['currency']">selected="selected"</if> >{$currency_item.name}</option>
+			</foreach>
+		</select> 
+	</td>
+</tr>
+<if condition="count($vo['config']) gt 0">
+	<?php if($vo['class_name']=='Alipay'){   ?>	
+		<tr>
+			<td class="tRight">配置：</td>
+			<td class="tLeft">
+				<table width="100%">
+					<tbody>
+						<tr>
+							<td width="100">接口方式: </td>
+							<td>
+									<select name="alipay_service" id="alipay_service" class="bLeft" onchange="get_alpayhref(this)">
+										<option value="0"  <?php if(intval($vo['config']['alipay_service'])==0){ ?>selected='selected'<?php } ?> >使用标准双接口</option>
+										<option value="1" <?php if(intval($vo['config']['alipay_service'])==1){ ?>selected='selected'<?php } ?>>使用担保交易接口</option>
+										<option value="2" <?php if(intval($vo['config']['alipay_service'])==2){ ?>selected='selected'<?php } ?>>使用即时到帐接口</option>						
+								    </select>
+									&nbsp;<a href="https://b.alipay.com/order/slaverIndex.htm?customer_external_id=C4393319516691172112&market_type=from_agent_contract&pro_codes=61F99645EC0DC4380ADE569DD132AD7A" target="_blank">签约开通支付宝</a>
+							</td>
+						</tr>
+						<tr>
+							<td width="100">支付宝帐号: </td>
+							<td>
+								<input type="text" class="bLeft" name="alipay_account" value="{$vo['config']['alipay_account']}">
+								
+							</td>
+						</tr>
+						<tr>
+							<td width="100">合作者身份PID: </td>
+							<td>
+								<input type="text" class="bLeft" name="alipay_partner" value="{$vo['config']['alipay_partner']}">
+								&nbsp;<a id="alipay_get" href="https://b.alipay.com/order/pidKey.htm?pid=2088002980708493&product=dualpay" target="_blank" style="font-weight:bold;color:red;text-decoration:underline;">获取PID、KEY</a>
+							</td>
+						</tr>
+						<tr>
+							<td width="100">校验码key: </td>
+							<td><input type="text" class="bLeft" name="alipay_key" value="{$vo['config']['alipay_key']}"></td>
+						</tr>				
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	<?php }else{ ?>
+		<tr>
+			<td class="tRight" >{%CONFIG}：</td>
+			<td class="tLeft" >
+				<table width=100%>
+				<foreach name="vo.config" item="config_item">
+				<tr>
+				<td width=100>{:L("CONFIG_".strtoupper($key))}: </td><td>
+					<php>if(is_array($config_item)){</php>
+					<foreach name="config_item" item="cf_item">
+						{:l("TENCENT_".$key)}：<input type="checkbox" name="tencentpay_gateway[{$key}]" value="1" <if condition="intval($cf_item) eq 1">checked="checked"</if> />&nbsp;&nbsp;
+					</foreach>
+					
+					<php>}else{</php>
+						<if condition="is_array(l($key))">
+						<php>$lang_items = L($key);</php>
+						<select name="{$key}" class="bLeft">
+							<foreach name="lang_items" item="key_item">
+								<option value="{$key}" <if condition="$key eq $config_item">selected=</if>>{$key_item}</option>
+							</foreach>
+						</select>
+						<else />
+						<input type="text" class="bLeft" name="{$key}" value="{$config_item}" />
+						</if>
+					<php>}</php>
+				</td>
+				</tr>
+				</foreach>
+				</table>
+			</td>
+		</tr>
+	<?php } ?>	
+</if>
+  
+  
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="hidden" name="class_name" value="{$vo.class_name}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small"  value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

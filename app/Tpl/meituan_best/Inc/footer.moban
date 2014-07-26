@@ -1,0 +1,148 @@
+<div align="center">{insert name="advLayout" id="底部通栏广告"}</div>
+	<div id="ftw">
+        <div id="ft">
+			<p class="contact"><a href="{function name="a_u" value="Message/feedback"}">{$lang.FEEDBACK}</a></p>
+            <ul class="cf">
+			
+				{foreach from=$help_center item=help_cate name="help_cate"}
+				<li class="col">
+                    <h3>{$help_cate.name_1}</h3>
+                    <ul class="sub-list">
+						{foreach from=$help_cate.list item=article_item}
+                        <li><a href="{$article_item.url}" target="{$article_item.target}">{$article_item.name_1}</a>
+						{/foreach}
+						{if $smarty.foreach.help_cate.index eq 1}
+						<li><a href="<?php echo a_u("Rss/index","cityname-".$this->_var['currentCity']['py'])?>" target="_blank">{$lang.RSS_SUBSCRIBE}</a></li>
+						{/if}
+                    </ul>
+                </li>
+				{/foreach}
+                <li class="col end">
+                    <div class=logo-footer><a href="{$__ROOT__}/"><img alt="" 
+  src="{$CND_URL}{function name="a_fanweC" value="FOOT_LOGO"}"></a></div>
+                </li>
+            </ul>
+            <div class=copyright>
+				<div>
+				{foreach from=$foot_navs item=nav key=key}
+					{if $key neq 0}&nbsp;&nbsp;|&nbsp;&nbsp;{/if}
+					<a href="{$nav.url}" {if $nav.act eq 1}class="act"{/if}  target="{$nav.target}" >{$nav.name_1}</a>
+				{/foreach}
+				</div>
+                <p>{$CFG.PAGE_BOTTOM}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{if $CFG.SMS_SUBSCRIBE eq 1 && $smarty.request.m neq 'Suppliers'}
+<div class="smssubscribe-dialog-box">
+	<div class="shadow">&nbsp;</div>
+	<dl>
+		<dt><a href="javascript:;" class="close">{$lang.CLOSE}</a></dt>
+		<dd>
+			<div id="smssubscribe-1" class="ss-form">
+				<form name="ss-from1" id="ss-from1" method="post" action="{$__ROOT__}/index.php">
+				<h3>
+					{function name="sprintf" a="$lang.XY_SMS_SUBSCRIBE_TITLE" b="$currentCity.name"}
+				</h3>
+				<div class="ss-item">
+					<span>{$lang.XY_MOBILE}</span><input id="sms-subscribe-mobile" name="mobile_phone" type="text" class="txt" />
+				</div>
+				<div class="ss-hit">{$lang.XY_MOBILE_HIT}</div>
+				<div class="ss-item">
+					<span>{$lang.XY_VERIFY}</span><input id="sms-subscribe-verify" name="verify" type="text" class="txt code" /><img src="" id="sms-subscribe-verify-img" title="{$lang.XY_VERIFY_RESET}" onclick="this.src='index.php?m=Ajax&a=verify&rand='+ Math.random();"/>
+				</div>
+				<div class="ss-btns">
+					<input id="ss1-submit" type="image" src="{$CND_URL}/{$TMPL_PATH}Public/images/ss-1.jpg" />
+				</div>
+				</form>
+			</div>
+			<div id="smssubscribe-2" class="ss-form">
+				<form name="ss-from2" id="ss-from2" method="post" action="{$__ROOT__}/index.php">
+				<h3>
+					{function name="sprintf" a="$lang.XY_SMS_SUBSCRIBE_TITLE" b="$currentCity.name"}
+				</h3>
+				<div class="ss-item">
+					{$lang.XY_SMS_SUBSCRIBE_CODE_SEND}：<strong class="mobile"></strong>
+				</div>
+				<div class="ss-item">
+					<span>{$lang.XY_SMS_SUBSCRIBE_CODE}</span><input id="sms-subscribe-code" name="code" type="text" class="txt" />
+				</div>
+				<div class="ss-hit">{$lang.XY_SMS_SUBSCRIBE_CODE_HIT}</div>
+				<div class="ss-btns">
+					<input id="ss2-submit" type="image" src="{$CND_URL}/{$TMPL_PATH}Public/images/ss-2.jpg" />
+				</div>
+				</form>
+			</div>
+			<div id="smssubscribe-3" class="ss-form hidd">
+				<div class="ss-succ">
+					<strong>{$lang.XY_SMS_SUBSCRIBE_SUCC}</strong>
+					<p>
+					{function name="sprintf" a="$lang.XY_SMS_SUBSCRIBE_SUCC_NOTICE" b="$currentCity.name"}
+					</p>
+				</div>
+			</div>
+		</dd>
+	</dl>
+</div>
+<div class="unsmssubscribe-dialog-box">
+	<div class="shadow">&nbsp;</div>
+	<dl>
+		<dt><a href="javascript:;" class="close">{$lang.CLOSE}</a></dt>
+		<dd>
+			<div id="unsmssubscribe-1" class="ss-form">
+				<form name="unss1-from1" id="unss1-from1" method="post" action="{$__ROOT__}/index.php">
+				<h3>
+				{function name="sprintf" a="$lang.XY_SMS_UNSUBSCRIBE_TITLE" b="$currentCity.name"}
+				</h3>
+				<div class="ss-item">
+					<span>{$lang.XY_MOBILE}</span><input id="unsms-subscribe-mobile" name="mobile_phone" type="text" class="txt" />
+				</div>
+				<div class="ss-hit">{$lang.XY_MOBILE_HIT}</div>
+				<div class="ss-item">
+					<span>{$lang.XY_VERIFY}</span><input id="unsms-subscribe-verify" name="verify" type="text" class="txt code" /><img src="" id="unsms-subscribe-verify-img" title="{$lang.XY_VERIFY_RESET}" onclick="this.src='index.php?m=Ajax&a=verify&rand='+ Math.random();"/>
+				</div>
+				<div class="ss-btns">
+					<input id="unss1-submit" type="image" src="{$CND_URL}/{$TMPL_PATH}Public/images/ss-3.jpg" />
+				</div>
+				</form>
+			</div>
+			<div id="unsmssubscribe-2" class="ss-form">
+				<form name="unss-from2" id="unss-from2" method="post" action="{$__ROOT__}/index.php">
+				<h3>
+				{function name="sprintf" a="$lang.XY_SMS_UNSUBSCRIBE_TITLE" b="$currentCity.name"}
+				</h3>
+				<div class="ss-item">
+					{$lang.XY_SMS_UNSUBSCRIBE_CODE_SEND}：<strong class="mobile"></strong>
+				</div>
+				<div class="ss-item">
+					<span>{$lang.XY_SMS_UNSUBSCRIBE_CODE}</span><input id="unsms-subscribe-code" name="code" type="text" class="txt" />
+				</div>
+				<div class="ss-hit">{$lang.XY_SMS_UNSUBSCRIBE_CODE_HIT}</div>
+				<div class="ss-btns">
+					<input id="unss2-submit" type="image" src="{$CND_URL}/{$TMPL_PATH}Public/images/ss-2.jpg" />
+				</div>
+				</form>
+			</div>
+			<div id="unsmssubscribe-3" class="ss-form hidd">
+				<div class="ss-succ">
+					<strong>{$lang.XY_SMS_UNSUBSCRIBE_SUCC}</strong>
+					<p>
+					{function name="sprintf" a="$lang.XY_SMS_UNSUBSCRIBE_SUCC_NOTICE" b="$currentCity.name"}
+					</p>
+				</div>
+			</div>
+		</dd>
+	</dl>
+</div>
+{/if}
+<div class="saler_map_window">
+<div class="op_bar">
+{$lang.VIEW_BIG_MAP} <a href="javascript:void(0);" class="close">{$lang.CLOSE} </a>
+</div>
+<iframe scrolling="no" frameborder="0" src="" style="height:480px; width:730px;"></iframe>
+</div>
+</body>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jquery.bgiframe.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/ajaxSend.js"></script>
+</html>

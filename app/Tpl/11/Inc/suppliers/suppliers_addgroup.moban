@@ -1,0 +1,181 @@
+{include file="Inc/suppliers/suppheader.moban"}
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/calendar.php?lang=zh-cn" ></script>
+<link rel="stylesheet" type="text/css" href="{$TMPL_PATH}Public/js/calendar/calendar.css" />
+
+<script type="text/javascript" src="{$ROOT_PATH}/global/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="{$ROOT_PATH}/global/swfupload/swfupload.queue.js"></script>
+<script type="text/javascript" src="{$ROOT_PATH}/global/swfupload/fileprogress.js"></script>
+<script type="text/javascript" src="{$ROOT_PATH}/global/swfupload/handlers.js"></script>
+<script type="text/javascript">
+	var SESSION_ID = '<?php echo session_id(); ?>';
+	var TMPL_PATH = '{$ROOT_PATH}/global/swfupload/';
+	var UPLOAD_PATH = '{function name="a_U" value="Suppliers/uploadimg"}';
+	var MAX_FILE_SIZE = '{$CFG.MAX_UPLOAD}'/1000000;
+	var CND_URL  = '{$CND_URL}';
+	function delthisicon(obj)
+	{
+		$(obj).parent().remove();
+	}
+</script>
+<script type="text/javascript" src="{$ROOT_PATH}/global/swfupload/init_swfupload.js"></script>
+<style type="text/css">
+	.delicon{
+		position:absolute; font-size:12px; background:#000; color:#fff; bottom:3px; line-height:12px; width:29px; font-weight:normal; text-align:center; text-decoration:none; opacity:0.7; filter:alpha(opacity=70); 
+	}
+	.delbox{ position:relative; margin:0px 2px;}
+	#content .field {width:658px;}
+	#content .field label {padding-right:10px}
+</style>
+<script type="text/javascript" src="{$ROOT_PATH}/global/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="{$ROOT_PATH}/global/kindeditor/lang/zh_CN.js"></script>
+		<script type="text/javascript" >
+			var editor;
+			KindEditor.ready(function(K) {
+				editor = K.create('#brief', {
+					uploadJson : '{function name="a_U" value="Suppliers/uploadeditor"}',
+					resizeType : 1,
+					allowPreviewEmoticons : false,
+					items : [
+					'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+					'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+					'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen','wordpaste','source']
+				});
+			});
+			var editor;
+			KindEditor.ready(function(K){
+				editor= K.create('#contents',{
+				uploadJson : ROOT_PATH + '/index.php?m=Suppliers&a=uploadeditor',
+				id : 'contents',
+				resizeType : 1,
+				allowPreviewEmoticons : false,
+				items : [
+				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen','wordpaste','source']
+				});
+			});
+			var editor;
+			KindEditor.ready(function(K){
+				editor=K.create('#other_desc',{
+				uploadJson : ROOT_PATH + '/index.php?m=Suppliers&a=uploadeditor',
+				resizeType : 1,
+				allowPreviewEmoticons : false,
+				items : [
+				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen','wordpaste','source']
+				});
+			});
+		</script>
+
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		
+			<div id="content" class="login-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.ADD_SUPPLIERS_GROUPON}</h2>
+						</div>
+						<div class="sect">
+						<form method="post" action="{$POST_URL}" name="reg_form" enctype="multipart/form-data">
+								<div class="field">
+									<label class="f-label">{$lang.GROUP_NAME}</label>
+									<input type="text" class="f-input" value="" name="name">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.GROUP_IMG}</label>
+									<!--上传控件区-->
+									<span id="spanButtonPlaceHolder"></span>
+									<span id="img_list">
+									</span>
+									
+									<span style="display:none;">							
+									<span id="btnCancel"></span>
+									<span class="fieldset flash" id="fsUploadProgress"></span>	
+									</span>
+									<!--end 控件区-->	
+								</div>
+							
+								<div class="field">
+									<label class="f-label">{$lang.PROMOTE_BEGIN_TIME}</label>
+									<input type="text" name="promote_begin_time" class="input-text f-input" id="promote_begin_time" value=""  style="width:150px;" onfocus="this.blur();" onclick="return showCalendar('end_time', '%Y-%m-%d %H:%M', false, false, 'selbtn1');"/>
+									&nbsp;&nbsp;<input name="selbtn1" type="button" id="selbtn1" class="formbutton" onclick="return showCalendar('promote_begin_time', '%Y-%m-%d %H:%M', false, false, 'selbtn1');" value="{$lang.XY_SELECT}"/>
+									
+																	
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.PROMOTE_END_TIME}</label>
+									<input type="text" name="promote_end_time" class="input-text f-input" id="promote_end_time" value=""  style="width:150px;" onfocus="this.blur();" onclick="return showCalendar('promote_end_time', '%Y-%m-%d %H:%M', false, false, 'selbtn2');"/>
+									&nbsp;&nbsp;<input name="selbtn2" type="button" id="selbtn2" class="formbutton" onclick="return showCalendar('promote_end_time', '%Y-%m-%d %H:%M', false, false, 'selbtn2');" value="{$lang.XY_SELECT}"/>
+										
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.JJ_ORIGINAL_PRICE}</label>
+									<input type="text" class="f-input" value="" name="origin_price">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.JJ_SHOP_PRICE}</label>
+									<input type="text" class="f-input" value="" name="shop_price">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.MIN_COUNT_GROUP}</label>
+									<input type="text" class="f-input" value="" name="min_count">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.USER_MAX_COUNT_GROUP}</label>
+									<input type="text" class="f-input" value="" name="user_max_count">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.MAX_COUNT_GROUP}</label>
+									<input type="text" class="f-input" value="" name="max_count">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.GOODS_ATTR}</label>
+									<select name="goods_type" id="goods_type" class="bLeft" onchange="getAttrList(this);">
+										<option value="0" {if $vo['type_id'] eq 0}selected="selected" {/if}>{$lang.NO_TYPE_SELECT}</option>
+										{foreach from="$type_list" item="type_item"}
+											<option value="{$type_item.id}">{$type_item.$select_dispname}</option>	
+										{/foreach}
+									</select>				
+								</div>
+								<div class="field" style="display:none;">
+									<label class="f-label"></label>									
+									<div id="attr_list"></div>
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.GROUP_BRIEF}</label>									
+									<textarea id="brief" name="brief" style="width:555px;height:200px;visibility:hidden;"></textarea>
+
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.GROUP_CONTENTS}</label>
+									<textarea id="contents" name="contents" style="width:555px;height:200px;visibility:hidden;"></textarea>									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.OTHER_DESC}</label>
+									<textarea id="other_desc" name="other_desc" style="width:555px;height:200px;visibility:hidden;"></textarea>	
+														
+								</div>
+								
+								
+								
+								<div class="act">
+									<input type="hidden" value="Suppliers" name="m">
+									<input type="hidden" value="doaddgroup" name="a">
+									<input type="hidden" value="{$supplier_info.id}" name="supplier_id">
+									<input type="hidden" value="{$supplier_goods_id}" name="supplier_goods_id" id="supplier_goods_id">
+									<input type="submit" value="{$lang.ADD_SUPPLIERS_GROUPON}" id="reset-submit" class="formbutton">
+								</div>
+							</form>
+						</div><!--end sect-->
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

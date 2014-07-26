@@ -1,0 +1,66 @@
+					<div class="box clear" style="margin-top:20px;">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head">
+								<h2 style="padding-left:30px;">{$lang.JJ_COMMENT_LIST}</h2>
+							</div>
+							<div class="sect consult-list">
+								<ul class="list">
+									{foreach from=$message_list item=message_item  name="goods_item"}
+									<li {if $smarty.foreach.goods_item.index mod 2 eq 1} class="alt"{/if} id="consult-entry-{$message_item.id}" name="consult-entry-{$message_item.id}">
+										<div class="item">
+											<p class="user"><strong>{$message_item.user_name}</strong><span>{$message_item.create_time_format}</span></p>
+											<div class="clear"></div>
+											<p class="text">{$message_item.content}</p>
+											{if $message_item.admin_reply.id neq 0}
+											<p class="reply">
+											<strong>{$lang.JJ_REPLY}</strong>{$message_item.admin_reply.content}</p>
+											{/if}
+										</div>
+									</li>
+									{/foreach}
+								</ul>
+								<div class="blank"></div>
+								<div style="text-align:right">
+									{$pages}
+								</div>
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+					<div class="box clear" style="margin-top:20px;">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head" id="consult-form-head" name="consult-form-head">
+								<h2 style="padding-left:30px;">{$lang.JJ_MY_DISCUSSION}</h2>
+							</div>
+							<div class="sect consult-form" style="height:370px;">
+								{if $smarty.session.user_id gt 0}
+								<form name="message" action="<?php echo a_u('Message/addComment'); ?>" method="post" />
+									<script type='text/javascript'  src='{$__ROOT__}/global/kindeditor/kindeditor.js'></script>
+									<script type="text/javascript" src="{$__ROOT__}/global/kindeditor/lang/zh_CN.js"></script>
+									  <script type='text/javascript'>
+										    var editor;
+										    KindEditor.ready(function(K){
+										    editor= K.create("#tg_content",{uploadJson : ROOT_PATH + '/index.php?m=FileUpload&a=doUpload',allowFileManager : false,resizeMode : 0,items : ['fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist','insertunorderedlist', 'emoticons', 'image', 'link']});
+										    });
+									  </script>
+									<div  style='margin-bottom:5px;'>
+										<textarea id='tg_content' name='content' style='width:610px;height:230px;visibility:hidden;' ></textarea>
+									</div>
+									<p class="commit">
+										<input type="hidden" name="rec_module" value="{$module_name}" />
+										<input type="hidden" name="rec_id" value="{$rec_id}" />
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="addComment" />
+										<input type="submit" value="{$lang.JJ_SUBMIT}" name="commit" class="formbutton"/>
+									</p>
+								</form>
+								{else}
+									<?php echo sprintf($this->_var['lang']['JJ_regist'],a_u('User/login'),a_u('User/register')); ?>
+								{/if}
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+				</div>

@@ -1,0 +1,22 @@
+<div class="sbox sbox-about-us">
+	<div class="sbox-top"></div>
+	<div class="sbox-content ">
+		<div class="tip">
+		<h2>关注我们</h2>
+		 <div class="list cf">
+		  <ul>
+			  <li>
+			   <span class="s1">人人分享<a href="">关注我们</a></span></li>
+			   <li>
+			   <span class="s2">新浪微博<a href="">关注我们</a></span></li>
+			   <li>
+			   <span class="s3">腾讯微博<a href="">关注我们</a></span></li>
+			   <li>
+			   <span class="s4">豆瓣小组<a href="">关注我们</a></span></li>
+		 </ul>
+		</div>
+		</div>
+	</div>
+	<div class="sbox-bottom">
+	</div>
+</div>

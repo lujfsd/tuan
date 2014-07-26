@@ -1,0 +1,48 @@
+<tagLib name="fanwe" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$vote.title}———调查结果</title>
+<style type="text/css">
+body{font-size:14px;}
+div{margin:0; padding:0;}
+h4{background:#CCC; line-height:28px; font-size:16px; padding:0 0 0 8px;}
+li{line-height:1.5em;}
+span{color:#F00;}
+</style>
+</head>
+
+<body>
+<div>
+    <div>
+        <h2>{$vote.title}&nbsp;[{$vote.vote_count}]</h2>
+    </div>
+    <div>
+        <ol class="vote-list">
+            <volist name="vote.items" id="vote_item">
+            <li id="vote-list-{$i}">
+                <h4>{$vote_item.title}&nbsp;[{$vote_item.vote_count}]</h4>
+                <ul style="list-style:upper-alpha;">
+                    <volist name="vote_item.groups" id="vote_group">
+                    <foreach name="vote_group.options" item="vote_option" >
+                    <li>
+                    <div>{$vote_option.title}&nbsp;<span>[{$vote_option.vote_count}]</span></div>
+                    <if condition="$vote_option['inputs']" >
+                    <ol style="list-style:lower-alpha;">
+                    <foreach name="vote_option.inputs" item="vote_input" >
+                    	<li>{$vote_input.value}&nbsp;<span>[{$vote_input.vote_count}]</span></li>
+                    </foreach>
+                    </ol>
+                    </if>
+                    </li>
+                    </foreach>
+                    </volist>
+                </ul>
+            </li>
+            </volist>
+        </ol>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+	var PLEASE_SELECT = '{%NO_SELECT}';
+	function loadTheme()
+	{
+				  $.ajax({
+				  url: APP+'?'+VAR_MODULE+'='+CURR_MODULE+'&'+VAR_ACTION+'=getFileList&tmpl='+$("#tmpl").val(),
+				  cache: false,
+				  success:function(data)
+				  {
+					  if(data!=null)
+					  {
+						  $("#moban").empty();
+						  $("#moban").empty();
+						  var files = $.evalJSON(data);
+						  for(var i=0;i<files.length;i++)
+						  {
+							  $("#moban").append("<option value='"+files[i]+"'>"+files[i]+"</option>");
+						  }
+						  loadFile();
+					  }					  
+				  }
+				}); 
+	}
+	function loadFile()
+	{
+				  $.ajax({
+				  url: APP+'?'+VAR_MODULE+'='+CURR_MODULE+'&'+VAR_ACTION+'=readTplContent&tmpl='+$("#tmpl").val()+'&file='+$("#moban").val(),
+				  cache: false,
+				  success:function(data)
+				  {
+					 $("#file_content").val(data);			  
+				  }
+				}); 
+	}
+
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">模板设置</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Editor/updateTpl')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{%TMPL}：</td>
+	<td class="tLeft" >
+		<select name="tmpl" onchange="loadTheme();" id="tmpl" >
+			<foreach name="themes" item="theme">
+			<option value="{$theme}">{$theme}</option>
+			</foreach>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">模板文件：</td>
+	<td class="tLeft" >
+		<select name="moban" onchange="loadFile();" id="moban" >
+		</select>
+	</td>
+</tr> 
+<tr>
+	<td class="tRight" width="120">模板内容：</td>
+	<td class="tLeft" >
+		<textarea name="file_content" id="file_content" cols=160 rows=30></textarea>
+	</td>
+</tr> 
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> 
+	</div></td>
+</tr>
+</form>
+</table>
+<script type="text/javascript">
+loadTheme();
+</script>
+</div>
+</div>

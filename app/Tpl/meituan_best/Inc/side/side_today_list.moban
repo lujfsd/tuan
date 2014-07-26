@@ -1,0 +1,31 @@
+{if $today_list}
+<div class="sbox side-goods-tip">
+	<div class="sbox-top"></div>
+	<div class="sbox-content">
+			<h2>今天的其它团购<!--{$lang.XY_STIL_CAN_GROUP}--></h2>
+		<ul>
+			{foreach from="$today_list" item="today_item"}
+				{if $today_item.id neq $goods.id}
+				<li>
+					<a href="{$today_item.url}" class="title">{$today_item.name_1}</a>
+					<a href="{$today_item.url}" class="img"><img alt="{$today_item.name}" src="{$CND_URL}/{$today_item.small_img}" /></a>
+					<div class="count">
+						<strong style="margin-left:5px;"><font>{$today_item.buy_count}</font>{$lang.XY_GROUP_HAD_BUY}</strong>
+						<a href="{$today_item.url}"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/btn-sidedeal-buy.png" /></a>
+					</div>
+					<div class="money">
+						<span>{$lang.XY_MAKET_PRICE}：<strong class="market">{$today_item.market_price_format}</strong></span>
+						<span>{$lang.XY_SHOP_DISCOUNT}：<strong class="discount">{function name="sprintf" a="$lang.XY_SHOP_SAVE_POINT" b="$today_item.discountfb"}</strong></span>
+						<span>现价：<strong>{$today_item.shop_price_format}</strong></span>
+						<span>{$lang.XY_SHOP_SAVE}：<strong>{$today_item.save}</strong></span>
+					</div>
+				</li>
+				{/if}
+			{/foreach}
+		</ul>
+		<div class="blank"></div>
+	</div>
+	<div class="sbox-bottom"></div>
+</div>
+<div class="blank"></div>
+{/if}

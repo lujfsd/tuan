@@ -1,0 +1,24 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="deal-default">
+				{if $goods_list}
+				{include file="Inc/goods/goods_list_small.moban"}
+				{elseif $goods}
+				{include file="Inc/goods/goods_info.moban"}
+				{else}
+				{include file="Inc/goods/goods_subscribe.moban"}
+				{/if}
+			<div id="sidebar" {if !$goods_list}style="padding-top:30px;"{/if}>
+				{if $goods_list || $goods}				
+				{include file="Inc/right.moban"}
+				{insert name="advLayout" id="首页右侧广告位"}
+				{else}			
+				{insert name="advLayout" id="右侧无团购时的广告位"}
+				{/if}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

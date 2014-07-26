@@ -1,0 +1,89 @@
+{include file="Inc/suppliers/suppheader.moban"}
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/calendar.php?lang=zh-cn" ></script>
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/sp_coupon.js" ></script>
+<link rel="stylesheet" type="text/css" href="{$TMPL_PATH}Public/js/calendar/calendar.css" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		
+			<div id="content" class="coupons-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.EDIT_YOUHUI}</h2>
+						</div>
+						<div class="sect">
+						<form method="post" action="{$POST_URL}" name="reg_form" enctype="multipart/form-data">
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_NAME}</label>
+									<input type="text" class="f-input" id="reset-password" value="{$coupon.name}" name="name">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_SN}</label>
+									<input type="text" class="f-input" id="reset-password" value="{$coupon.sn}" name="sn">									
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_END_TIME}</label>
+									<input type="text" name="end_time" class="input-text f-input" id="end_time" value="{function name="a_toDate" value=$coupon.end_time format="Y-m-d"}"  style="width:100px;" onfocus="this.blur();" onclick="return showCalendar('end_time', '%Y-%m-%d', false, false, 'selbtn1');"/>
+									&nbsp;&nbsp;<input name="selbtn1" type="button" id="selbtn1" class="formbutton" onclick="return showCalendar('end_time', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.XY_SELECT}"/>
+												
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_CITY_AND_REGION}</label>
+									<select name="city_id">
+										{foreach from=$city_list item=city}
+										<option value="{$city.id}" {if $coupon.city_id eq $city.id}selected="selected"{/if}>{$city.name}</option>
+										{/foreach}
+									</select>	
+									
+									<span id="region_list"></span>							
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.SUPPORT_DEPART}</label>									
+										{foreach from=$depart_list item=depart}
+										<label style="display:inline; float:none; width:auto;">{$depart.depart_name}&nbsp;<input type="checkbox" value="{$depart.id}" name="depart[]" {if $depart.checked}checked="checked"{/if} /></label>
+										{/foreach}																	
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_ICON}</label>
+									<input type="file" name="icon">	{if $coupon.icon}<a href="{$CND_URL}/{$coupon.icon}" target="_blank">{$lang.YOUHUI_VIEW}</a>{/if}								
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_IMG}</label>
+									<input type="file"  name="img">		{if $coupon.img}<a href="{$CND_URL}/{$coupon.img}" target="_blank">{$lang.YOUHUI_VIEW}</a>{/if}							
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_CONTENT}</label>
+									<textarea rows="4" cols="50" name="content">{$coupon.content}</textarea>								
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_IS_SMS}</label>
+									<select name="is_sms">
+										<option value="0" {if $coupon.is_sms eq 0}selected="selected"{/if}>{$lang.YOUHUI_NO}</option>
+										<option value="1" {if $coupon.is_sms eq 1}selected="selected"{/if}>{$lang.YOUHUI_YES}</option>
+									</select>							
+								</div>
+								<div class="field">
+									<label class="f-label">{$lang.YOUHUI_TXT}</label>
+									<textarea rows="4" cols="50" name="txt">{$coupon.txt}</textarea>								
+								</div>
+								
+								
+								<div class="act">
+									<input type="hidden" value="Suppliers" name="m">
+									<input type="hidden" value="doeditcoupon" name="a">
+									<input type="hidden" value="{$supplier_info.id}" name="supplier_id">
+									<input type="hidden" value="{$coupon.id}" name="id">
+									<input type="submit" value="{$lang.YOUHUI_EDIT_CONFIRM}" id="reset-submit" class="formbutton">
+								</div>
+							</form>
+						</div><!--end sect-->
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

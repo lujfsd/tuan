@@ -1,0 +1,24 @@
+{include file="Inc/header.moban"}
+<script type="text/javascript">
+var VAR_MODULE = 'm';
+var VAR_ACTION = 'a';
+var NO_SELECT = '{$lang.NO_SELECT}';
+var CONFIRM_DELETE = '{$lang.CONFIRM_DELETE}';
+var goodsType = '{$goods_type}';
+var maxMoney = '{$user_info_money}';
+var totalPrice ='{$cart_total_price}';
+var isInquiry  = 0;
+var payType  = {function name='a_fanweC' value='PAY_SHOW_TYPE'};
+var isOrder = false;
+var is_smzq = 0;
+</script>
+<div id="bdw" class="bdw">	
+	{include file="Inc/cart/cart_check_list.moban" /}
+</div>
+{include file="Inc/footer.moban"}
+
+<script type="text/javascript">
+jQuery(function($){
+	countCartTotal();
+});
+</script>

@@ -1,0 +1,61 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals">
+			<div id="content">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content" style="position:relative;">
+						<div class="head" id="coupons">
+							<h2>{$lang.JJ_DISCUSS_AREA}</h2>
+							{include file="Inc/common/message_menu.moban"}
+						</div>
+						<div class="sect">
+							{if $info_list}
+							{foreach from=$info_list item=info_item name="info_item"}
+								<div class="comment_row">
+									<div class="img"><a href="<?php echo a_u('Message/commentList','id-'.$GLOBALS['tpl']->_var['info_item']['id']); ?>" ><img src="{$CND_URL}{$info_item.small_img}" /></a></div>
+									<div class="infos">
+									<div class="comment_author">
+									{if $info_item.comment.content}{$info_item.comment.user_name}&nbsp;{function name="sprintf" a="$lang.WHO_MSG_BUY" b="$SHOP_NAME"}&nbsp;<a href="<?php echo a_u('Goods/show','id-'.$GLOBALS['tpl']->_var['info_item']['id']); ?>" >{if $info_item.goods_short_name}{$info_item.goods_short_name}{else}{$info_item.name_1}{/if}{else}<?php echo sprintf($this->_var['lang']['JJ_NO_DISCUSSED'],a_u('Message/commentList','id-'.$GLOBALS['tpl']->_var['info_item']['id'])); ?>{/if}</a>
+									</div>
+									{if $info_item.comment.content}
+										<div style="padding:8px; padding-bottom:0">
+											{$info_item.comment.content|nl2br}
+											<div class="blank"></div>
+											<div style="text-align:right;">
+												<a href=<?php echo a_u('Message/commentList','id-'.$GLOBALS['tpl']->_var['info_item']['id']); ?> >{$lang.JJ_DISCUSSION}</a>
+											</div>
+										</div>
+									{/if}
+									</div>
+									<div class="clear"></div>
+								</div>	
+							{/foreach}								
+							</ul>
+								<div class="blank"></div>
+								<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+								</div>
+						{else}
+							<div class="notice">
+								{function name="sprintf" format="$lang.JJ_NO_BFGROUP" value="$currentCity.name"}<br />
+								{if $currentCity.name neq $default_city.name}
+									<?php echo sprintf($GLOBALS['lang']['JJ_LOOK_BFGROUP'],a_u("Goods/index",'cityname-'.$GLOBALS['tpl']->_var['default_city']['py']),$GLOBALS['tpl']->_var['default_city']['name']); ?>
+								{/if}
+							</div>
+						{/if}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id=sidebar>
+				{include file="Inc/side/side_referrals.moban"}
+				{include file="Inc/side/side_subscribe.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

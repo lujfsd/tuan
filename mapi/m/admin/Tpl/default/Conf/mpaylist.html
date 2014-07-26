@@ -1,0 +1,36 @@
+<tagLib name="html" />
+<include file="Public:header" />
+<script type="text/javascript">
+function edit_mconf(id)
+{
+	location.href = ROOT+'?m=Conf&a=edit_mconf&id=' + id;
+}
+
+function del_mconf(id)
+{
+	location.href = ROOT+'?m=Conf&a=del_mconf&id=' + id;
+}
+</script>
+<div class="main">
+	<div class="main_title">支付方式列表</div>
+	<div class="button_row">
+					
+	</div>
+	<div class="blank5"></div>
+	<html:list 
+		id="checkList" 
+		style="dataTable" 
+		name="node" 
+		checkbox="true" 
+		action="true" 
+		datasource="list" 
+		show="id:{%ID}|80
+			,pay_id:支付id
+			,code:编号,title:内容
+			,is_verify|get_toogle_status=$node['id']#is_verify:启用" 
+			actionlist="edit_mconf:{%EDIT}" />
+	
+	<div class="blank5"></div>
+	<div class="page">{$page}</div>
+</div>
+<include file="Public:footer" />

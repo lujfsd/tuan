@@ -1,0 +1,44 @@
+{include file="Inc/header.moban"}
+<style>
+	.city-list-box{ clear:both;padding:8px;}
+	.city-list-box .m_l{float:left;font-weight:bold;width:5%; padding-top:3px;}
+	.city-list-box .m_r{ float:left;width:95%; border-bottom:1px dashed #f1f1f1;}
+	.city-list-box .m_r li{ width:25%; float:left; height:28px; line-height:28px;}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="user-vote">
+			<div id="content">
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.SELECT_WHERE_YOU_CITY}</h2>
+						</div>
+						<div class="sect">
+						<strong>&nbsp;&nbsp;按拼音首字母选择：</strong>
+						{foreach from="$citylist" item="list"}
+							<div class="city-list-box">
+								<div class="m_l">
+									{$list.py}：
+								</div>
+								<div class="m_r">
+									<ul>
+										{foreach from="$list.list" item="clist"}
+											<li><a href="{$clist.url}">{$clist.name}</a></li>
+										{/foreach}
+									</ul>
+									<div class="blank"></div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						{/foreach}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>

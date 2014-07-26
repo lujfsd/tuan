@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">	
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$site_info.title}</title>
+<meta name="keywords" content="{$site_info.keyword}" />
+<meta name="description" content="{$site_info.content}" />
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+</head>
+<body style="margin:0px; padding:10px;">
+	<div id="map_canvas" style="width:700px; height:360px;"></div>
+	<table width="100%" style="font-size:14px;">
+	<tr>
+		<td width="550" style="padding:10px; line-height:22px;">
+		<span style="font-weight:bold">{$supplier.name}</span><br />
+		{$supplier.main.address}<br />
+		{$supplier.main.tel}
+		<td>
+		<td style="text-align:right;">
+			<a href='javascript:;' onclick="window.print();"  style="padding:10px; color:#f30;">{$lang.PRINT_MAP}</a>
+		</td>
+	</tr>
+	</table>
+</body>
+</html>
+<script type="text/javascript">
+	var blue_point = "__ROOT__/global/blue_point.png";
+	var red_point = "__ROOT__/global/red_point.png";
+	var xpoint="{$supplier.xpoint}";
+	var ypoint="{$supplier.ypoint}";
+	var map = new BMap.Map("map_canvas"); //可以修改容器ID
+	        var opts = {type: BMAP_NAVIGATION_CONTROL_ZOOM }  
+	        map.addControl(new BMap.NavigationControl());  
+	        // map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  
+	        // 创建地理编码服务实例  
+	        var point = new BMap.Point(xpoint,ypoint);
+	        
+	        // 将结果显示在地图上，并调整地图视野  
+	        map.centerAndZoom(point, 16);  
+	        map.addOverlay(new BMap.Marker(point));
+</script>

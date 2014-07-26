@@ -1,0 +1,61 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<script type="text/javascript">
+	function downsql(file)
+	{
+		if(confirm("确定下载吗"))
+		{				
+			location.href=APP+'?'+VAR_MODULE+'=Database&'+VAR_ACTION+'=zipdown&file='+file;
+		}
+	}
+</script>
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+<div class="operate" >
+<fanwe:imageBtn  value="{$Think.lang.BACKUP_DATABASE}" click="backup()" style="impBtn hMargin fLeft shadow" />
+</div>
+<!-- 功能操作区域结束 -->
+
+<!-- 列表显示区域  -->
+<div class="list" >
+<table cellspacing="0" cellpadding="0" class="list" id="checkList">
+	<tr><td height="5" class="topTd" colspan="5"/></tr>
+	<tr class="row">
+		<th width="8"></th>
+		<th>{$Think.lang.BACKUP_FILE}</th>
+		<th>{$Think.lang.CREATE_TIME}</th>
+
+		<th>{$Think.lang.OPERATION}</th>
+	</tr>
+	<foreach name="sql_list" item="sql_item" key="groupname">
+
+		<tr class="row">
+			<td width="8"></td>
+			<td>{$groupname}.sql ({$Think.lang.TOTAL}{$sql_item|count}{$Think.lang.VOL})</td>
+			<td>{$groupname|toDate}</td>
+			<td>
+				<a href="javascript:;" onclick="restore('{$groupname}');">{$Think.lang.RESTORE}</a> 
+				<a href="javascript:;" onclick="delsql('{$groupname}');">{$Think.lang._DELETE_DATA}</a> 
+				<a href="javascript:;" onclick="downsql('{$groupname}');">打包下载</a> 
+			</td>
+		</tr>
+			
+	</foreach>
+</table>
+</div>
+<!--  分页显示区域 -->
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

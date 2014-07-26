@@ -1,0 +1,10 @@
+<div class="deals">
+
+{foreach from="$goods_list" item="goods_item"}
+<div class="item">
+<p>{function name="a_toDate" a="$goods_item.promote_end_time" b="Y-m-d"}</p>
+<p><a href="m.php?m=Goods&a=show&id={$goods_item.id}&s={$s}">{$goods_item.name_1}</a></p>
+</div>
+{/foreach}
+
+</div>

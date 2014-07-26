@@ -1,0 +1,6 @@
+<p class=nav><a href="{function name="a_u" value="Message/index"}" target=_blank>{function name="a_L" value="XY_SEE_ALL"}(<span id="new-message-count">{$message_count}</span>)</a> | <a href="{function name="a_u" value="Message/index"}#consult-form-head" target=_blank>{function name="a_L" value="XY_I_SENT_MSG"}</a></p>
+<ul class="list" id="new-message-ul">
+{foreach from=$message_list item=message_item}
+<li><a href="{function name="a_u" value="Message/index"}#consult-entry-{$message_item.id}">{$message_item.content}</a></li>
+{/foreach}
+</ul>

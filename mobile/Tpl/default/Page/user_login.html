@@ -1,0 +1,23 @@
+{include file="Inc/header.html"}
+{if $err}
+<div class="errmsg">{$err}</div>
+{/if}
+<div class="legend">
+<strong>{$lang.WELCOME}{$shop_info.shop_name}</strong>
+</div>
+<div class="lg-form">
+<form action="m.php?m=User&a=doLogin" method="post">
+<input type="hidden" name="origURL" value=""/>
+<p class="lgt"><strong>{$lang.EMAIL}：</strong></p>
+<p class="ipt"><input type="text" name="email" value="{$email}"/></p>
+<p class="lgt"><strong>{$lang.PASSWORD}：</strong></p>
+<p class="ipt"><input type="password" name="password"/></p>
+
+<p class="sbm">
+<input type="submit" class="ibtn" value="{$lang.LOGIN_ACCOUNT}" />
+</p>
+<p>{function name="sprintf" a=$lang.NO_ACCOUNT b="$HTTP_URL"}</p>
+</form>
+</div>
+</div>
+{include file="Inc/footer.html"}

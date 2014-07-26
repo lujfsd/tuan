@@ -1,0 +1,15 @@
+<div class="adBox" id="top_ad" style="position:relative;{if $smarty.session.close_ad_top}display:none;{/if}">
+<a href="javascript:void();" onclick="close_top_adv();" class="close_adv" >{$lang.XY_CLOSE}</a>
+<div class="adBox-top"></div>
+<div class="adBox-mid">
+<table cellpadding=3 cellspacing=3 class="adBoxtb" >
+<tr>
+{foreach from="$adv_list" item="adv"}
+<td>{$adv.html}</td>
+{/foreach}
+</tr>
+</table>
+
+</div>
+<div class="adBox-foot"></div>
+</div>

@@ -1,0 +1,51 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/index',$param)}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('GoodsTypeAttr/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.ATTR_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">{$Think.lang.INPUT_TYPE}：</td>
+	<td class="tLeft" >
+		<select name="input_type" onchange="swAttrvalue(this);">
+			<option value="0">{$Think.lang.INPUT_TYPE_0}</option>
+			<option value="1">{$Think.lang.INPUT_TYPE_1}</option>
+		</select>
+		<input type="hidden" value="0" name="attr_type" />
+	</td>
+</tr>
+<!--<tr>
+	<td class="tRight" width="120">{$Think.lang.ATTR_TYPE}：</td>
+	<td class="tLeft" >
+		<select name="attr_type">
+			<option value="0">{$Think.lang.ATTR_TYPE_0}</option>
+			<option value="1">{$Think.lang.ATTR_TYPE_1}</option>
+		</select>
+	</td>
+</tr>-->
+<tr>
+	<td class="tRight" width="120">{$Think.lang.ATTR_VALUE_SELECT}：<br />{$Think.lang.ATTR_VALUE_SELECT_TIP}</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="attr_value" class="bLeft" cols="50" rows="2"/>
+	</td>
+</tr> 
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="type_id" value="{$type_id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

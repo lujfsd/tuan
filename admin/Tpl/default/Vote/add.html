@@ -1,0 +1,66 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Vote/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.VOTE_TITLE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="title" class="bLeft" />
+	</td>
+</tr>
+
+<tr>
+    <td class="tRight">{$Think.lang.GROUPCITY}：</td>
+    <td class="tLeft" >
+        <select name="city_id" class="bLeftRequire">
+            <option value="0">所有城市</option>
+       		<foreach name="city_list" item="city_item" >
+            <option value="{$city_item.id}">{$city_item.name}</option>
+        	</foreach>
+        </select>
+    </td>
+</tr>
+
+<tr>
+	<td class="tRight">{$Think.lang.VOTE_START_TIME}：</td>
+	<td class="tLeft" >
+		<input type="text" name="start_time" id="start_time" class="bLeft" />
+        <input type="button" name="btn_start_time" id="btn_start_time" onclick="return showCalendar('start_time', '%Y-%m-%d', false, false, 'btn_start_time');" value="{$Think.lang.SELECT}" class="button"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.VOTE_END_TIME}：</td>
+	<td class="tLeft" >
+		<input type="text" name="end_time" id="end_time" class="bLeft" />
+        <input type="button" name="btn_end_time" id="btn_end_time" onclick="return showCalendar('end_time', '%Y-%m-%d', false, false, 'btn_end_time');" value="{$Think.lang.SELECT}" class="button"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.VOTE}{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" value="{$new_sort}" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.VOTE_DESC}：</td>
+	<td class="tLeft" >
+    	<textarea name="desc" style="width:80%; height:100px;" class="bLeft" ></textarea>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

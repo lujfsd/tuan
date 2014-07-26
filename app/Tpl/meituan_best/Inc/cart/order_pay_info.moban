@@ -1,0 +1,29 @@
+					<div class="sect">
+						<p style="padding:20px 0; text-align:center;">{$order_info}</p>
+						{if $payment_str}
+						<div class="order-check-form" style="padding:20px 0; text-align:center;">
+							{$payment_str}
+						</div>
+						{/if}
+						{if $accountpay_str}
+						<div class="order-check-form" style="padding:20px 0; text-align:center;">
+							{$accountpay_str}
+						</div>
+						{/if}
+						{if $ecvpay_str}
+						<div class="order-check-form" style="padding:20px 0; text-align:center;">
+							{$ecvpay_str}
+						</div>
+						{/if}
+						<div class="blank"></div>
+						<div style="padding:20px 0; text-align:center;">
+							<a href="{$__ROOT__}/index.php?m=Order&a=check&id={$order_id}">&raquo; {$lang.JJ_OTHER_PAYMENT_METHOD}</a>&nbsp;&nbsp;&nbsp;
+							{if $goods_type eq 2}
+								<a href="{$__ROOT__}/index.php?m=BelowLine&a=index">&raquo; {$lang.JJ_BELOW_LINE_GB}</a>&nbsp;&nbsp;&nbsp;
+								<a href="{$__ROOT__}/index.php?m=UcBelowOrder&a=index">&raquo; {$lang.JJ_MY_ORDER}</a>
+							{else}
+								<a href="{$__ROOT__}/index.php">&raquo; {$lang.JJ_TODAY_GB}</a>&nbsp;&nbsp;&nbsp;
+								<a href="{$__ROOT__}/index.php?m=UcOrder&a=index">&raquo; {$lang.JJ_MY_ORDERS}</a>
+							{/if}
+						</div>
+					</div>

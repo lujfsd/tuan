@@ -1,0 +1,9 @@
+{if $region_list}
+<select name="region_id">
+	{foreach from=$region_list item=region}
+	<option value="{$region.id}" {if $region.selected eq 1}selected="selected"{/if}>{$region.name}</option>
+	{/foreach}
+</select>
+{else}
+{$lang.NO_REGION_LIST}
+{/if}

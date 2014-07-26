@@ -1,0 +1,124 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}		
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_MY_VOUCHER}</h2>
+							<ul class="filter">
+								<li class="label">{$lang.XY_CLASS_IFICATION}</li>
+								<li {if $status eq 1}class="current"{/if}><a href="<?php echo a_u('UcEcv/index','status-1') ?>">{$lang.XY_NO_USE}</a></li>
+								<li {if $status eq 2}class="current"{/if}><a href="<?php echo a_u('UcEcv/index','status-2') ?>">{$lang.XY_HAD_USE}</a></li>
+								<li {if $status eq 0}class="current"{/if}><a href="<?php echo a_u('UcEcv/index','status-0') ?>">{$lang.XY_ALL}</a></li>
+								<li {if $is_exchange eq 1}class="current"{/if}><a href="<?php echo a_u('UcEcv/exchange') ?>">{$lang.EXCHANGE_ECV}</a></li>
+							</ul>
+						</div>
+						{include file="Inc/user_center/uc_center_money.moban"}
+						<div class="sect">
+							<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+								<tr>
+									<th width="160">{$lang.XY_VOUCHER_INTRO}</th>
+									<th width="120">{$lang.XY_STARTEND_TIMES}</th>
+									<th width="70">{$lang.XY_USE_PROJECT}</th>
+									<th width="70">{$lang.TYPE}</th>
+									<th width="70">{$lang.XY_USE_MEMBER}</th>
+									<th width="70">{$lang.XY_USE_TIME}</th>
+									<th width="40">{$lang.XY_USE_COUNT}</th>
+								</tr>
+							
+								{foreach from=$evc_list item=ecv_item key=key}
+								<tr {if $key mod 2 eq 0}class="alt"{/if}>
+									<td style="text-align:left;">
+										{$lang.XY_VOUCHER_SN}{$ecv_item.sn}<br/>
+										
+										{if $ecv_item.password}
+										{$lang.XY_VOUCHER_PASS}{$ecv_item.password}<br/>
+										{/if}
+										{$lang.XY_VOUCHER_NAME}{$ecv_item.name}<br/>
+										{$lang.XY_VOUCHER_PRICE}{$ecv_item.money_format}
+									</td>
+									<td style="text-align:center">
+										
+										{if $ecv_item.use_start_date_format}
+										{$ecv_item.use_start_date_format}
+										{else}
+										{$lang.XY_NOLIMIT}
+										{/if}<br/>{$lang.XY_TO}<br/>
+										
+										{if $ecv_item.use_end_date_format}
+										{$ecv_item.use_end_date_format}
+										{else}
+										{$lang.XY_NOLIMIT}
+										{/if}
+									</td>
+									<td><a class="deal-title" href="{$__ROOT__}/index.php?m=Goods&a=show&id={$ecv_item.goods_id}" target="_blank">{$ecv_item.goods_name}</a></td>
+									<td>									
+										<?php
+											echo $GLOBALS['Ln']['ECV_TYPE_'.$this->_var['ecv_item']['type']];
+										?>
+										
+										{if $ecv_item.type eq 1 and $ecv_item.estatus eq 0}
+										<br />
+										<a href="{$__ROOT__}/index.php?m=UcIncharge&a=ecv&id={$ecv_item.id}">{$lang.INCHARGE_NOW}</a>
+										{/if}
+									</td>
+									<td>{$ecv_item.use_user_name}</td>
+									<td>
+										
+										{if $ecv_item.use_date_time_format}
+										{$ecv_item.use_date_time_format}
+										{else}
+										{$lang.XY_NO_USE}
+										{/if}
+									</td>
+									<td>
+										{$ecv_item.use_count}
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+						</div>
+						<div class="sect">
+							<h2>{$lang.XY_ADD_VOUCHER}</h2>
+							<div class="blank"></div>
+							<form id="ecv-form" action="<?php echo a_u('UcEcv/add') ?>" method="post">
+							<p id="cardcode-link-t">
+								{$lang.XY_VOUCHER_SN}<input class="f-input" type="text" name="ecvSn" id="ecvSn" maxlength="20" value="" />&nbsp;&nbsp;&nbsp;{$lang.XY_VOUCHER_PASS}<input class="f-input" type="password" name="ecvPassword" id="ecvPassword" maxlength="20" value="" />&nbsp;&nbsp;&nbsp;<input type="submit" class="formbutton" value="{$lang.XY_CONFIRM}" />
+							</p>
+							</form>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_WHAY_NOT_GROUPBOTH}<?php echo a_fanweC('GROUPBOTH') ?>？</h3>
+							<p><?php echo sprintf(a_L('XY_WHAY_NOT_GROUPBOTH_MSG'),a_fanweC('GROUPBOTH')) ?></p>
+							<h3>{$lang.XY_WHAT_IS_EXPIRED_ORDER}</h3>
+							<p>{$lang.XY_WHAT_IS_EXPIRED_ORDER_MSG}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

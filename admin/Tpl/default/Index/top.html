@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$SHOP_NAME}团购管理系统</title>
+<load href='__TMPL__ThemeFiles/Css/style.css' />
+<load href="__TMPL__ThemeFiles/Js/Base.js" />
+<load href="__TMPL__ThemeFiles/Js/prototype.js" />
+<load href="__TMPL__ThemeFiles/Js/mootools.js" />
+<load href="__TMPL__ThemeFiles/Js/Ajax/ThinkAjax.js" />
+<load href="__TMPL__ThemeFiles/Js/common.js" />
+<load href="__TMPL__ThemeFiles/Js/Util/ImageLoader.js" />
+
+<script language="JavaScript">
+<!--
+//指定当前组模块URL地址 
+var URL = '__URL__';
+var ROOT_PATH = '__ROOT__';
+var APP	 =	 '__APP__';
+var PUBLIC = '__TMPL__ThemeFiles';
+ThinkAjax.image = [	 '__TMPL__ThemeFiles/Images/loading2.gif', '__TMPL__ThemeFiles/Images/ok.gif','__TMPL__ThemeFiles/Images/update.gif' ]
+ImageLoader.add("__TMPL__ThemeFiles/Images/bgline.gif","__TMPL__ThemeFiles/Images/bgcolor.gif","__TMPL__ThemeFiles/Images/titlebg.gif");
+ImageLoader.startLoad();
+var VAR_MODULE = '{:c('VAR_MODULE')}';
+var VAR_ACTION = '{:c('VAR_ACTION')}';
+var CURR_MODULE = '{$module_name}';
+//-->
+</script>
+<base target="main" />
+</head>
+<body>
+<!-- 头部区域 -->
+<div id="header" class="header">
+<div class="headTitle" style="margin:0px 5px 5px 0px;">
+	<img src="__TMPL__ThemeFiles/Images/logo.gif" />
+</div>
+<div id="mail_run" style="display:none; color:#ccc; font-size:12px; position:absolute; right:12px; top:25px;">邮件队列群发中</div>
+<div id="send_run" style="display:none; color:#ccc; font-size:12px; position:absolute; right:122px; top:25px;">业务队列群发中</div>
+<div id="sms_run"  style="display:none; color:#ccc; font-size:12px; position:absolute; right:232px; top:25px;">短信队列群发中</div>
+
+<!-- 功能导航区 -->
+<div class="topmenu">
+<ul id="top_menu">
+
+<foreach name="roleNav" item="vo" key="key" >
+<li><span><a href="#" onClick="sethighlight({$key}); parent.menu.location='{:u('Index/menu?tag='.$vo['id'].'&title='.$vo['name'])}'; return false;">{$vo.name}</a></span></li>
+</foreach>
+
+</ul>
+</div>
+	<div class="nav">
+	
+	{$Think.lang.WELCOME}{$Think.session.adm_name}
+	
+	<a href="__ROOT__/" target="_blank"><img src="__TMPL__ThemeFiles/Images/gohome.gif" width="13" height="13" border="0" alt="" align="absmiddle"> {$Think.lang.GO_HOME}</a>
+        <a href="{:u("Index/password")}" target="main">{:l("CHANGE_PASSWORD")}</a>
+	<a href="{:u("Send/Index")}" target="blank"><img src="__TMPL__ThemeFiles/Images/home.gif" width="13" height="13" border="0" alt="" align="absmiddle"> 邮件短信</a> 
+	<a href="javascript:;" onclick="clearAllCache();"><img src="__TMPL__ThemeFiles/Images/clear.gif" width="13" height="13" border="0" alt="" align="absmiddle"> 清除缓存</a> 
+	<a href="{:u('Public/logout')}" target="_top"><img SRC="__TMPL__ThemeFiles/Images/error.gif" WIDTH="13" HEIGHT="13" BORDER="0" ALT="" align="absmiddle"> {$Think.lang.LOGOUT}</a>
+    
+    </div>
+    <div class="ajaxmessage"></div>
+</div>
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<script language="JavaScript">
+
+jQuery.noConflict();
+
+function sethighlight(n) {
+	var lis = document.getElementById("top_menu").getElementsByTagName('span');
+	for(var i = 0; i < lis.length; i++) {
+		lis[i].className = '';
+	}
+	lis[n].className = 'current';
+}
+sethighlight(0);
+
+</script>
+</body>
+</html>

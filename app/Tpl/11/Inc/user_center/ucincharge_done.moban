@@ -1,0 +1,36 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="content">
+			<div id="deal-buy" class="box">
+				<div class="box-top"></div>
+				<div class="box-content">
+					<div class="head">
+						<h2>{$lang.JJ_ONLINE_DELTA}</h2>
+					</div>
+					<div class="sect">
+						<p style="padding:20px 0; text-align:center;">{$order_info}</p>
+						{if $payment_str}
+						<div class="order-check-form" style="padding:20px 0; text-align:center;">
+							{$payment_str}
+						</div>
+						{/if}
+						{if $accountpay_str}
+						<div class="order-check-form" style="padding:20px 0; text-align:center;">
+							{$accountpay_str}
+						</div>
+						{/if}
+						<div class="blank"></div>
+						<div style="padding:20px 0; text-align:center;">
+							<a href="{$__ROOT__}/index.php">&raquo; {$lang.JJ_TODAY_GB}</a>&nbsp;&nbsp;&nbsp;
+							<a href="{$__ROOT__}/index.php?m=UcLog&a=index">&raquo; {$lang.XY_PRICE_LOG}</a>
+						</div>
+					</div>
+				</div>
+				<div class="box-bottom"></div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

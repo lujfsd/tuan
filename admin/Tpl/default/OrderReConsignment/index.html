@@ -1,0 +1,41 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+
+<div id="main" class="main" >
+<div class="content" >
+<div class="title">退货单列表</div>
+<div class="operate">
+<form method='get' action="__APP__">
+				订单: <input type="text" name="order_sn" title="订单号" class="medium" id="c_order_sn" value="{:trim($_REQUEST['order_sn'])}" style="width:90px;" >  
+				团购ID: <input type="text" name="group_id" class="medium"  id="c_group_id" value="{:trim($_REQUEST['group_id'])}"  style="width:90px;" />
+				会员名称: <input type="text" name="user_name" class="medium"  id="c_user_name" value="{:trim($_REQUEST['user_name'])}"  style="width:90px;" />
+				物流单号: <input type="text" name="delivery_sn" title="物流单号" class="medium" id="c_delivery_sn" value="{:trim($_REQUEST['delivery_sn'])}" style="width:90px;" >  
+				配送方式: <select name="delivery_id" id="c_delivery_id">
+					<option value="">=全部=</option>
+					<foreach name="delivery_list" item="delivery_item">
+					<option value="{$delivery_item.id}" <if condition="$_REQUEST['delivery_id'] eq $delivery_item['id']">selected="selected"</if>>{$delivery_item.name_1}</option>
+					</foreach>
+				</select>
+			
+<input type="hidden" name="m" value="OrderReConsignment" />
+<input type="hidden" name="a" value="index" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+
+</form>
+</div>
+<div class="list" >
+<fanwe:list 
+id="checkList" 
+name="order" 
+style="list" 
+datasource="list" 
+order="false" 
+show="order_sn:订单编号,data_name:商品名称,number:数量,delivery_code:物流单号,mname:会员,create_time|toDate:单据时间,delivery_fee|priceFormat:物流费用,protect_fee|priceFormat:保价,consignee:收货人,fname:配送方式,address:收货地址" 
+/> 
+
+</div>
+
+<div class="page">{$page}</div>
+
+</div>
+</div>

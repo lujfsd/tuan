@@ -1,0 +1,709 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/model.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<load href='__TMPL__ThemeFiles/Js/swfupload/swfupload.js' />
+<load href='__TMPL__ThemeFiles/Js/swfupload/goodsupload/swfupload.queue.js' />
+<load href='__TMPL__ThemeFiles/Js/swfupload/goodsupload/fileprogress.js' />
+<load href='__TMPL__ThemeFiles/Js/swfupload/goodsupload/handlers.js' />
+<load href='__TMPL__ThemeFiles/Js/goods.js' />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+
+<script type="text/javascript">
+var goods_id = {$goods_id};
+var session_id = '{$session_id}';
+var default_lang_id = '{$default_lang_id}';
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var ATTR_TIPS = '{%ATTR_TIPS}';
+var MAX_UPLOAD = '<php>echo (fanweC('MAX_UPLOAD')/1000000)."MB";</php>';
+var MAX_UPLOAD_TIP = "{$Think.lang.GOODS_UPLOAD_MAX_TIP}<php>echo (fanweC('MAX_UPLOAD')/1000000)."MB";</php>";
+var EDIT_SUCCESS = '{%EDIT_SUCCESS}';
+var SELECT_SPEC_TYPE = '=={%SELECT_SPEC_TYPE}==';
+
+var GOODS_SPEC_ITEM_EXIST = '{%GOODS_SPEC_ITEM_EXIST}';
+var EXIST_SAME_SPEC = '{%EXIST_SAME_SPEC}';
+var CLOSE = '{%CLOSE}';
+var DEFAULT_LANG_ID = '{$DEFAULT_LANG_ID}';
+//本页验证
+function checkform()
+{
+	var goods_name = document.form.name_1.value;
+	var suppliers_id = document.form.suppliers_id.value;
+	var cate_id = document.form.cate_id.value;
+	
+	if(goods_name=='')
+	{
+		alert("团购名称不能为空");
+		return false;
+	}
+	if(cate_id==0)
+	{
+		alert("请选择团购分类");
+		return false;
+	}
+	if(suppliers_id==0)
+	{
+		alert("请选择商户");
+		return false;
+	}
+	if($("select[name='score_goods']").val()==1&&($("input[name='score']").val()<=0||isNaN($("input[name='score']").val())))
+	{
+		alert("积分兑换数必需大于0的整数");
+		return false;
+	}
+
+}
+//$("#goods_name").html();
+
+</script>
+
+
+<div id="main" class="main" >
+<div class="content">
+<div class="title"  style="border-bottom:1px solid #9CB8CC">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ] </div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Goods/update')}"  enctype="multipart/form-data" onsubmit="return checkform();">
+<table cellpadding="0" cellspacing="0" width=100% >
+	<tr>
+		<td valign="top">
+		<!-- 普通信息 -->
+		<table cellpadding=0 cellspacing=0 class="dataEdit" style="border-top:none;border-bottom:none;border-right:1px dashed #ccc;">
+		<tr>
+			<td class="tRight" width="120">{$Think.lang.GOODS_NAME}：</td>
+			<td class="tLeft">
+				<input name="name_1" class="bLeftRequire goods_name" value="{$vo.name_1}" />
+                <div>商品名称请勿超过100个字，否则支付宝支付时将会出错</div>
+			</td>
+		</tr>
+		
+		<!--<tr>
+			<td class="tRight" width="120">发送邮件通知：</td>
+			<td class="tLeft" >
+				<label>是：<input type="radio" name="send_email" value="1"></label>
+				<label>否：<input type="radio" name="send_email" value="0" checked="checked"></label>
+				<div>选择是将立即发送邮件通知相应地区的用户</div>
+			</td>
+		</tr>
+        <tr>
+			<td class="tRight" width="140">发送短信通知：</td>
+			<td class="tLeft" id="send_sms_td">
+				<label>是：<input type="radio" name="send_sms" value="1"></label>
+				<label>否：<input type="radio" name="send_sms" value="0" checked="checked"></label>
+				<div>选择是，将发送短信通知相应地区的用户</div>
+			</td>
+		</tr>
+        <tr id="sms_send_time_tr" style="display:none;">
+			<td class="tRight" width="120">短信发送时间：</td>
+			<td class="tLeft" >
+				<INPUT TYPE="text" name="sms_send_time" id="sms_send_time"  class="bLeft" value="">
+				<input type="button" name="btn_sms_send_time" id="btn_sms_send_time" onclick="return showCalendar('sms_send_time', '%Y-%m-%d %H:%M', false, false, 'btn_sms_send_time');" value="{$Think.lang.SELECT}" class="button"/>
+                <input type="button"  value="字数统计" class="button" id="goodsSmsInfo"/>
+				<div>如果不指定，将立即发送短信通知</div>
+			</td>
+		</tr>-->
+		<tr>
+			<td class="tRight">{$Think.lang.GOODS_SN}：</td>
+			<td class="tLeft" >
+				<input type="text" class="bLeft" name="sn" value="{$vo.sn}" id="sn" /> {$Think.lang.GOODS_SN_TIP}
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight" width="120">商品缩略名：</td>
+			<td class="tLeft" >
+				<input type="text" name="goods_short_name" class="bLeft goods_short_name" value="{$vo.goods_short_name}" />
+				
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight" width="120">URL别名：</td>
+			<td class="tLeft" >
+				<input type="text" name="u_name" class="bLeft" value="{$vo.u_name}"  />
+				
+			</td>
+		</tr> 
+		<tr>
+			<td class="tRight">{$Think.lang.GROUPCITY}：</td>
+			<td class="tLeft" >
+				<select name="city_id" class="bLeftRequire">
+				<foreach name="city_list" item="city_item" >
+					<option value="{$city_item.id}" <if condition="$vo['city_id'] eq $city_item['id']">selected="selected" </if>>{$city_item.name}</option>
+				</foreach>
+				</select>
+				全部地区显示：<input type="checkbox" name="all_show" value="1" <if condition="$vo['all_show'] eq 1">checked="checked"</if> />
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="tRight">商圈：</td>
+			<td class="tLeft" id="quan_list">
+				<select name="quan_id" class="bLeft">
+				<option value="0">选择商圈</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">{$Think.lang.GOODS_CATE}：</td>
+			<td class="tLeft" >
+				<select name="cate_id" class="bLeftRequire">
+				<option value="0" <if condition="$vo['cate_id'] eq 0">selected="selected" </if>>{$Think.lang.NO_CATE_SELECT}</option>
+				<foreach name="cate_list" item="cate_item" >
+					<option value="{$cate_item.id}" <if condition="$vo['cate_id'] eq $cate_item['id']">selected="selected" </if>>{$cate_item[$select_dispname]}</option>
+				</foreach>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">扩展分类：</td>
+			<td class="tLeft" >
+				<select name="extend_cate_id">
+				<option value="0" <if condition="$vo['extend_cate_id'] eq 0">selected="selected" </if>>{$Think.lang.NO_CATE_SELECT}</option>
+				<foreach name="cate_list" item="cate_item" >
+					<option value="{$cate_item.id}" <if condition="$vo['extend_cate_id'] eq $cate_item['id']">selected="selected" </if>>{$cate_item[$select_dispname]}</option>
+				</foreach>
+				</select>
+			</td>
+		</tr>  
+        <tr>
+			<td class="tRight">{$Think.lang.SUPPLIERS}：</td>
+			<td class="tLeft" >
+				<select name="suppliers_id" class="bLeftRequire" id="shangjia_list">
+				<option value="0">{$Think.lang.NO_SUPPLIERS_SELECT}</option>
+				<foreach name="suppliers_list" item="suppliers_item" >
+					<option value="{$suppliers_item.id}" <if condition="$vo['suppliers_id'] eq $suppliers_item['id']">selected="selected" </if>>{$suppliers_item.name}</option>
+				</foreach>
+				</select>
+				&nbsp;&nbsp;<input type="text" id="suppliers_name" class="bLeft"/>
+				<input type="button" value="{$Think.lang._SEARCH_SUPPLIERS}" class="button" onclick="search_suppliers();" />
+			</td>
+		</tr> 
+		<!--
+		<tr>
+			<td class="tRight">{$Think.lang.GOODS_BRAND}：</td>
+			<td class="tLeft" >
+				<select name="brand_id" class="bLeft">
+				<option value="0" <if condition="$vo['brand_id'] eq 0">selected="selected" </if>>{$Think.lang.NO_BRAND_SELECT}</option>
+				<foreach name="brand_list" item="brand_item" >
+					<option value="{$brand_item.id}" <if condition="$vo['brand_id'] eq $brand_item['id']">selected="selected" </if>>{$brand_item[$select_dispname]}</option>
+				</foreach>
+				</select>
+			</td>
+		</tr> 
+		-->
+		<tr>
+			<td class="tRight">预告是否显示到首页：</td>
+			<td class="tLeft" >
+				<select name="is_preview" class="bLeftRequire">
+				<option value="0" <if condition="$vo['is_preview'] eq 0">selected="selected"</if>>否</option>
+				<option value="1" <if condition="$vo['is_preview'] eq 1">selected="selected"</if>>是</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">本商品不在首页中显示：</td>
+			<td class="tLeft" >
+				<select name="no_show_index" class="bLeftRequire">
+				<option value="0"  <if condition="$vo['no_show_index'] eq 0">selected="selected"</if>>否</option>
+				<option value="1" <if condition="$vo['no_show_index'] eq 1">selected="selected"</if>>是</option>
+				</select>
+			</td>
+		</tr>		
+		<tr>
+			<td class="tRight">{$Think.lang.GOODS_TYPE}：</td>
+			<td class="tLeft" >
+				<select name="type_id" class="bLeft" onchange="sw_goods_type(this);">
+                <option value="0" <if condition="$vo['type_id'] eq 0">selected="selected"</if>>{$Think.lang.GOODS_TYPE_0}</option>
+                <option value="1" <if condition="$vo['type_id'] eq 1">selected="selected"</if>>{$Think.lang.GOODS_TYPE_1}</option>
+                <option value="2" <if condition="$vo['type_id'] eq 2">selected="selected"</if>>{$Think.lang.GOODS_TYPE_2}</option>
+                <option value="3" <if condition="$vo['type_id'] eq 3">selected="selected"</if>>实体商品,有配送,有团购券</option>
+				</select>
+			</td>
+		</tr>  
+		<tr id="allow_sms_tr" <if condition="$vo['type_id'] eq 1">style="display:none;"</if>>
+			<td class="tRight">团购券允许使用短信通知：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="allow_sms"  <if condition="$vo['allow_sms'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="allow_sms" <if condition="$vo['allow_sms'] eq 0">checked="checked" </if> /></label>				
+			</td>
+		</tr>
+        <tr id="free_delivery_tr" <if condition="$vo['type_id'] neq 1">style="display:none;"</if>>
+			<td class="tRight">实体商品免运费：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_inquiry" onclick="sw_freedelivery_amount(this);"  <if condition="$vo['is_inquiry'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_inquiry" onclick="sw_freedelivery_amount(this);"  <if condition="$vo['is_inquiry'] eq 0">checked="checked" </if> /></label>
+				<label id="free_delivery_amount_label" <if condition="$vo['is_inquiry'] eq 0">style="display:none;"</if>>一次性购买满&nbsp;<input type="text" name="free_delivery_amount" id="free_delivery_amount_input" class="bLeft" style="width:50px;" value="{$vo.free_delivery_amount|round=2}" />&nbsp;元免运费&nbsp;&nbsp;[不设置或设置为0以系统默认设置为准]</label>
+			</td>
+		</tr> 
+		
+		<tr id="fix_delivery_money_tr" >
+			<td class="tRight">本商品加收快递费：</td>
+			<td class="tLeft" >
+				<input type="text" value="{$vo.fix_delivery_money}" class="bLeft" name="fix_delivery_money"  style="width:50px;"/>配置后，配送方式中的快递计算费将不起作用。以本费用配置 为准
+			</td>
+		</tr>		
+		
+		<tr id="allow_combine_delivery" <if condition="$vo['type_id'] neq 1">style="display:none;"</if>>
+			<td class="tRight">允许拼购运单：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="allow_combine_delivery"  <if condition="$vo['allow_combine_delivery'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="allow_combine_delivery" <if condition="$vo['allow_combine_delivery'] eq 0">checked="checked" </if> /></label>				
+			</td>
+		</tr>
+		
+        <tr>
+			<td class="tRight">是否按单发短信：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_order_sms"  <if condition="$vo['is_order_sms'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_order_sms" <if condition="$vo['is_order_sms'] eq 0">checked="checked" </if> /></label>
+			</td>
+		</tr>
+				
+        <tr>
+			<td class="tRight">是否上架：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="status"  <if condition="$vo['status'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="status" <if condition="$vo['status'] eq 0">checked="checked" </if> /></label>
+			</td>
+		</tr>
+			
+        <tr>
+			<td class="tRight">不显示在导航api中：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="no_api"  <if condition="$vo['no_api'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="no_api" <if condition="$vo['no_api'] eq 0">checked="checked" </if> /></label>
+			</td>
+		</tr>
+						
+		<tr>
+			<td class="tRight">{$Think.lang.SORT}：</td>
+			<td class="tLeft" >
+				<input type="text" name="sort" value="{$vo.sort}" class="bLeft" />
+			</td>
+		</tr> 
+		<tr id="goods_weight_tr" <if condition="$vo['type_id'] neq 1">style="display:none;"</if>>
+			<td class="tRight">{$Think.lang.WEIGHT}：</td>
+			<td class="tLeft" >
+				<input type="text" name="weight" value="{$vo.weight|floatval}" class="bLeft" id="weight" />
+			</td>
+		</tr> 
+		<tr id="goods_weight_unit_tr" <if condition="$vo['type_id'] neq 1">style="display:none;"</if>>
+			<td class="tRight">{$Think.lang.WEIGHT_UNIT}：</td>
+			<td class="tLeft" >
+				<select name="weight_unit" class="bLeft">
+				<foreach name="weight_list" item="weight_item">
+				<option value="{$weight_item.id}" <if condition="$vo['weight_unit'] eq $weight_item['id']">selected="selected"</if>>{$weight_item.name}</option>
+				</foreach>
+				</select>
+			</td>
+		</tr> 
+		<!-- 价格体系 -->
+        
+		<tr>
+			<td class="tRight">商品邀请返利：</td>
+			<td class="tLeft" >
+				<input type="text" name="referrals" class="bLeft <if condition="$vo['close_referrals'] eq 1">disabledbox</if>" value="{$vo.referrals}" id="referrals" <if condition="$vo['close_referrals'] eq 1">disabled</if> />
+				<select name="close_referrals" onchange="change_referrals(this)">
+					<option value="0" <if condition="$vo['close_referrals'] eq 0">selected="selected"</if>>返利</option>
+					<option value="1" <if condition="$vo['close_referrals'] eq 1">selected="selected"</if>>本商品不返利</option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="tRight">商品购买返现：</td>
+			<td class="tLeft" >
+				<input type="text" name="referral_money" class="bLeft" value="{$vo.referral_money|priceVal}"/> 
+			</td>
+		</tr>
+				
+        <tr>
+			<td class="tRight">不算第一次购买(返利)：</td>
+			<td class="tLeft" >
+				<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_first_referral"  <if condition="$vo['is_first_referral'] eq 1">checked="checked" </if> /></label>
+				<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_first_referral" <if condition="$vo['is_first_referral'] eq 0">checked="checked" </if> /></label>
+			</td>
+		</tr>
+				
+		<tr>
+			<td class="tRight">购买类型：</td>
+			<td class="tLeft" >
+				 <select name="score_goods">
+				 	<option value="0" <if condition="$vo['score_goods'] eq 0">selected="selected"</if>>普通团购</option>
+					<option value="1" <if condition="$vo['score_goods'] eq 1">selected="selected"</if>>积分兑换</option>
+					<option value="2" <if condition="$vo['score_goods'] eq 2">selected="selected"</if>>抽奖商品</option>
+				 </select>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">{$Think.lang.MARKET_PRICE}：</td>
+			<td class="tLeft" >
+				<input type="text" class="bLeft" name="market_price" value="{$vo.market_price|priceVal}" /> 
+			</td>
+		</tr>
+		<tr  class="price_row">
+			<td class="tRight">{$Think.lang.SHOP_PRICE}：</td>
+			<td class="tLeft" >
+				 <input type="text" class="bLeft" name="shop_price" value="{$vo.shop_price|priceVal}" id="shop_price" /> 
+			</td>
+		</tr>
+                <tr  class="price_row">
+			<td class="tRight">上架费：</td>
+			<td class="tLeft" >
+				 <input type="text" class="bLeft" name="shelves_price" value="{$vo.shelves_price|priceVal}" id="shelves_price" /> 
+			</td>
+		</tr>
+                
+                <tr  class="price_row">
+			<td class="tRight">提供价：</td>
+			<td class="tLeft" >
+				 <input type="text" class="bLeft" name="profit" value="{$vo.profit|priceVal}" id="profit" /> 
+			</td>
+		</tr>
+				
+		<tr id="ding_price_tr" <if condition="$vo['type_id'] neq 2">style="display:none;"</if>  class="price_row">
+			<td class="tRight">{$Think.lang.EARNEST_MONEY}：</td>
+			<td class="tLeft" >
+				 <input type="text" class="bLeft" name="earnest_money" value="{$vo.earnest_money|priceVal}" id="earnest_money" /> 
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">{$Think.lang.GOODS_SCORE}：</td>
+			<td class="tLeft" >
+				<input type="text" name="score" class="bLeft" value="{$vo.score|abs}" />
+			</td>
+		</tr>				
+		<tr>
+            <td class="tRight">{$Think.lang.GOODS_STOCK}：</td>
+            <td class="tLeft" >
+                <input type="text" class="bLeft" name="stock" value="{$vo.stock}" />
+                <div>设为 0 则不限制订购数量</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="tRight">{$Think.lang.GOODS_MAX_BOUGHT}：</td>
+            <td class="tLeft" >
+                <input type="text" class="bLeft" name="max_bought"  value="{$vo.max_bought}" />
+                <div>设为 0 则不限制{$Think.lang.GOODS_MAX_BOUGHT}</div>
+            </td>
+        </tr>
+        <tr>
+			<td class="tRight">{$Think.lang.GROUP_USER}：</td>
+			<td class="tLeft" >
+				<input type="text" name="group_user" class="bLeft"  value="{$vo.group_user}"  />
+                <div>设为 0 则不限制团购人数</div>
+			</td>
+		</tr>
+        
+        <tr>
+			<td class="tRight">虚拟购买人数：</td>
+			<td class="tLeft" >
+				<input type="text" name="virtual_count" class="bLeft" value="{$vo.virtual_count}" />
+			</td>
+		</tr>
+        <tr>
+			<td class="tRight">刷新指定界面添加虚拟人数(数量)：</td>
+			<td class="tLeft" >
+				<input type="text" name="interval_num" class="bLeft" value="{$vo.interval_num}" />团购成功后,才会开始自动添加
+			</td>
+		</tr>		
+		<tr>
+			<td class="tRight">团购券密码前缀：</td>
+			<td class="tLeft" >
+				<input type="text" name="bond_pw_prefix" class="bLeft" value = "{$vo.bond_pw_prefix}" />主要使用在电话验证方面
+			</td>
+		</tr>
+			   
+		<tr>
+			<td class="tRight">团购券序号前缀：</td>
+			<td class="tLeft" >
+				<input type="text" name="bond_sn_prefix" class="bLeft" value = "{$vo.bond_sn_prefix}" />主要使用在电话验证方面
+			</td>
+		</tr>
+		
+        <tr id="gb_expire_tr" <if condition="$vo['type_id'] eq 1">style="display:none;"</if>>
+			<td class="tRight">团购券过期时间：</td>
+			<td class="tLeft" >
+				<INPUT TYPE="text"  name="group_bond_end_time" id="group_bond_end_time"  class="bLeft"  value="{$vo.group_bond_end_time|toDate='Y-m-d H:i'}">
+				<input type="button" name="btn_group_bond_end_time" id="btn_group_bond_end_time" onclick="return showCalendar('group_bond_end_time', '%Y-%m-%d %H:%M', false, false, 'btn_group_bond_end_time');" value="{$Think.lang.SELECT}" class="button"/>
+			</td>
+		</tr>
+        
+		<tr>
+			<td class="tRight">{$Think.lang.PROMOTE_BEGIN_TIME}：</td>
+			<td class="tLeft" >
+				<INPUT TYPE="text"  name="promote_begin_time" id="promote_begin_time"  class="bLeft" value="{$vo.promote_begin_time|toDate='Y-m-d H:i'}">
+				<input type="button" name="btn_promote_begin_time" id="btn_promote_begin_time" onclick="return showCalendar('promote_begin_time', '%Y-%m-%d %H:%M', false, false, 'btn_promote_begin_time');" value="{$Think.lang.SELECT}" class="button"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">{$Think.lang.PROMOTE_END_TIME}：</td>
+			<td class="tLeft" >
+				<INPUT TYPE="text"  name="promote_end_time" id="promote_end_time"  class="bLeft" value="{$vo.promote_end_time|toDate='Y-m-d H:i'}">
+				<input type="button" name="btn_promote_end_time" id="btn_promote_end_time" onclick="return showCalendar('promote_end_time', '%Y-%m-%d %H:%M', false, false, 'btn_promote_end_time');" value="{$Think.lang.SELECT}" class="button"/>
+			</td>
+		</tr>
+		<!-- 价格体系 -->
+		</table>
+		<!-- 普通信息 -->
+		</td>
+		<td valign="top" style="padding-left:50px;">
+		<!-- 图片上传块 -->
+		<TABLE cellpadding=3 cellspacing=3 >
+		<tr>
+			<td>
+			<table>
+				<tr>
+					<td width="120">
+						<div id="divStatus" style="display:none;"></div>
+						<input id="btnCancel" type="hidden" />
+						<span id="image_browse"></span>
+					</td>
+					<td>
+						<div class="fieldset flash" id="fsUploadProgress" style="display:none;" ></div>
+						<div id="uploaderimg">{$Think.lang.GOODS_IMAGE_TIP}</div>
+					</td>
+				</tr>
+			</table>
+			
+	
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<img src="<if condition="$default_gallery">__ROOT__{$default_gallery.big_img}<else />__TMPL__ThemeFiles/Images/nopic.gif</if>" width="300" height="300" id="goods_img_box" />
+			<input type="hidden" name="gallery_id" id="gallery_id" value="<if condition="$default_gallery">{$default_gallery.id}<else />0</if>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!-- 图片列表 -->
+				<div id="gallery_list" class="gallery_list" >
+					<foreach name="gallery_list" item="gallery_item" >			
+						<div>
+						<input type='hidden' value='{$gallery_item.id}' name='goods_gallerys[]' />
+						<img <if condition="$gallery_item['id'] eq $default_gallery['id']">class="selectborder"</if> src='__ROOT__{$gallery_item.small_img}' onclick='setgallery({$gallery_item.id});' /><br /><a href='javascript:;' onclick='delgallery({$gallery_item.id},this)'>{$Think.lang._DELETE_DATA}</a>
+						</div>							
+					</foreach>			
+				</div>
+				<!-- 图片列表 -->
+			</td>
+		</tr>
+		<!--
+		<tr>
+			<td>
+				{%DEFINE_SMALL_IMG}：
+				{%YES}：<input type="radio" name="is_define_small_img" value="1" <if condition="$vo['is_define_small_img'] eq 1">checked="checked"</if> onclick="sw_define_img(1);" />				
+				{%NO}：<input type="radio" name="is_define_small_img" value="0" <if condition="$vo['is_define_small_img'] eq 0">checked="checked"</if> onclick="sw_define_img(0);" />
+				<div style="height:10px;"></div>
+				<div id="define_small_img" <if condition="$vo['is_define_small_img'] eq 0">style="display:none;"</if>>
+					<if condition="$vo['define_small_img'] neq ''"><img src="__ROOT__{$vo.define_small_img}" class="define_small_img" /></if>
+					<input type="file" name="define_small_img" style="display:inline; float:left; margin-left:10px; margin-top:15px;" />
+				</div>
+			</td>
+		</tr>
+		-->
+		</TABLE>
+		<script type="text/javascript">
+		var settings = {
+				flash_url : PUBLIC+"/Js/swfupload/swfupload.swf",
+				upload_url: APP,				
+				post_params: {"<php>echo C('VAR_MODULE');</php>":"Public","<php>echo C('VAR_ACTION');</php>":"uploadBatch","goods_id":goods_id,"session_id":session_id},
+				file_size_limit : "<php>echo (fanweC('MAX_UPLOAD')/1000000)."MB";</php>",
+				file_types : "*.jpg;*.gif",
+				file_types_description : "{$Think.lang.GOODS_UPLOAD_MAX_TIP}<php>echo (fanweC('MAX_UPLOAD')/1000000)."MB";</php>",
+				file_upload_limit : 100,
+				file_queue_limit : 100,
+				custom_settings : {
+					progressTarget : "fsUploadProgress",
+					cancelButtonId : "btnCancel"
+				},
+				debug: false,
+
+
+				button_image_url: PUBLIC+"/Images/uploadbtn.png",
+				button_width: "100",
+				button_height: "30",
+				button_placeholder_id: "image_browse",
+				file_queued_handler : fileQueued,
+				file_queue_error_handler : fileQueueError,
+				file_dialog_complete_handler : fileDialogComplete,
+				upload_start_handler : uploadStart,
+				upload_progress_handler : uploadProgress,
+				upload_error_handler : uploadError,
+				upload_success_handler : uploadSuccess,
+				upload_complete_handler : uploadComplete,
+				queue_complete_handler : queueComplete	
+			};
+			var swfu = new SWFUpload(settings);
+		</script>
+		<!-- 图片上传块 -->
+		</td>
+	</tr>
+</table>
+
+
+
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td colspan="2">
+		<table cellpadding=3 cellspacing=3 width=100% id="spec_table">
+		<tr><th colspan="2">商品属性</th></tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">商品属性：</td>
+	<td class="tLeft" >
+		<select name="goods_type" id="goods_type" class="bLeft" onchange="getAttrList(this);">
+		<option value="0" <if condition="$vo['type_id'] eq 0">selected="selected" </if>>{$Think.lang.NO_TYPE_SELECT}</option>
+		<foreach name="type_list" item="type_item" >
+			<option value="{$type_item.id}" <if condition="$vo['goods_type'] eq $type_item['id']">selected="selected" </if>>{$type_item[$select_dispname]}</option>
+		</foreach>
+		</select>
+		
+	</td>
+</tr> 
+
+
+<!-- 类型相对应属性列表 -->
+<tr>
+	<td class="tRight"></td>
+	<td class="tLeft" >
+		<div id="attr_list"></div>		
+	</td>
+</tr> 
+<!-- 类型相对应属性列表 -->
+<tr>
+	<td colspan="2">
+		<table cellpadding=3 cellspacing=3 width=100% id="spec_table">
+		<tr><th colspan="2">{%GOODS_REVIEWS}</th></tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" style="width:100px;">{$Think.lang.GOODS_REVIEWS}：</td>
+	<td class="tLeft" >
+		<textarea name="goods_reviews" class="bLeft" style="width:80%; height:50px;">{$vo.goods_reviews}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.GOODS_REVIEWS_LIST}：</td>
+	<td class="tLeft" >
+		[<a href="javascript:;" onclick="addReviewsList()">添加</a>]
+	</td>
+</tr>
+<tr>
+	<td class="tRight">&nbsp;</td>
+	<td class="tLeft"  id="reviewsLis">
+    <foreach name="reviews_list" item="reviews_item" >
+        <div style="border-top:solid 2px #333; padding:8px 0;">
+            <textarea name="goods_reviews_content[]" class="bLeft" style="width:80%; height:50px;">{$reviews_item.content}</textarea>
+            <div style="margin:5px 0 0 0;">
+                <span>用户名称：</span><input type="text" name="goods_reviews_user[]" class="bLeft" style="width:100px;" value="{$reviews_item.user_name}" />&nbsp;&nbsp;
+                <span>点评网址：</span><input type="text" name="goods_reviews_url[]" class="bLeft" style="width:150px;" value="{$reviews_item.url}" />&nbsp;&nbsp;
+                <span>点评网站：</span><input type="text" name="goods_reviews_web[]" class="bLeft" style="width:150px;" value="{$reviews_item.webname}" />&nbsp;&nbsp;[<a href="javascript:;" onclick="delReviewsList(this,{$reviews_item.id})">删除</a>]<input type="hidden" name="goods_reviews_id[]" value="{$reviews_item.id}" />
+            </div>
+        </div>
+    </foreach>
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<table cellpadding=3 cellspacing=3 width=100% id="spec_table">
+		<tr><th colspan="2">{%GOODS_SPEC}</th></tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.WEB_REVIEWS}：</td>
+	<td class="tLeft" >
+    	<fanwe:editor  name="web_reviews" type="KindEditor" style="width:670px;height:200px;visibility:hidden;"  />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.GOODS_BRIEF}：</td>
+	<td class="tLeft" >
+		<fanwe:editor id="brief"  name="brief" type="KindEditor" style="width:670px;height:200px;visibility:hidden;"  />
+	</td>
+</tr>
+<tr>
+		<td class="tRight" width="160">SEO标题：</td>
+		<td class="tLeft" >
+			<input type="text" name="seo_title" class="bLeftRequire seo_title" value="{$vo.seo_title}"  style="width:300px" />
+			<div>搜索引擎优化使用</div>
+		</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.SEO_KEYWORD}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="seokeyword" class="bLeft" cols="80" rows="5" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.SEO_CONTENT}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="seocontent" class="bLeft" cols="80" rows="5" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.GOODS_DESC}：</td>
+	<td class="tLeft" >
+		<fanwe:editor  name="goods_desc" type="KindEditor"  style="width:670px;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >手机站团购商品简介：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="expand1" class="bLeft" cols="50" rows="2" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >抽奖公告内容：</td>
+	<td class="tLeft" >
+		<fanwe:editor id="expand2"  name="expand2" type="KindEditor" style="width:670px;height:200px;visibility:hidden;"  />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.GOODS_EXPAND3}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="expand3" class="bLeft" cols="50" rows="2" />
+	</td>
+</tr>
+
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input name="click_count" value="{$vo.click_count}" type="hidden" />
+	<input name="id" id="goods_id" value="{$vo.id}" type="hidden" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+<div id="goodsReviewsListHtml" style="display:none;">
+	<div style="border-top:solid 2px #333; padding:8px 0;">
+        <textarea name="goods_reviews_content[]" class="bLeft" style="width:80%; height:50px;"></textarea>
+        <div style="margin:5px 0 0 0;">
+            <span>用户名称：</span><input type="text" name="goods_reviews_user[]" class="bLeft" style="width:100px;" />&nbsp;&nbsp;
+            <span>点评网址：</span><input type="text" name="goods_reviews_url[]" class="bLeft" style="width:150px;" />&nbsp;&nbsp;
+            <span>点评网站：</span><input type="text" name="goods_reviews_web[]" class="bLeft" style="width:150px;" />&nbsp;&nbsp;[<a href="javascript:;" onclick="delReviewsList(this,0)">删除</a>]<input type="hidden" name="goods_reviews_id[]" value="0" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	getAttrList($("#goods_type").get(0));
+});
+</script>

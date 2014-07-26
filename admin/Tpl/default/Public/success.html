@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html>
+<head>
+<title>{$Think.lang.PAGE_MSG}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="refresh" content="{$waitSecond};URL={$jumpUrl}" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href ="__TMPL__/ThemeFiles/Css/style.css" />
+</head>
+<body>
+<div class="message">
+<table class="message"  cellpadding=0 cellspacing=0 style="border-top:1px solid #ccc;border-right:1px solid #ccc">
+	<tr class="big-row" >
+		<th class="tCenter space">{$msgTitle}</th>
+	</tr>
+	<present name="message" >
+	<tr class="row">
+		<td style="color:blue">{$message}</td>
+	</tr>
+	</present>
+	<present name="error" >
+	<tr class="row">
+		<td style="color:red">{$error}</td>
+	</tr>
+	</present>
+	<present name="closeWin" >
+		<tr class="row">
+		<td>{$Think.lang.SYS_WILL} <span style="color:blue;font-weight:bold">{$waitSecond}</span> {$Think.lang.PAGE_CLOSE_TIP} <a href="{$jumpUrl}">{$Think.lang.HERE}</a> {$Think.lang.CLOSE}</td>
+	</tr>
+	</present>
+	<notpresent name="closeWin" >
+	<tr class="row">
+		<td>{$Think.lang.SYS_WILL} <span style="color:blue;font-weight:bold">{$waitSecond}</span> {$Think.lang.PAGE_JUMP_TIP}<a href="{$jumpUrl}">{$Think.lang.HERE}</a> {$Think.lang.JUMP}</td>
+	</tr>
+	</notpresent>
+	
+	</table>
+</div>
+</body>
+</html>

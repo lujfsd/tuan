@@ -1,0 +1,20 @@
+<table class="table-list">
+	{foreach from=$delivery_list item=delivery_item}
+	<tr>
+		<td class='t1'><input id="check-{$payment_item.id}" type="radio" name="delivery" value="{$delivery_item.id}" onclick="deliveryChange(this);" {if $delivery_item.id eq $order.delivery}checked="true"{/if} /></td>
+		<td class='t2'>{$delivery_item.name_1}</td>
+		<td class='t3'>
+			{if $delivery_item.protect eq 1}
+			{$lang.PROTECT_RADIO}:{$delivery_item.protect_radio}&nbsp;&nbsp;
+			{$lang.PROTECT_PRICE}:{function name="a_formatPrice" value=$delivery_item.protect_price}<br />
+			{/if}
+			{function name="nl2br" value=$delivery_item.desc_1}
+		</td>
+		<td class='t4'>
+			{if $delivery_item.protect eq 1}
+			<nobr><input type="checkbox" name="protect" value="1" class="protect" onclick="countCartTotal();" {if $delivery_item.id eq $order.delivery and $order.protect eq 1}checked="true"<else/>disabled="disabled"{/if}/>&nbsp;{$lang.PROTECT}</nobr>
+			{/if}
+		</td>
+	</tr>
+	{/foreach}
+</table>

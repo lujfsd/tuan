@@ -1,0 +1,84 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Js/region.js' />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/index',$user_param)}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('UserConsignee/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.REGION_INFO}：</td>
+	<td class="tLeft" >
+		{$Think.lang.REGION_LV1_NAME}：<select name="region_lv1" class="bLeft" id="region_lv1" onchange="selectRegion(this,1);">
+			<option value="0">{$Think.lang.NO_SELECT}</option>
+			<foreach name="region_lv1_list" item="region_lv1_item">
+			<option value="{$region_lv1_item.id}">{$region_lv1_item.name}</option>
+			</foreach>
+		</select>
+		
+		{$Think.lang.REGION_LV2_NAME}：<select name="region_lv2" class="bLeft" id="region_lv2" onchange="selectRegion(this,2);">
+			<option value="0">{$Think.lang.NO_SELECT}</option>
+		</select>
+		
+		{$Think.lang.REGION_LV3_NAME}：<select name="region_lv3" class="bLeft" id="region_lv3" onchange="selectRegion(this,3);">
+			<option value="0">{$Think.lang.NO_SELECT}</option>
+		</select>
+		
+		{$Think.lang.REGION_LV4_NAME}：<select name="region_lv4" class="bLeft" id="region_lv4" onchange="selectRegion(this,4);">
+			<option value="0">{$Think.lang.NO_SELECT}</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADDRESS}：</td>
+	<td class="tLeft" >
+		<input type="text" name="address" class="bLeftRequire" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.CONSIGNEE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="consignee" class="bLeftRequire" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ZIP}：</td>
+	<td class="tLeft" >
+		<input type="text" name="zip" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.FIX_PHONE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="fix_phone" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.FAX_PHONE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="fax_phone" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.MOBILE_PHONE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="mobile_phone" class="bLeft" />
+	</td>
+</tr>
+
+
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="user_id" value="{$user_id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

@@ -1,0 +1,66 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}	
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						
+						<div class="head">
+							<h2>{$lang.XY_PRICE_LOG}</h2>
+							<ul class="filter">
+								<li class="label">{$lang.XY_CLASS_IFICATION}: </li>
+								<li {if $current_page eq 'UCLOG_INDEX'}class="current"{/if}><a href="<?php echo a_u('UcLog/index') ?>">{$lang.XY_PRICE_LOG}</a></li>
+								<li {if $current_page eq 'UCLOG_LOGINDEX'}class="current"{/if}><a href="<?php echo a_u('UcLog/logIndex') ?>">{$lang.XY_INTEGRAL_LOG}</a></li>
+								{foreach from="$user_money_menu" item="menu_item"}
+									<li {if $menu_item.act eq 1} class="current"{/if}><a href="{$menu_item.url}" >{$menu_item.name}</a><li>
+								{/foreach}
+								{foreach from="$user_uncharge_menu" item="menu_item"}
+									<li {if $menu_item.act eq 1} class="current"{/if}><a href="{$menu_item.url}" >{$menu_item.name}</a><li>
+								{/foreach}
+							</ul>
+						</div>
+						{include file="Inc/user_center/uc_center_money.moban"}
+						<div class="sect">
+							<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+								<tr>
+									<th width="300">{$lang.LOG_EVENT}</th>
+									<th width="80">{$lang.MONEY_VALUE}</th>
+									<th width="60">{$lang.OP_TYPE}</th>
+									<th width="140">{$lang.LOG_TIME}</th>
+								</tr>
+								
+								{foreach from=$log_list item=log_item key=key}
+								<tr {if $key mod 2 eq 0}class="alt"{/if}>
+									<td style="text-align:left;">{$log_item.memo_1}</td>
+									<td>{if $log_item.log_type eq 'money'}{$log_item.value}{/if}</td>
+									<td>{$log_item.op_type}</td>
+									<td>
+									{$log_item.create_time_format}
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div class="blank"></div>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

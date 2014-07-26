@@ -1,0 +1,13 @@
+{include file="Inc/header.html" }
+{include file="Inc/user_menu.html"}
+<div class="smod">
+	{foreach from="$groupbond_list" item="groupbond"}
+	<div class="item">
+	<p>{$groupbond.goods_name}({$lang.SN}：{$groupbond.sn}，{$lang.PASSWORD}：{$groupbond.password}) [{$groupbond.use_status}]</p>
+	</div>
+	{/foreach}	
+</div>
+
+{include file="Inc/pages.html" }
+{include file="Inc/user_menu.html"}
+{include file="Inc/footer.html" }

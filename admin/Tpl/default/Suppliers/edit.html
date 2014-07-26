@@ -1,0 +1,96 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<style type="text/css">
+	.cursorp{ cursor:pointer;}
+</style>
+<script type="text/javascript">
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var DIY_URL = '{%DIY_URL}';
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Suppliers/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="180">{$Think.lang.SUPPLIERS_NAME}：</td>
+	<td class="tLeft" >
+		<input type="text" name="name" class="bLeft"  value="{$vo.name}"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="80">排序：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft"  value="{$vo.sort}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="80">分类：</td>
+	<td class="tLeft" >
+		<select name="cate_id">
+		<foreach name="cate_list" item="cate_item" >
+			<option value="{$cate_item.id}" <if condition="$vo['cate_id'] eq $cate_item['id']">selected="selected"</if>>{$cate_item.name}</option>
+		</foreach>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.SUPPLIERS_WEB}：</td>
+	<td class="tLeft" >
+		<input type="text" name="web" class="bLeft"  value="{$vo.web}"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.SUPPLIERS_IMG}：</td>
+	<td class="tLeft" >
+		<input type="file" name="img" class="bLeft"/> <if condition="$vo['img'] neq ''"><a href="__ROOT__{$vo.img}" target="_blank">{%VIEW}</a>&nbsp;&nbsp;<a href="{:u("Suppliers/deleteImg",array('id'=>$vo['id']))}" target="_blank">{%_DELETE_DATA}</a></if>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">需要提供团购卷口令：<br>
+	（确认团购券使用情况）</br></td>
+	<td class="tLeft" >
+		<select name="h_pwd_groupbond" size="1" onchange="" style="width: 300px">
+			<option value="0" <if condition="$vo.h_pwd_groupbond eq 0"> selected</if> >否</option>
+			<option value="1" <if condition="$vo.h_pwd_groupbond eq 1"> selected</if> >是</option>
+		</select>	
+	</td>
+</tr>
+<tr>
+	<td class="tRight">是否为品牌商户：</td>
+	<td class="tLeft" >
+		<select name="is_brand" size="1" onchange="" style="width: 300px">
+			<option value="0" <if condition="$vo.is_brand eq 0"> selected</if> >否</option>
+			<option value="1" <if condition="$vo.is_brand eq 1"> selected</if> >是</option>
+		</select>	
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.SUPPLIERS_BRIEF}：</td>
+	<td class="tLeft" >
+		<textarea name="brief" class="bLeft" style="width:80%; height:90px;">{$vo.brief}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.SUPPLIERS_DESC}：</td>
+	<td class="tLeft" >
+		<fanwe:editor name="desc" type="KindEditor"  style="width:80%;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" value="{$vo.id}" name="id" id="suppliers_id" />
+	<input type="hidden" name="status" value="1" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</table>
+</form>
+</div>
+</div>

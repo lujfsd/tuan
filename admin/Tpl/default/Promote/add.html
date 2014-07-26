@@ -1,0 +1,99 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.PROMOTE_PROMOTE_TYPE}</div>
+
+<!--  功能组区域  -->
+<script language="Javascript">
+function cancelList(){
+	if ('{$vo.is_card}' == '1'){
+		location.href = "{:u('Promote/promoteCard')}";
+	}else{
+		//alert("{:u('Promote/promoteModule')}");
+		location.href =  "{:u('Promote/promoteModule')}";
+	}
+}
+</script>
+
+<!-- 功能组区域结束 -->
+<form METHOD=POST id="form1" action="{:u('Promote/editPromote')}">
+<table cellpadding=3 cellspacing=3 width = "100%">
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="1" <if condition="$vo.promote_type_id eq 1 ">checked </if> >
+			1: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_1}
+		</label>
+	</td>
+</tr>
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="2" <if condition="$vo.promote_type_id eq 2 ">checked </if> >
+	 		2: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_2}
+	 	</label>
+	 </td>
+</tr>
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="3" <if condition="$vo.promote_type_id eq 3 ">checked </if> >
+		 	3: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_3}
+	 	</label>
+	 </td>		 
+</tr>
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="4" <if condition="$vo.promote_type_id eq 4 ">checked </if> >
+		 	4: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_4}
+	 	</label>
+	 </td>	
+</tr>
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="5" <if condition="$vo.promote_type_id eq 5 ">checked </if> >
+			5: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_5}
+	 	</label>
+	 </td>	
+</tr>
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="6" <if condition="$vo.promote_type_id eq 6 ">checked </if> >
+			6: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_6}
+	 	</label>
+	 </td>	
+</tr>
+<tr>
+	<td class="tLeft" >
+		<label>
+			<input TYPE="radio" name="promote_type_id" value="7" <if condition="$vo.promote_type_id eq 7 ">checked </if> >
+			7: {$Think.lang.PROMOTE_PROMOTE_TYPE_ID_7}
+	 	</label>
+	 </td>			
+</tr>
+<tr>
+	<td class="center">
+	<input TYPE="hidden" name="id" value="{$vo.id}" >
+	<input TYPE="hidden" name="is_card" value="{$vo.is_card}" >
+	<input TYPE="submit" value="{$Think.lang.NEXT_SET}" class="button">
+	<input TYPE="button" class="submit  small" value="{$Think.lang.CANCEL}" onclick="javascript:cancelList()">
+	</td>
+</tr>
+
+</table>
+</form>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>

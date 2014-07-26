@@ -1,0 +1,143 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="settings-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$page_title}</h2>
+							<ul class="filter">
+								<li {if $current_page eq 'UCMODIFY_INDEX'}class="current"{/if}><a href="<?php echo a_u('UcModify/index') ?>">{$lang.UCMODIFY_INDEX}</a></li>
+								<li {if $current_page eq 'UCMODIFY_AVATAR' }class="current"{/if}><a href="<?php echo a_u('UcModify/avatar') ?>">{$lang.UCMODIFY_AVATAR}</a></li>
+								<li {if $current_page eq 'UCMODIFY_CONSIGNEE' }class="current"{/if}><a href="<?php echo a_u('UcModify/consignee') ?>">{$lang.UCMODIFY_CONSIGNEE}</a></li>
+							</ul>
+						</div>
+						<div class="sect">
+						
+						<div style="width:600px;margin:0 auto;">
+							{if $user_face}
+							<div style="font-size:16px;padding:0 50px 20px 50px;;border-bottom:solid 1px #ccc;">
+								<table >
+									<tr>
+										<td style="padding:3px;"><b>您的头像：</b></td>
+										<td style="padding:3px 30px;"><img src="{$user_face}" style="border:2px solid #f60" /></td>
+										<td style="padding:3px;"><img src="Public/upload/avatar/avatar_big/{$smarty.session.user_id}.jpg" style="border:2px solid #f60" /></td>
+									</tr>
+								</table>
+							</div>
+							{/if}
+							<div style="width:500px;margin:0 auto;padding-top:30px;">
+								<h3>{if $user_face}重新上传{else}上传头像{/if}</h3>
+								<div style="padding:10px 0;color:#666;">
+								上传一张真人照片（不要超过500K），也可以  <a style="color:#cc3300;" href="javascript:void(0);" onclick="useCamera()">使用摄像头！</a>
+								</div>
+								<form enctype="multipart/form-data" method="post" name="upform" target="upload_target" action="{$ROOT_PATH}/index.php?m=Ucmodify&a=avatar_upload">
+								<input type="file" name="Filedata" id="Filedata"/>
+								<input style="margin-right:20px;" type="submit" class="formbutton" name="" value="上传形象照" onclick="return checkFile();" /><span style="visibility:hidden;" id="loading_gif"><img src="{$ROOT_PATH}/Public/loading.gif" align="absmiddle" />上传中，请稍侯......</span>
+								</form>
+								<iframe src="about:blank" name="upload_target" style="display:none;"></iframe>
+								<div id="avatar_editor"></div>
+								<script type="text/javascript">
+								//允许上传的图片类型
+								var extensions = 'jpg,jpeg,gif,png';
+								//保存缩略图的地址.
+								var saveUrl = '{$ROOT_PATH}/save_avatar.php';
+								//保存摄象头白摄图片的地址.
+								var cameraPostUrl = '{$ROOT_PATH}/index.php?m=Ucmodify&a=camera';
+								//头像编辑器flash的地址.
+								var editorFlaPath = '{$ROOT_PATH}/Public/AvatarEditor.swf';
+								//Download by http://www.codefans.net
+								function useCamera()
+								{
+									var content = '<embed height="464" width="514" ';
+									content +='flashvars="type=camera';
+									content +='&postUrl='+cameraPostUrl+'?&radom=1';
+									content += '&saveUrl='+saveUrl+'?radom=1" ';
+									content +='pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" ';
+									content +='allowscriptaccess="always" quality="high" ';
+									content +='src="'+editorFlaPath+'"/>';
+									document.getElementById('avatar_editor').innerHTML = content;
+								}
+								function buildAvatarEditor(pic_id,pic_path,post_type)
+								{
+									var content = '<embed height="464" width="514"'; 
+									content+='flashvars="type='+post_type;
+									content+='&photoUrl='+pic_path;
+									content+='&photoId='+pic_id;
+									content+='&postUrl='+cameraPostUrl+'?&radom=1';
+									content+='&saveUrl='+saveUrl+'?radom=1"';
+									content+=' pluginspage="http://www.macromedia.com/go/getflashplayer"';
+									content+=' type="application/x-shockwave-flash"';
+									content+=' allowscriptaccess="always" quality="high" src="'+editorFlaPath+'"/>';
+									document.getElementById('avatar_editor').innerHTML = content;
+								}
+									/**
+									  * 提供给FLASH的接口 ： 没有摄像头时的回调方法
+									  */
+									 function noCamera(){
+										 alert("没有摄像头 ：）");
+									 }
+											
+									/**
+									 * 提供给FLASH的接口：编辑头像保存成功后的回调方法
+									 */
+									function avatarSaved(){
+										alert('保存成功！');
+										window.location.href = ROOT_PATH +"/index.php?m=UcModify&a=avatar";
+									}
+									
+									 /**
+									  * 提供给FLASH的接口：编辑头像保存失败的回调方法, msg 是失败信息，可以不返回给用户, 仅作调试使用.
+									  */
+									 function avatarError(msg){
+										 alert("上传失败！");
+									 }
+						
+									 function checkFile()
+									 {
+										 var path = document.getElementById('Filedata').value;
+										 var ext = getExt(path);
+										 var re = new RegExp("(^|\\s|,)" + ext + "($|\\s|,)", "ig");
+										  if(extensions != '' && (re.exec(extensions) == null || ext == '')) {
+										 alert('对不起，只能上传jpg, gif, png类型的图片');
+										 return false;
+										 }
+										 showLoading();
+										 return true;
+									 }
+						
+									 function getExt(path) {
+										return path.lastIndexOf('.') == -1 ? '' : path.substr(path.lastIndexOf('.') + 1, path.length).toLowerCase();
+									}
+									  function	showLoading()
+									  {
+										  document.getElementById('loading_gif').style.visibility = 'visible';
+									  }
+									  function hideLoading()
+									  {
+										document.getElementById('loading_gif').style.visibility = 'hidden';
+									  }
+								</script>
+							</div>
+						</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

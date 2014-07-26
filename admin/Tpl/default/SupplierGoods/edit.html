@@ -1,0 +1,89 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+
+<div id="main" class="main" >
+<div class="content">
+<div class="title">查看团购[ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ][ <a href="{:u($module_name.'/publicGoods',array("id"=>$vo['id']))}">发布该团购</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Coupon/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="180">团购名称：</td>
+	<td class="tLeft" >
+		{$vo.name}
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="180">库存：</td>
+	<td class="tLeft" >
+		{$vo.max_count}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">成团数：</td>
+	<td class="tLeft" >
+		{$vo.min_count}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">单人限购数：</td>
+	<td class="tLeft" >
+		{$vo.user_max_count}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">原价：</td>
+	<td class="tLeft" >
+		{$vo.origin_price|formatPrice}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">团购价：</td>
+	<td class="tLeft" >
+		{$vo.shop_price|formatPrice}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">开团时间：</td>
+	<td class="tLeft" >
+		{$vo.promote_begin_time|toDate}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">结束时间：</td>
+	<td class="tLeft" >
+		{$vo.promote_end_time|toDate}
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="180">简介：</td>
+	<td class="tLeft" >
+		<div style="height:200px; overflow-y:scroll;">
+		{$vo.brief}
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">描述：</td>
+	<td class="tLeft" >
+		<div style="height:200px; overflow-y:scroll;">
+		{$vo.contents}
+		</div>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="180">其他说明：</td>
+	<td class="tLeft" >
+		<div style="height:200px; overflow-y:scroll;">
+		{$vo.other_desc}
+		</div>
+	</td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

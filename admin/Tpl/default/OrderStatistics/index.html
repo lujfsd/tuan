@@ -1,0 +1,113 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/tabs.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+
+<div id="main" class="main" >
+
+<div class="title">订单统计信息</div>
+<div class="operate">
+<form method="get">
+下单时间：<input type="text" name="begintime" id="c_begintime" value="{$begintime}" style="width:90px;"  onfocus="return showCalendar('c_begintime', '%Y-%m-%d', false, false, 'c_begintime');" />
+ 到 
+<input type="text" name="endtime" id="c_endtime" value="{$endtime}" style="width:100px;" onfocus="return showCalendar('c_endtime', '%Y-%m-%d', false, false, 'c_endtime');" />
+ <fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+<input type="hidden" value="OrderStatistics" name="m" />
+<input type="hidden" value="index" name="a" />
+<input type="hidden" value="search" name="do" />
+</form>
+</div>
+<div class="tabItem">
+    <table id="list" class="list" cellpadding="0" cellspacing="0">
+        <tr>
+            <th>编号</th>
+            <th>订单号</th>
+            <th style="width:120px">下单时间</th>
+            <th>商品</th>
+            <th>销量</th>
+            <th>单价</th>
+            <th>实收</th>
+            <th>上架费</th>
+            <th>供应费</th>
+            <th>单品利润</th>
+            <th>实际收益</th>
+        </tr>
+        <?php $total_profit = 0;$goods_temp=array(); ?>
+        <foreach name="list" item="list">
+        <tr>
+            <td style="vertical-align: middle;text-align: center">{$list.id}</td>
+            <td style="vertical-align: middle;">{$list.sn}</td>
+             <td style="vertical-align: middle;text-align: center">{$list.create_time|toDate="Y-m-d H:i"}</td>
+            <td>
+                <foreach name="list.goods_list" item="glist">
+                    <if condition="$glist['goods_short_name']">
+                    <a href="./index.php?m=Goods&a=show&id={$glist.id}" target="_blank" title="{$glist.name_1}">{$glist.goods_short_name}</a>
+                    <else/>
+                    <a href="./index.php?m=Goods&a=show&id={$glist.id}" target="_blank" title="{$glist.name_1}">{$glist.name_1|msubstr=0,30}</a>
+                    </if>
+                    <if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+                </foreach>
+            </td>
+            <td align="center">
+                <foreach name="list.goods_list" item="glist">
+                    {$glist.number}<if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+                </foreach>
+            </td>
+            <td align="center">
+                <foreach name="list.goods_list" item="glist">
+                    {$glist.shop_price|priceVal}<if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+                </foreach>
+            </td>
+            <td align="center">
+                <foreach name="list.goods_list" item="glist">
+                    {$glist.data_total_price|priceVal}<if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+                </foreach>
+            </td>
+            <td align="center">
+                <foreach name="list.goods_list" item="glist">
+                    {$glist.shelves_price|priceVal}<if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+					<php>
+						$goods_temp[$glist['id']][] =  $shelves_price;
+					</php>
+                </foreach>
+            </td>
+            <td align="center">
+                <foreach name="list.goods_list" item="glist">
+                    {$glist.profit|priceVal}<if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+                </foreach>
+            </td>
+            <td align="center">
+                <foreach name="list.goods_list" item="glist">
+                    {$glist.profitnow|priceVal}<if condition="($key+1) != count($list['goods_list'])" ><hr></if>
+                </foreach>
+            </td>
+            <td style="vertical-align: middle;text-align: center">
+                <?php $goods_total_profit = 0 ?>
+            <foreach name="list.goods_list" item="glist">
+                <?php
+				if(count($goods_temp[$glist['id']]) ==1)
+				{
+                	$goods_total_profit += $glist['number'] * $glist['profitnow'] + $glist['shelves_price'];
+				}
+				else
+				{
+					$goods_total_profit += $glist['number'] * $glist['profitnow'];
+				}
+                ?>
+            </foreach>
+            <?php $total_profit +=$goods_total_profit;echo priceVal($goods_total_profit) ?>
+            </td>
+        </tr>
+        </foreach>
+        <tr>
+            <td colspan="10"><if condition="$begintime !='' && $endtime  !=''">{$begintime} 到 {$endtime} <elseif condition="$begintime !=''"/>从 {$begintime} 到现在 <elseif condition="$endtime !=''" />{$endtime} 以前 <else/>至今</if>的实际收益为 <b style="color:red"><?php echo priceformat($total_profit) ?></b> 注：同一款商品上架费只算第一个。</td>
+        </tr>
+  </table>
+</div>
+
+<style>
+    hr{border:none;border-top:1px solid #ccc;clear:both;margin: 1px 0;padding:0}
+</style>

@@ -1,0 +1,35 @@
+<tagLib name="html" />
+<include file="Public:header" />
+<script type="text/javascript">
+function edit_youhui(id)
+{
+	location.href = ROOT+'?m=Conf&a=edit_youhui&id=' + id;
+}
+
+function del_mconf(id)
+{
+	location.href = ROOT+'?m=Conf&a=del_mconf&id=' + id;
+}
+</script>
+<div class="main">
+	<div class="main_title">手机购买车优惠公告</div>
+	<div class="button_row">
+		<input type="button" class="button" value="{%ADD}" onclick="location.href='{:u("Conf/add_youhui")}';" />			
+	</div>
+	<div class="blank5"></div>
+	<html:list 
+		id="checkList" 
+		style="dataTable" 
+		name="node" 
+		checkbox="true" 
+		action="true" 
+		datasource="list" 
+		show="id:{%ID}|80
+			,code:内容
+			,is_verify|get_toogle_status=$node['id']#is_verify:{%STATUS}" 
+			actionlist="edit_youhui:{%EDIT},del_mconf:{%DEL}" />
+	
+	<div class="blank5"></div>
+	<div class="page">{$page}</div>
+</div>
+<include file="Public:footer" />

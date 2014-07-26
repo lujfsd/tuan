@@ -1,0 +1,47 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/ecv.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">导入数据</div>
+
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Consignment/importInsert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+    <tr>
+        <td class="tRight">.csv导入文件：</td>
+        <td class="tLeft" >
+            <input type="file" name="excel" class="bLeft" /> (<a href="{:u('Consignment/download')}" target="_blank">下载团购券导入模板文件</a>)
+        </td>
+    </tr>
+	
+    <tr>
+    	<td class="tRight">是否发短信：</td>
+        <td class="tLeft" >
+           <input type="checkbox" name="send_sms" value="1" /> 当导入量大的话建议不要发短信！
+        </td>
+    </tr>
+    <tr>
+        <td class="tRight">&nbsp;</td>
+        <td class="tLeft" >
+            导入过程中，将自动忽略数据库中不存在的数据<br/>
+        </td>
+    </tr>
+<tr>
+	<td class="tRight">&nbsp;</td>
+	<td class="tLeft" >
+    	<div style="width:85%;margin:5px; text-align:center;">
+        <input type="hidden" name="status" value="0" />
+		<input type="submit" value="确认发货"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+        </div>
+    </td>
+</tr>
+</form>
+</table>
+</div>
+</div>

@@ -1,0 +1,13 @@
+<div class="youhui_box" style="height:285px;">
+	<div class="close_coupon"><a href="javascript:void(0);" onclick="close_coupon();">{$lang.CLOSE}</a></div>
+									<a href="{$coupon.url}" title="{$coupon.name}" class="coupon_name">{$coupon.name}</a>									
+									<a href="{$coupon.url}" title="{$coupon.name}"><img height="90" width="150" src="{$CND_URL}/{$coupon.icon}" alt="{$coupon.name}" /></a>
+									<div class="blank"></div>
+									<span class="coupon_end_time">{$lang.YOUHUI_END_TIME}：{if $coupon.end_time eq 0}{$lang.YOUHUI_NO_LIMIT}{else}{function name="a_toDate" value=$coupon.end_time format="Y-m-d"}{/if}</span>
+									<span class="coupon_count">{$lang.YOUHUI_COUNT}：{$coupon.count}</span>
+									<div class="blank"></div>
+									<a href="<?php echo a_u("Youhui/print","id-".$this->_var['coupon']['id']);?>" class="coupon_print" target="_blank">{$lang.YOUHUI_PRINT}</a>
+									{if $coupon.is_sms eq 1}
+									<a class="coupon_sms" href="javascript:void(0);" onclick="showCouponSms({$coupon.id})" >{$lang.YOUHUI_SMS_DOWN}</a>
+									{/if}								
+</div>

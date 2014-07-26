@@ -1,0 +1,24 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+<load href='__TMPL__ThemeFiles/Js/goods.js' />
+<div id="content_box">
+<div id="result" class="result none"></div>
+<table cellpadding=3 cellspacing=3 >
+<foreach name="type_list" item="type_item">
+<tr>
+	<td class="tRight" width="10">
+	<input type="radio" name="type_id" value="{$type_item.id}" onclick="getSpecList(this);" />
+	</td>
+	<td class="tLeft" >
+		<fanwe:label ignore="1" value="$type_item.name" />
+	</td>
+</tr>
+</foreach>
+</table>
+</div>
+<input type="hidden" id="idx" name="idx" value="{$idx}" />
+

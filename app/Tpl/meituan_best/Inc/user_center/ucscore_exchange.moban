@@ -1,0 +1,115 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}	
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$page_title}</h2>
+						</div>
+						<div class="head">
+						<div class="score_money_tit">您可以使用积分兑换余额，每个余额可在本网购买时抵充一元人民币。</div>
+						<div class="money_box">您目前积分为<strong style="color:#CC3333;">{function name="round" a=$user_info.score b=2}</strong>分，余额<strong style="color:#CC3333;">{function name="round" a=$user_info.money b=2}</strong>个&nbsp;&nbsp;&nbsp;<span>每{$CFG.EX_SCORE_SCALE}分可兑换1元余额</span></div>
+						</div>
+						<script>
+							var EX_USER_SCORE = '{function name="round" a=$user_info.score b=2}';
+							var EX_SCORE_SCALE='{$CFG.EX_SCORE_SCALE}';
+						</script>
+						<div class="cf" style="padding-left:50px;style="width:97%"">
+							<table cellspacing="0" cellpadding="0" border="0" align="left" class="score_money_form" id="score_money_form">
+								<form method="POST" action="index.php">
+								<tr>
+									<td><b>请输入您要兑换的积分：</b><td>
+									<td><input type="text" name="score_val" class="f-input" /> <td>
+								</tr>
+								<tr>
+									<td><td>
+									<td style="padding:6px 0px  6px 20px">积分→余额<td>
+								</tr>
+								<tr>
+									<td><input type="hidden" name="m" value="UcScore" /><input type="hidden" name="a" value="exchange_do"><td>
+									<td style="padding-left:8px"><input type="submit" name="sub" class="formbutton" value="确认兑换" />&nbsp;&nbsp;<input type="reset" name="reset" class="formbutton" value="取消兑换" /><td>
+								</tr>
+								</form>
+							</table>
+						</div>
+						<div class="blank"></div>
+						<div class="sect">
+							<div style="padding-left:15px"><b>会员兑换记录</b></div>
+							<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table" style="width:97%">
+								<tr>
+									<th width="140">时间</th>
+									<th width="300">详情</th>
+									<th>兑换数额</th>
+								</tr>
+								
+								{foreach from=$log_list item=log_item key=key}
+								<tr {if $key mod 2 eq 0}class="alt"{/if}>
+									<td>
+										{function name="a_toDate" a=$log_item.create_time b="Y-m-d"}
+									</td>
+									<td>{$log_item.memo_1}</td>
+									<td>{$log_item.rec_id}</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div class="blank"></div>
+							<div style="padding:0 20px 0 0; text-align:right;">
+								{$pages}
+							</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+<script>
+$("#score_money_form form").submit(function(){
+		var val=$("#score_money_form .f-input").val()
+		if(val=="")
+		{
+			$.showErr('请输入要兑换的积分！');
+			return false;
+		}
+		
+		if(isNaN(val))
+		{
+			$.showErr('输入的积分必须为数字！');
+			return false;
+		}
+		
+		if(parseInt(val)<EX_SCORE_SCALE)
+		{
+			$.showErr('输入的积分要大于'+EX_SCORE_SCALE+'，并且为整数倍！');
+			return false;
+		}
+		
+		if(parseInt(val)>EX_USER_SCORE)
+		{
+			$.showErr('您没有那么多的积分可兑换！');
+			return false;
+		}
+		
+		if((parseInt(val)%parseInt(EX_SCORE_SCALE))!=0)
+		{
+			$.showErr('输入的积分必须是'+EX_SCORE_SCALE+'的整数倍！');
+			return false;
+		}
+		
+	});
+</script>
+{include file="Inc/footer.moban" }

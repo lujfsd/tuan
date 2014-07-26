@@ -1,0 +1,11 @@
+{include file="Inc/suppliers/suppheader.moban"}
+{if $content_page eq 'login'}
+	{include file="Inc/suppliers/supplogin.moban"}
+{elseif $content_page eq 'groupbond'}
+	{include file="Inc/suppliers/suppgroupbond.moban"}
+{elseif $content_page eq 'reset'}
+	{include file="Inc/suppliers/suppreset_password.moban"}
+{elseif $content_page eq 'groupbondedit'}
+	{include file="Inc/suppliers/suppgroupbondedit.moban"}
+{/if}
+{include file="Inc/footer.moban"}

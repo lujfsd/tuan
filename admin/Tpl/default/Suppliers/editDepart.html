@@ -1,0 +1,170 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<if condition="C('DEFAULT_LANG') eq 'en-us'">
+	<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<else/>
+	<load href="__TMPL__ThemeFiles/Js/map.js" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+	<script type="text/javascript">
+	var blue_point = "__ROOT__/global/blue_point.png";
+	var red_point = "__ROOT__/global/red_point.png";
+		$(document).ready(function(){
+			 $("input[name='search_api']").bind("click",function(){  
+			 	var api_address = $("input[name='api_address']").val();
+				var city=$("select[name='city_id']").find("option:selected").attr("rel");
+				if ($.trim(api_address) == '') {
+					alert("请输入搜索关键词");
+				}
+				else 
+				{
+					search_api(api_address, city);
+				}
+	        });
+			draw_map('{$vo.xpoint}','{$vo.ypoint}');
+			$("#container_front").hide();
+	        $("#cancel_btn").bind("click",function(){ $("#container_front").hide(); });
+	        $("input[name='chang_api']").bind("click",function(){ 
+	            editMap($("input[name='xpoint']").attr('value'),$("input[name='ypoint']").attr('value'));
+	        });		
+		});
+	</script>
+</if>
+<style type="text/css">
+	.cursorp{ cursor:pointer;}
+	
+	td span label{float:left; padding:3px; margin:2px; background:#E6E6E6; cursor:pointer; display:inline-block; }
+    td span label.active{background:#F60; color:#fff;}
+    #container{height:200px; width: 200px; float:left;}  
+    #container_front{width: 600px; height:500px; border: 1px solid #000; position: absolute; top: 10px; background-color: #fff; overflow: hidden;}
+    #container_m{ width: 550px; height: 450px; margin: 0 auto;}
+    #cancel_btn{display: block; width: 600px; height: 18px; line-height: 18px; text-align: right;}
+</style>
+<script type="text/javascript">
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var DIY_URL = '{%DIY_URL}';
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/departList',array('supplier_id'=>$vo['supplier_id']))}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Suppliers/updateSupplierDepart')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="180">名称：</td>
+	<td class="tLeft" >
+		<input type="text" name="depart_name" id="baidu_name" class="bLeft" value="{$vo.depart_name}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">密码：</td>
+	<td class="tLeft" >
+		<input type="password" name="pwd" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">地址：</td>
+	<td class="tLeft" >
+		<textarea name="address" class="bLeft" style="width:80%; height:90px;">{$vo.address}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">交通路线：</td>
+	<td class="tLeft" >
+		<textarea name="bus" class="bLeft" style="width:80%; height:90px;">{$vo.bus}</textarea>
+	</td>
+</tr>
+<if condition="C('DEFAULT_LANG') eq 'en-us'">
+	<tr>
+	<td class="tRight">供应商API用的地址：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" name="api_address" id="api_address" value="{$vo.api_address}" /> <input type="button" value="开始定位" onclick="loadGeoInfo();" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">供应商API用的地址经纬度：</td>
+	<td class="tLeft" >
+		经度：<input type="text" name="xpoint" id="xpoint" class="bLeft" value="{$vo.xpoint}" />
+		纬度：<input type="text" name="ypoint" id="ypoint" class="bLeft" value="{$vo.ypoint}" />
+		<input type="hidden" name="codebar" value="BCGcode39" />
+		<input type="hidden" name="resolution" value="1" />
+	</td>
+</tr>
+<else/>
+	<tr>
+            <td class="tRight">地图定位:</td>
+            <td class="tLeft">            	
+            	关键词&nbsp;<input type="text" class="textbox" name="api_address" id="api_address" value="{$vo.api_address}" /> 
+				<input type="button" value="查找" class="button" name="search_api" id="search_api" >
+				<div style="height:10px; clear:both;"></div>
+                <div id="container"></div>
+				<div style="height:10px; clear:both;"></div>
+                <script type="text/javascript"></script> 
+                <input type="button" value="手动修改" name="chang_api" id="chang_api">
+                <div style="position:relative; top:-400px;">
+                    <div  id="container_front">
+                        <a href="#" id="cancel_btn">取消</a>
+                        <div id="container_m"></div>
+                    </div>
+                </div>
+				<input type="hidden" name="xpoint" value="{$vo.xpoint}"/>
+				<input type="hidden" name="ypoint" value="{$vo.ypoint}"/>
+            </td>
+	</tr>
+</if>
+
+<!--
+<tr>
+	<td class="tRight">供应商API用的地址：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" name="api_address" id="api_address" value="{$vo.api_address}" /> <input type="button" value="开始定位" onclick="loadGeoInfo();" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">供应商API用的地址经纬度：</td>
+	<td class="tLeft" >
+		经度：<input type="text" name="xpoint" id="xpoint" class="bLeft" value="{$vo.xpoint}" />
+		纬度：<input type="text" name="ypoint" id="ypoint" class="bLeft" value="{$vo.ypoint}" />
+		<input type="hidden" name="codebar" value="BCGcode39" />
+		<input type="hidden" name="resolution" value="1" />
+	</td>
+</tr>
+-->
+<tr>
+	<td class="tRight">地图链接：</td>
+	<td class="tLeft" >
+		<input type="text" name="map" class="bLeft" value="{$vo.map}" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">电话：</td>
+	<td class="tLeft" >
+		<input type="text" name="tel" class="bLeft" value="{$vo.tel}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">营业时间：</td>
+	<td class="tLeft" >
+		<input type="text" name="operating" class="bLeft" value="{$vo.operating}" />
+		<input type="hidden" name="supplier_id" value="{$vo.supplier_id}" />
+	</td>
+</tr>
+
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

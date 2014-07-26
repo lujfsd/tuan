@@ -1,0 +1,60 @@
+{if $today_goods}
+<div class="info">
+<p class="title"><strong>{$today_goods.name_1}</strong></p>
+<form action="m.php?m=Cart&a=index&id={$today_goods.id}&s={$s}" method="post">
+<p class="buy">
+<input type="hidden" name="userId" value="" />
+<input type="hidden" name="t" value="" />
+<input type="hidden" name="dealId" value="40" />
+<img src="{$CND_URL}/{$today_goods.small_img}" width=130 height=90 />
+{if $today_goods.promote_end_time gt $TIME}
+	{if $today_goods.promote_end_time gt $TIME and ($today_goods.stock gt $today_goods.buy_count or $today_goods.stock eq 0)}
+	<input type="submit" class="ibtn" value="{$lang.BUY}" />
+	{/if}
+	{if $today_goods.promote_end_time gt $TIME and $today_goods.stock <= $today_goods.buy_count and $today_goods.stock neq 0}
+	{$lang.YOU_TOO_LATE}
+	{/if}
+{else}
+{$lang.GROUP_EXPIRED}
+{/if}
+</p>
+</form>
+
+{if $today_goods.type_id neq 2}
+<p class="price"><strong>{$lang.GROUP_PRICE}：{$today_goods.shop_price_format}</strong></p>
+{else}
+<p class="price"><strong>{$lang.ORDER_PRICE}：{$today_goods.earnest_money_format}</strong></p>
+{/if}
+{if $today_goods.promote_end_time gt $TIME}
+<p>
+<span>{$lang.LESS_TIME}:</span>
+<span class="red">
+{$today_goods.less_day}{$lang.DAY}{$today_goods.less_hour}{$lang.HOUR}<span>{$today_goods.less_min}{$lang.MIN}{$today_goods.less_sec}{$lang.SEC}</span>
+</span>
+</p>
+{/if}
+<p class="buy-info">
+{function name="sprintf" a="$lang.LREADY_BUY_COUNT" b=$today_goods.buy_count}
+{if $today_goods.is_group_fail eq 0}
+<?php echo sprintf(a_L("STILL_LESS_COUNT"),($this->_var['today_goods']['group_user']-$this->_var['today_goods']['buy_count']));?>
+{/if}
+{if $today_goods.is_group_fail eq 2}
+{$lang.GROUP_SUCCESS}
+{/if}
+{if $today_goods.is_group_fail eq 1}
+{$lang.GROUP_FAILED}
+{/if}
+</p>
+
+<p class="pinfo">
+{$lang.ORIGIN_PRICE}:<span class="ori">{$today_goods.market_price_format}</span> {$lang.DISCOUNT}:<span>{$today_goods.discountfb}{$lang.ZHE}</span> {$lang.SAVE_MONEY}:<span>{$today_goods.save}</span>
+</p>
+</div>
+<div class="desc">
+                                                                                                                                                                                                                                                                                                                                        <div class="pd">
+{$today_goods.expand1}
+</div>
+</div>
+{else}
+ <div class="info">{$lang.NO_GROUP}</div>
+{/if}

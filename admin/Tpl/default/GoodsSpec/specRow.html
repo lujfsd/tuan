@@ -1,0 +1,26 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<div class="spec_item">		
+			<input type="checkbox" value="{$spec_item['id']}" name='goods_spec_id[]' class="select_goods_spec spec_group_{$spec_item.idx}" onclick="makeSpecItemTable();" />	
+			<input type="hidden" value="{$spec_item['id']}" name="spec_id[]" class="spec_id_hidden" />
+			<input type="hidden" value="{$spec_item['spec_type_id']}" name="spec_type_id[]" />
+            <input type="hidden" value="" class="spec_gallery" name="spec_gallery[]" />
+			<fanwe:textbox value="$spec_item.spec_name" name="spec_name" class="spec_name_box" ignore="1" />
+			<if condition="$spec_item['spec_type']['type'] eq 1">
+			<img src='__ROOT__/admin/Tpl/default/ThemeFiles/Images/error.gif' align="absmiddle" width=20 height=20 style="border:#ccc solid 1px;" id="spec_img_{$spec_item.idx}_{$spec_item.id}"/>
+			<span id="image_browse_{$spec_item.id}"></span>	
+			</if>
+			[<a href="javascript:;" onclick="addSpecRow(this,{$spec_item['id']},{$spec_item.idx});">+</a>]
+			[<a href="javascript:;" onclick="delSpecRow(this,{$spec_item['id']},{$spec_item.idx});">-</a>]
+			<font>存入预设：<input type='checkbox' name='insert_to_spec[]' value='{$spec_item.id}' /></font>
+			<a class="spec_gallrey_btn"<if condition="$spec_item['id'] neq 0 && $spec_item['session_id'] neq ''"> style="display:none;"</if>　specID="{$spec_item['id']}" href="javascript:;" onclick="popGoodsGallery(this);">设置关联相册</a>
+			<div class="spec_gallrey_box">
+                <ul class="sortable">
+                <foreach name="spec_item.gallerys" item="gallery" >
+                	<li galleryID="{$gallery.gallery_id}" title="拖动进行排序"><img alt="拖动进行排序" src='__ROOT__{$gallery.small_img}' /></li>
+                </foreach>
+                </ul>
+            </div>
+		</div>		
+	</div>
+</div>

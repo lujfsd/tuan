@@ -1,0 +1,39 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content" >
+<div class="title">退款单列表</div>
+<div class="operate">
+<form method='get' action="__APP__">
+				订单: <input type="text" name="order_sn" title="订单号" class="medium" id="c_order_sn" value="{:trim($_REQUEST['order_sn'])}" style="width:90px;" >  
+				团购ID: <input type="text" name="group_id" class="medium"  id="c_group_id" value="{:trim($_REQUEST['group_id'])}"  style="width:90px;" />
+				会员名称: <input type="text" name="user_name" class="medium"  id="c_user_name" value="{:trim($_REQUEST['user_name'])}"  style="width:90px;" />
+				
+				收款帐号: <select name="payment_id" id="c_payment_id">
+					<option value="">=全部=</option>
+					<foreach name="payment_list" item="payment_item">
+					<option value="{$payment_item.id}" <if condition="$_REQUEST['payment_id'] eq $payment_item['id']">selected="selected"</if>>{$payment_item.name_1}</option>
+					</foreach>
+				</select>
+			
+<input type="hidden" name="m" value="OrderUncharge" />
+<input type="hidden" name="a" value="index" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+
+</form>
+</div>
+<div class="list" >
+<fanwe:list 
+id="checkList" 
+name="order" 
+style="list" 
+datasource="list" 
+order="false"
+		  show="id:编号|8%,ORDER_SN:订单编号,data_name:商品名称,number:数量,date_price|priceFormat:单商品金额,final_amount|priceFormat:订单金额,PName:退款帐户,money|priceFormat:订单退款金额,user_name:会员,create_time|toDate:退款时间" /> 
+
+</div>
+
+<div class="page">{$page}</div>
+
+</div>
+</div>

@@ -1,0 +1,45 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<div id="main" class="main" >
+
+<div class="title">hao123Api接口内容，请尽快将以下内容发送到：hao123com@baidu.com</div>
+<form method='post' id="form" name="form" action="{:u('Goods/sendApiEmail')}" >
+	<table id="user" class="list" cellpadding=0 cellspacing=0>
+		<tr>
+			<td class="tRight" width="120">接口地址：</td>
+			<td class="tLeft">
+			   http://[域名及站点目录]/index.php?m=API&a=hao123  [或] http://[域名及站点目录]/index.php?m=API&a=hao123&city=[城市ID]
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight" width="120">邮件标题：</td>
+			<td class="tLeft">
+			   <INPUT TYPE="text"  name="title" id="title" style="width:80%;" value={$title}>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">邮件内容：</td>
+			<td class="tLeft" >
+				<textarea name="hao123Api" id="hao123Api" class="bLeft" style="width:80%; height:350px;">{$hao123api}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">收信人:</td>
+			<td class="tLeft">
+				<INPUT TYPE="text"  name="mail_address" id="mail_address"  class="bLeft" value="hao123com@baidu.com">
+				<fanwe:imageBtn type="submit"  value="发送邮件" style="impBtn hMargin fLeft shadow" />
+			</td>
+		</tr>
+		<tr>
+			<td class="tRight">参考内容：</td>
+			<td class="tLeft" >
+				<span><a href='http://www.hao123.com/redian/api.htm';'>http://www.hao123.com/redian/api.htm</a></span>
+			</td>
+		</tr>				
+	</table>
+</form>	
+</div>		
+
+

@@ -1,0 +1,43 @@
+{include file="Inc/suppliers/suppheader.moban"}
+<div id="bdw" class="bdw" >
+	<div id="bd" class="cf">
+		
+			<div id="content" class="login-box">
+                                    <div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+                        <div class="head">
+                        <h2>{$lang.SUPPLIERS_LANG_13}{$lang.XY_SEARCH}</h2>  
+                        </div>
+                        <div class="long f_r">
+			<div class="blank"></div>
+			<div  style="padding:0 10px;">
+			<form name="searchform" action="{function name="a_u" a="Suppliers/balance"}" method="post">
+			项目编号：<input type="text" class="f-input" name="goods_id" value="{$deal_info.id}" style="width:50px;" />
+			&nbsp;&nbsp;&nbsp;&nbsp;结算状态：
+			<select name="is_balance">
+				<option value="0" {if $is_balance eq 0}selected="selected"{/if}>未结算</option>	
+				<option value="1" {if $is_balance eq 1}selected="selected"{/if}>待结算</option>	
+				<option value="2" {if $is_balance eq 2}selected="selected"{/if}>已结算</option>	
+			</select>
+			<input type="hidden" value="1" name="is_redirect" />
+			&nbsp;&nbsp;<input type="submit" value="{$lang.XY_SEARCH}" class="formbutton" style="margin-left:38px;height:25px;font-size:14px;padding-bottom: 0px;padding-top: 0px;"/>
+			</form>
+			</div>		
+			<div class="blank"></div>
+			{$html}
+			<div class="blank"></div>
+			
+	</div>
+	<div class="blank"></div>
+</div>
+<div class="box-bottom"></div>
+</div><!--end blance_index_box-->
+</div>
+<div>
+</div>
+<div class="blank"></div>
+</div>
+
+
+{include file="Inc/footer.moban"}

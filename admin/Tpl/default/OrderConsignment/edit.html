@@ -1,0 +1,220 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<include file="../OrderConsignment/edit_js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+<load href='__TMPL__ThemeFiles/Js/common.js' />
+<div class="main">
+<div class="title">编辑数据 [有拼购运单时所有拼购配送的商品都会被发货]</div>
+
+<FORM METHOD=POST id="form1" action="{:u('OrderConsignment/save')}">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<TR>
+	<TD class="tRight" >订单号：</TD>
+	<TD class="tLeft" >{$order_vo.sn}【{$order_vo.goods_status}】</TD>
+	
+	<TD class="tRight" >下单日期：</TD>
+	<TD class="tLeft" >{$order_vo.create_time}</TD>	
+</TR>
+
+			<TR>
+				<TD class="tRight" >配送方式：</TD>
+				<TD class="tLeft" >
+					<SELECT class="bLeft"  NAME="delivery_id"  id ="delivery_id" onchange = "selectFreightMode(this.value)">
+						<iterate name="freightModeList" id="fmlist">
+							<option value={$fmlist.id} <if condition="$vo.delivery_id eq $fmlist['id']"> selected</if> >{$fmlist.name}</option>
+						</iterate>
+					</SELECT>
+					
+					<SELECT class="bLeft"  NAME="express_id"  id ="express_id">
+						<iterate name="ExpressModeList" id="emlist">
+							<option value={$emlist.id} <if condition="$vo.express_id eq $emlist['id']"> selected</if> >{$emlist.name}</option>
+						</iterate>
+					</SELECT>					
+				</TD>
+				<TD class="tRight" >物流单号：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="delivery_code" id = "delivery_code" value="{$vo.delivery_no}" >
+				</TD>							
+	
+			</TR>
+			
+			<TR>
+				<TD class="tRight" >商品总金额：</TD>
+				<TD class="tLeft" ><INPUT TYPE="text" class="medium bLeft" NAME="total_price" id = "total_price" readonly value="{$order_vo.total_price}"></TD>
+				
+				<TD class="tRight" >商品重量：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="order_weight" id="order_weight"  readonly value="{$order_vo.order_weight}" >
+				</TD>	
+			</TR>
+						
+			<TR>
+				<TD class="tRight" >配送费用：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="delivery_fee" id = "delivery_fee" value="{$vo.delivery_fee}"  onfocus = "save_old_value('delivery_fee')" onblur = "sum_money(true, 'delivery_fee')" >
+					<INPUT TYPE="hidden" class="medium bLeft" NAME="delivery_fee_old"  id ="delivery_fee_old" value="{$vo.delivery_fee}" size = 3>
+					<div id="div" style="display: none" >
+						<label>订单成本<INPUT TYPE="checkBox"  NAME="cost_calc" id = "cost_calc" <if condition="$vo.cost_calc eq 1"> checked</if> </label>
+					</div>	
+				</TD>			
+				<TD class="tRight" >保价：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" size = 6 NAME="protect_fee" id="protect_fee" value="{$vo.protect_fee}" onfocus = "save_old_value('protect_fee')" onblur = "sum_money(true, 'protect_fee')">
+					<INPUT TYPE="hidden" NAME="protect_fee_old"  id ="protect_fee_old" value="{$vo.protect_fee}" size = 3>
+					
+					<INPUT TYPE="hidden" NAME="protect_fee_original"  id ="protect_fee_original" value="{$vo.protect_fee}" size = 3>
+					
+					<label>是否要保价<INPUT TYPE="checkBox"  NAME="protect" id = "protect" onclick = "protectChange(this.checked)"  <if condition="$vo.protect eq 1"> checked</if> </label>
+										
+				</TD>
+			</TR>
+			
+				<TR>
+					<TD class="tRight" >收货地区：</TD>
+					<TD class="tLeft" colspan = 3>
+						<SELECT class="bLeft"  NAME="region_lv1" id="region_lv1" onchange = "javascript:region_lv1Change(this.value, null)">
+							<option value="" >请选择国家...</option>
+							<iterate name="region_lv1List" id="cyList">
+								<option value={$cyList.id} <if condition="$vo.region_lv1 eq $cyList['id']"> selected</if> >{$cyList.name}</option>
+							</iterate>
+						</SELECT>
+						
+						<SELECT class="bLeft"  NAME="region_lv2"  id="region_lv2" onchange = "javascript:region_lv2Change(this.value)">
+							<option value="" >请选择省份...</option>
+
+						</SELECT>	
+						
+						<SELECT class="bLeft"  NAME="region_lv3"  id="region_lv3" onchange = "javascript:region_lv3Change(this.value)">
+							<option value="" >请选择地/市...</option>
+
+						</SELECT>		
+						
+						<SELECT class="bLeft"  NAME="region_lv4"  id="region_lv4"  onchange = "javascript:region_lv4Change()">
+							<option value="" >请选择区/县...</option>
+						</SELECT>															
+					</TD>
+				</TR>			
+			
+			
+				<TR>
+					<TD class="tRight" >收货地址：</TD>
+					<TD class="tLeft"  colspan = 3>
+						<INPUT TYPE="text" size = "60" NAME="address" id = "address" value="{$vo.address}">
+					</TD>
+					
+				</TR>
+
+				<TR>
+					<TD class="tRight" >收货人姓名：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="consignee" id = "consignee" value="{$vo.consignee}">
+					</TD>
+					<TD class="tRight" >邮编：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="zip" id = "zip" value="{$vo.zip}">
+					</TD>					
+				</TR>
+						
+				<TR>
+					<TD class="tRight" >联系电话：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="mobile_phone" id = "mobile_phone" value="{$vo.mobile_phone}">
+					</TD>
+					<TD class="tRight" >EMail：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="email" id ="email" value="{$vo.email}">
+					</TD>					
+				</TR>
+	
+	<TR>
+		<TD class="tLeft" colspan = 4>
+			<table id="checkList" class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th>商品货号</th>
+					<th>商品名称</th>
+					<th>销售价</th>
+					<th>重量(克)</th>
+					<th>当前库存</th>
+					<th>购买数量</th>
+                    <th>总价</th>
+				</tr>
+			</table>
+		</TD>	
+	</TR>
+	
+<TR>
+	<TD class="center" colspan = 4>
+	<INPUT TYPE="hidden" name="id" value="{$vo.id}" >
+	<INPUT TYPE="hidden" name="order_id" value="{$vo.order_id}" >
+	<INPUT TYPE="submit" value="保 存" class="button">
+	<INPUT TYPE="button" class="button" onclick="javascript:history.back(1)" value="关闭" >
+	</TD>
+</TR>
+</TABLE>
+</FORM>
+</div>
+<script type="text/javascript">
+$().ready(function() {
+
+	FCUR_RATE = 1;
+
+		/*
+		<th>类型</th>
+		<th>商品货号</th>
+		<th>商品名称</th>
+		<th>重量</th>
+		<th>当前库存</th>
+		<th>购买数量</th>
+		<th>已发货</th>
+		<th>此单发货</th>
+		
+		 类型（goods_type: 0：商品规格；1：添加捆绑商品; 2:赠品），ID，货号，商品名称)
+		 function newTr(goods_type, id, goods_sn, goods_name, goods_number, goods_num, send_num, cd_num) {
+		*/	 
+		function showDetail(orderGoodsList){
+		  if (orderGoodsList != null){
+			  var cd_num = 0;
+			for (var i=0; i< orderGoodsList.length; i++){
+				
+				if ({$isNew} == true){
+					cd_num = orderGoodsList[i].goods_num - orderGoodsList[i].send_num;
+				}else{
+					cd_num = orderGoodsList[i].cd_num;
+				}
+
+				newTr(orderGoodsList[i].rec_module, 
+						orderGoodsList[i].id, 
+						orderGoodsList[i].data_sn, 
+						orderGoodsList[i].data_name, 
+						orderGoodsList[i].data_price,
+						orderGoodsList[i].data_weight, 
+						orderGoodsList[i].goods_number, 
+						orderGoodsList[i].goods_num, 
+						orderGoodsList[i].send_num, 
+						cd_num,
+						orderGoodsList[i].data_total_price
+						);
+				
+			}	
+		  }
+		  	
+		}
+		
+		showDetail({$orderGoodsList});	
+
+		region_lv1Change({$vo.region_lv1}, {$vo.region_lv2}, false);
+		region_lv2Change({$vo.region_lv2}, {$vo.region_lv3}, false);
+		region_lv3Change({$vo.region_lv3}, {$vo.region_lv4}, false);
+
+		sum_goods_weight();
+		selectFreightMode({$vo.delivery_id}, {$vo.region_lv1}, {$vo.region_lv2}, {$vo.region_lv3}, {$vo.region_lv4});
+			
+});
+</script>			

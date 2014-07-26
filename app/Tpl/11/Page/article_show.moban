@@ -1,0 +1,30 @@
+{include file="Inc/header.moban"}
+<style type="text/css">
+#articleInfo li{list-style:square;}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="about learn">
+			<div id="content" class="about">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$article_info.name_1}</h2>
+						</div>
+						<div class="sect guide" id="articleInfo">
+							{$article_info.content_1}
+							<div class="blank"></div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		</div>
+		<div id=sidebar>
+			{include file="Inc/common/right.moban"}
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

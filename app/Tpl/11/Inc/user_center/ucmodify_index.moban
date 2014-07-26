@@ -1,0 +1,180 @@
+{include file="Inc/header.moban" }
+<script type="text/javascript">
+var USER_TOO_SHORT = '{$lang.USER_TOO_SHORT}';
+var PWD_TOO_SHORT = '{$lang.PWD_TOO_SHORT}';
+var PWD_CONFIRM_FAILED = '{$lang.PWD_CONFIRM_FAILED}';
+var EMAIL_FORMAT_ERROR =	'{$lang.EMAIL_FORMAT_ERROR}';
+
+jQuery(function($){
+	$("#settings-submit").click(function(){
+	{if !$user_info.email}
+		if($.trim($("#settings-email-address").val()).length == 0)
+		{
+			$.showErr("{$lang.XY_PLEASE_MAIL}");
+			$("#settings-email-address").focus();
+			return false;
+		}
+		if(!$.checkEmail($("#settings-email-address").val()))
+		{
+			$.showErr("{$lang.XY_ERROR_MAIL}");
+			$("#settings-email-address").focus();
+			return false;
+		}
+	{/if}
+		if(!$.minLength($("#settings-username").val(),4,true))
+		{
+			$.showErr("{$lang.XY_USER_NAME_SHORT_NOTICE}");
+			$("#settings-username").focus();
+			return false;
+		}
+		
+		if(!$.maxLength($("#settings-username").val(),16,true))
+		{
+			$.showErr("{$lang.XY_USER_NAME_LONG_NOTICE}");
+			$("#settings-username").focus();
+			return false;
+		}
+		
+		if($.trim($("#settings-password").val()).length > 0)
+		{
+			if(!$.minLength($("#settings-password").val(),4,false))
+			{
+				$.showErr("{$lang.XY_USER_PASS_SHORT_NOTICE}");
+				$("#settings-password").focus();
+				return false;
+			}
+			
+			if($("#settings-password-confirm").val() != $("#settings-password").val())
+			{
+				$.showErr("{$lang.XY_TOW_DIF_PASS}");
+				$("#settings-password-confirm").focus();
+				return false;
+			}
+		}
+		
+
+		{if $MOBILE_PHONE_MUST eq 1}
+		if(!$.checkMobilePhone($("#settings-mobile").val()))
+		{
+			$.showErr("{$lang.XY_PLEASE_ENTER_TRUE_PHONE}");
+			$("#settings-mobile").focus();
+			return false;
+		}	
+		{/if}	
+		
+
+		{foreach from=$extend_fields item =field_item}
+		    {if $field_item.is_must eq 1}
+			if($("#settings-{$field_item.field_name}").val()=='')
+			{
+				$.showErr("{$lang.XY_PLEASE_ENTER}{$field_item.field_show_name}");
+				$("#settings-{$field_item.field_name}").focus();
+				return false;
+			}
+			{/if}
+		{/foreach}
+		
+	});
+	{if $FLAG eq 1}
+		$.showErr("{$lang.XY_FLAG}");
+	{/if}
+});
+</script>
+
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="settings-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}		
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$page_title}</h2>
+							<ul class="filter">
+								<li {if $current_page eq 'UCMODIFY_INDEX'}class="current"{/if}><a href="<?php echo a_u('UcModify/index') ?>">{$lang.UCMODIFY_INDEX}</a></li>
+								<li {if $current_page eq 'UCMODIFY_AVATAR' }class="current"{/if}><a href="<?php echo a_u('UcModify/avatar') ?>">{$lang.UCMODIFY_AVATAR}</a></li>
+								<li {if $current_page eq 'UCMODIFY_CONSIGNEE'}class="current"{/if}><a href="<?php echo a_u('UcModify/consignee')?> ">{$lang.UCMODIFY_CONSIGNEE}</a></li>
+							</ul>
+						</div>
+						<div class="sect">
+							<form name="modify" action="{$__ROOT__}/index.php" method="post">
+								<div class="field email">
+									<label for="settings-email-address">Email</label>
+									<input type="text" size="30" name="email" id="settings-email-address" class="f-input {if $user_info.email}readonly{/if}" {if $user_info.email}readonly="readonly"{/if} value="{$user_info.email}" />
+								</div>
+								<div class="field username">
+									<label for="settings-username">{$lang.XY_USER_NAME}</label>
+									<input type="text" size="30" name="user_name" id="settings-username" class="f-input readonly" readonly="readonly" value="{$user_info.user_name}" />
+								</div>
+								<div class="field password">
+									<label for="settings-password">{$lang.XY_NEW_PASS}</label>
+									<input type="password" size="30" name="user_pwd" id="settings-password" class="f-input" />
+									<span class="hint">{$lang.XY_NEW_PASS_NOTICE}</span> </div>
+								<div class="field password">
+									<label for="settings-password-confirm">{$lang.XY_CONFIRM_PASS}</label>
+									<input type="password" size="30" name="user_pwd_confirm" id="settings-password-confirm" class="f-input" />
+								</div>
+								<div class="field mobile">
+									<label for="settings-mobile">{$lang.XY_MOBILE}</label>
+									<input type="text" size="30" name="mobile_phone" id="settings-mobile" class="f-input" value="{$user_info.mobile_phone}" />
+									<span class="hint">{$MOBILE_HITS}</span> </div>
+								<div class="field is_receive_sms">
+									<label for="is_receive_sms">{$lang.XY_IS_RECEIVE_SMS}</label>
+									<select name="is_receive_sms" id="is_receive_sms">
+										<option value="0" {if $user_info.is_receive_sms eq 0}selected="selected"{/if}>{$lang.XY_IS_RECEIVE_SMS_0}</option>
+										<option value="1" {if $user_info.is_receive_sms eq 1}selected="selected"{/if}>{$lang.XY_IS_RECEIVE_SMS_1}</option>
+									</select>
+								</div>
+							
+								{foreach from=$extend_fields item=field_item}
+									<div class="field {$field_item.field_name}">
+										<label for="signup-{$field_item.field_name}">{$field_item.field_show_name}</label>
+									
+										{if $field_item.type eq 0}
+											<input type="text" size="30" name="{$field_item.field_name}" id="settings-{$field_item.field_name}" class="f-input" value="{$field_item.value}" />
+										{/if}
+										
+										
+										{if $field_item.type eq 1}
+												<select name="{$field_item.field_name}" id="settings-{$field_item.field_name}">												
+												{foreach from=$field_item.val_scope item=val}
+													<option value="{$val}" {if $field_item.value eq $val}selected="selected"{/if}>{$val}</option>
+												{/foreach}
+												</select>
+										{/if}
+									</div>
+								{/foreach}
+								
+								<div class="field city">
+									<label for="settings-mobile">{$lang.XY_CHANGE_CITYS}</label>
+									<select name="city_id">									
+									{foreach from=$city_list item=city_item}
+										<option value="{$city_item.id}" {if $user_info.city_id eq $city_item.id}selected="selected"{/if}>{$city_item.name}</option>
+									{/foreach}
+									</select>
+								</div>
+								<div class="clear"></div>
+								<div class="act">
+									<input type="hidden" name="m" value="UcModify" />
+									<input type="hidden" name="a" value="doModify" />
+									<input type="submit" value="{$lang.XY_CHANGE}" name="commit" id="settings-submit" class="formbutton"/>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

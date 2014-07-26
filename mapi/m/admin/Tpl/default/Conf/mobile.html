@@ -1,0 +1,93 @@
+{// 引入标签库 }
+<tagLib name="html" />
+<include file="Public:header" />
+<load href='__TMPL__Common/js/conf.js' />
+
+<div class="main">
+<div class="main_title">{%CONF_MOBILE}</div>
+<div class="blank5"></div>
+<div class="button_row">
+	<foreach name="conf" item="conf_group">
+		<if condition="$key eq 0">
+			<input type="button" class="button conf_btn" rel="{$key}" value="基础配置" />&nbsp;
+		<else />
+			<input type="button" class="button conf_btn" rel="{$key}" value="订单配置" />&nbsp;
+		</if>	
+	</foreach>
+</div>
+<div class="blank5"></div>
+
+<form name="edit" action="__APP__" method="post" enctype="multipart/form-data">
+	<foreach name="conf" item="conf_group">
+	<table class="form conf_tab" cellpadding=0 cellspacing=0 rel="{$key}">
+		<tr>
+			<td colspan=2 class="topTd"></td>
+		</tr>
+		<foreach name="conf_group" item="conf_item">
+		<tr >
+			<td class="item_title">{$conf_item['title']}:</td>
+			<td class="item_input">
+				<!--系统配置文本输入-->
+				<if condition="$conf_item['input_type'] eq 0">
+					<input type="text" class="textbox " name="{$conf_item.name}" value="{$conf_item.value}" />{$conf_item['description']}
+				</if>
+				<!--系统配置文本输入-->				
+				
+				<!--系统配置下拉输入-->
+				<if condition="$conf_item['input_type'] eq 1">
+					<select name="{$conf_item.name}">	
+						<foreach name="conf_item.value_scope" item="preset_value" key = "key">
+							<option value="{$preset_value}" <if condition="$conf_item['value'] eq $preset_value">selected="selected"</if>>
+								{$conf_item['title_scope'][$key]}
+							</option>
+						</foreach>
+					</select>
+					{$conf_item['description']}
+				</if>
+
+
+				<!--系统配置下拉输入-->
+				<!--系统配置图片输入-->
+				<if condition="$conf_item['input_type'] eq 2">				
+					<html:imgUpload id="{$conf_item.name}" name="{$conf_item.name}" value='$conf_item.value' />{$conf_item['description']}
+				</if>
+				<!--系统配置图片输入-->
+				<!--系统配置编辑器输入-->
+				<if condition="$conf_item['input_type'] eq 3">				
+					<html:editor id="{$conf_item.name}" name="{$conf_item.name}" type="KINDEDITOR" content="{$conf_item.value}" style=" height:150px;width:750px;" />
+					{$conf_item['description']}
+				</if>
+				<!--系统配置编辑器输入-->
+			</td>
+		</tr>
+		</foreach>
+		<tr>
+			<td colspan=2 class="bottomTd"></td>
+		</tr>
+	</table>
+	</foreach>	
+	<div class="blank5"></div>
+
+	<table class="form" cellpadding=0 cellspacing=0>
+		<tr>
+			<td colspan=2 class="topTd"></td>
+		</tr>
+		<tr>
+			<td class="item_title"></td>
+			<td class="item_input">
+			<!--隐藏元素-->
+			<input type="hidden" name="{:conf("VAR_MODULE")}" value="Conf" />
+			<input type="hidden" name="{:conf("VAR_ACTION")}" value="savemobile" />
+			<!--隐藏元素-->
+			<input type="submit" class="button" value="{%EDIT}" />
+			<input type="reset" class="button" value="{%RESET}" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2 class="bottomTd"></td>
+		</tr>
+	</table> 
+</form>
+<div class="blank5"></div>
+</div>
+<include file="Public:footer" />

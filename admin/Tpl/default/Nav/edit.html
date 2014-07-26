@@ -1,0 +1,152 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+function getActionList(obj)
+{
+	$.ajax({
+		  url: APP+"?"+VAR_MODULE+"=Nav&"+VAR_ACTION+"=getActionList&rec_module="+obj.value,
+		  cache: false,
+		  success:function(data)
+		  {
+			data = $.evalJSON(data); 
+			var html = "<option value=''>{%NO_SELECT}</option>";
+			for(var i=0;i<data.length;i++)
+			{
+				html+="<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+			}
+			$("#rec_action").html(html);
+		  }
+		}); 
+}
+jQuery(function($){
+	$("select[name='all_city']").bind("change",function(){
+		if($(this).val()=="1")
+		{
+			$("tr#city-list").hide();
+		}
+		else{
+			$("tr#city-list").show();
+		}
+	});
+	$(".city_big_box input").click(function(){
+		if($(this).attr("checked")==true){
+			$(".city_small_box_"+$(this).val()+" input").attr("checked",true);
+		}
+	});
+});
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Nav/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.NAV_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" />
+		显示分类：
+		<input type="checkbox" name="show_cate" value="1" <if condition="$vo['show_cate'] eq 1">checked="checked"</if> />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.NAV_CONF}：</td>
+	<td class="tLeft" >
+		{%REC_MODULE}:
+		<select name="rec_module" onchange="getActionList(this);">
+			<option value=''>{%NO_SELECT}</option>
+			<foreach name="module_list" item="module_item">
+				<option value="{$key}" <if condition="$vo['rec_module'] eq $key">selected="selected"</if>>{:l("LANG_SHOW_MODULE_".$key)}</option>
+			</foreach>
+		</select>
+		{%REC_ACTION}:
+		<select name="rec_action" id="rec_action">
+			<option value=''>{%NO_SELECT}</option>
+			<foreach name="action_list" item="action_item">
+				<option value="{$action_item.value}" <if condition="$vo['rec_action'] eq $action_item['value']">selected="selected"</if>>{$action_item.name}</option>
+			</foreach>
+		</select>
+		{%REC_ID}:
+		<input type="text" class="bLeft" name="rec_id" value="{$vo.rec_id}" />
+		
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.NAV_URL}：</td>
+	<td class="tLeft" >
+		<input type="text" name="url" class="bLeft" value="{$vo.url}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.NAV_TYPE}：</td>
+	<td class="tLeft" >
+		<select name="type" class="bLeft">
+			<option value="2" <if condition="$vo['type'] eq 2">selected="selected"</if>>{$Think.lang.NAV_TYPE_2}</option>
+            <option value="3" <if condition="$vo['type'] eq 3">selected="selected"</if>>{$Think.lang.NAV_TYPE_3}</option>
+		</select>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$vo.sort}" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >默认首页：</td>
+	<td class="tLeft" >
+		<label>否：<input type="radio" name="is_default" value="0" <if condition="$vo['is_default'] neq 1">checked="checked"</if> /></label>
+		<label>是：<input type="radio" name="is_default" value="1" <if condition="$vo['is_default'] eq 1">checked="checked"</if> /></label>
+		<div>{$Think.lang.NAV_URL}不为空的话无法生效</div>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >所有城市显示：</td>
+	<td class="tLeft">
+		<select name="all_city">
+			<option value="1" <if condition="$vo['all_city'] eq 1">selected="selected"</if>>是</option>
+			<option value="0" <if condition="$vo['all_city'] eq 0">selected="selected"</if>>否</option>
+		</select>
+	</td>
+</tr>
+<tr id="city-list" <if condition="$vo['all_city'] eq 1">style="display:none"</if>>
+	<td class="tRight" >所属城市：</td>
+	<td class="tLeft">
+		<foreach name="city_list" item="city">
+			<if condition="$city['pid'] eq 0">
+			<div style="float:left;" class="city_big_box">
+				<label>
+					<input type="checkbox" value="{$city.id}" name="city_ids[]"  <if condition="$city['is_checked'] eq 1">checked="checked"</if>>{$city.name}：
+				</label>
+			</div>
+			<div style="float:left;" class="city_small_box_{$city.id}">
+				<foreach name="city_list" item="scity">
+					<if condition="$scity['pid'] eq $city['id']">
+					<label>
+						<input type="checkbox" value="{$scity.id}" name="city_ids[]"  <if condition="$scity['is_checked'] eq 1">checked="checked"</if>>{$scity.name}
+					</label>
+					</if>
+				</foreach>	
+			</div>
+			<div class="blank1"></div>
+			</if>
+		</foreach>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

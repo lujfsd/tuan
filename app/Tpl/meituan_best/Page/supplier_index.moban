@@ -1,0 +1,57 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals">
+			<div id="content">
+				{include file="Inc/common/goods_cate.moban"}
+                                <div class="clear"></div>					
+			<div  class="box">
+				
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.HC_SUPPLIER_LIST}</h2>
+						</div>
+						<div class="sect">
+							{if $suppliers_list}
+							<ul class="deals-list">
+							{foreach from=$suppliers_list item=supplier_item  name="supplier_item"}
+								<li class="{if $smarty.foreach.supplier_item.index mod 2 eq 1}alt{/if} {if $smarty.foreach.supplier_item.index lt 2}first{/if}">
+									<h4 style="font-weight:bold;"><a href="{$supplier_item.url}" title="{$supplier_item.name}" >{$supplier_item.name}</a></h4>
+									<div class="pic" style="margin-top:-5px;">
+										<a href="{$supplier_item.url}" title="{$supplier_item.name}" ><img alt="{$supplier_item.name}" src="{$CND_URL}{$supplier_item.img}" width="200" height="121"></a>
+									</div>
+									<div class="info">
+										{if $supplier_item['tel'] neq ''}
+											<p class="total">{$lang.SUPPLIER_TEL}<br />{$supplier_item.tel}</p>
+										{/if}
+										{if $supplier_item.operating neq ''}
+											<p class="total">{$lang.SUPPLIER_OPERATING}<br />{$supplier_item.operating}</p>
+										{/if}
+									</div>
+								</li>
+							{/foreach}
+							</ul>
+							<div class="clear"></div>
+							<div style="text-align:right; padding:20px 0 0 0;">
+								{$pages}
+							</div>
+						{else}
+							<div class="notice">
+								{$lang.NO_SUPPLIER}
+							</div>			
+						{/if}						
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div></div>
+			<div id="sidebar">
+				{include file="Inc/right.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

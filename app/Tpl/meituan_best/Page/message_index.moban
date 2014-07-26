@@ -1,0 +1,16 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="consult">
+			<div class="consult-bd consult-no-deal">
+				<div id="content">
+					{include file="Inc/common/message_index_data.moban"}
+				<div id="sidebar">
+					{include file="Inc/common/right.moban"}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

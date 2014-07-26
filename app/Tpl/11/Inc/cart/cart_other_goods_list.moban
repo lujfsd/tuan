@@ -1,0 +1,27 @@
+{if $other_goods_list}
+	<div class="box-top"></div>
+	<div class="box-content">
+		<div class="head">
+			<h2>{$lang.XY_TODAY_OTHER}</h2>
+		</div>
+			<div class="sect">
+				<div class="cart-other-goods">
+				<dl>
+				{foreach from =$other_goods_list item="oglist"}
+				<dd>
+					<h3><a href="{$oglist.url}" title="{$oglist.name_1}">{function name="a_msubstr" value="$oglist.name_1" a1=0 a2=40}</a></h3>
+					<div class="img"><img src="{$CND_URL}{$oglist.small_img}" /></div>
+					<div class="infos">
+						<p class="total"><strong class="count">{$oglist.buy_count}</strong>{$lang.JJ_PEOPLE_BUY}</p>
+						<p class="price">{$lang.JJ_ORIGINAL_PRICE}：<strong class="old">{function name="a_formatPrice" a=$oglist.market_price}</strong><br>{$lang.JJ_SHOP_PRICE}：<strong>{function name="a_formatPrice" a=$oglist.shop_price}</strong>
+						<a href="<?php echo a_u("Cart/index","id-".$this->_var['oglist']['id'])?>" class="formbutton">{$lang.BUY}</a>
+					</div>
+				</dd>
+				{/foreach}
+				</dl>
+				</div>
+				<div class="clear"></div>
+			</div>
+	</div>
+<div class="box-bottom"></div>
+{/if}

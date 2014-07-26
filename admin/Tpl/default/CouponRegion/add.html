@@ -1,0 +1,141 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<if condition="C('DEFAULT_LANG') eq 'en-us'">
+	<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<else/>
+	<load href="__TMPL__ThemeFiles/Js/map.js" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+	<script type="text/javascript">
+	var blue_point = "__ROOT__/global/blue_point.png";
+	var red_point = "__ROOT__/global/red_point.png";
+		$(document).ready(function(){
+			 $("input[name='search_api']").bind("click",function(){  
+			 	var api_address = $("input[name='api_address']").val();
+				var city=$("select[name='city_id']").find("option:selected").attr("rel");
+				if ($.trim(api_address) == '') {
+					alert("请输入搜索关键词");
+				}
+				else 
+				{
+					search_api(api_address, city);
+				}
+	        });
+			draw_map('0','0');
+			$("#container_front").hide();
+	        $("#cancel_btn").bind("click",function(){ $("#container_front").hide(); });
+	        $("input[name='chang_api']").bind("click",function(){ 
+	            editMap($("input[name='xpoint']").attr('value'),$("input[name='ypoint']").attr('value'));
+	        });
+			
+			
+		});
+	</script>
+</if>
+<style type="text/css">
+	.cursorp{ cursor:pointer;}
+	
+	td span label{float:left; padding:3px; margin:2px; background:#E6E6E6; cursor:pointer; display:inline-block; }
+    td span label.active{background:#F60; color:#fff;}
+    #container{height:200px; width: 200px; float:left;}  
+    #container_front{width: 600px; height:500px; border: 1px solid #000; position: absolute; top: 10px; background-color: #fff; overflow: hidden;}
+    #container_m{ width: 550px; height: 450px; margin: 0 auto;}
+    #cancel_btn{display: block; width: 600px; height: 18px; line-height: 18px; text-align: right;}
+</style>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA}[ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('CouponRegion/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="180">商圈名称：</td>
+	<td class="tLeft" >
+		<input id="baidu_name" type="text" name="name" class="bLeft"  />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">所属城市：</td>
+	<td class="tLeft" >
+		<select name="city_id">
+			<foreach name="group_city" item="city">
+				<option value="{$city.id}">{$city.name}</option>
+			</foreach>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.PARENT_CATE}：</td>
+	<td class="tLeft" >
+		<select name="pid" class="bLeft" name = "pid" id="pid">
+		<option value="0" <if condition="$vo['pid'] eq 0">selected</if>>{$Think.lang.TOP_CATE}</option>
+		<foreach name="cate_list" item="cate_item" >
+			<option value="{$cate_item.id}" <if condition="$vo['pid'] eq $cate_item['id']">selected</if>>{$cate_item['name']}</option>
+		</foreach>
+		</select>&nbsp;商圈二级分类只针对团购商品
+	</td>
+</tr>
+<if condition="C('DEFAULT_LANG') eq 'en-us'">
+	<tr>
+		<td class="tRight">商圈地址坐标查询地址：</td>
+		<td class="tLeft" >
+			<input type="text" name="api_address" class="bLeft" id="api_address" /> <input type="button" value="开始定位" onclick="loadGeoInfo();" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="tRight">经纬度：</td>
+		<td class="tLeft" >
+			经度：<input type="text" name="xpoint" id="xpoint" class="bLeft" />
+			纬度：<input type="text" name="ypoint" id="ypoint" class="bLeft" />
+		</td>
+	</tr>
+<else/>
+	<tr>
+            <td class="tRight">地图定位:</td>
+            <td class="tLeft">            	
+            	关键词&nbsp;<input type="text" class="textbox" name="api_address" value="" /> 
+				<input type="button" value="查找" class="button" name="search_api" id="search_api" >
+				<div style="height:10px; clear:both;"></div>
+                <div id="container"></div>
+				<div style="height:10px; clear:both;"></div>
+                <script type="text/javascript"></script> 
+                <input type="button" value="手动修改" name="chang_api" id="chang_api">
+                <div style="position:relative; top:-400px;">
+                    <div  id="container_front">
+                        <a href="#" id="cancel_btn">取消</a>
+                        <div id="container_m"></div>
+                    </div>
+                </div>
+				<input type="hidden" name="xpoint" />
+				<input type="hidden" name="ypoint" />
+            </td>
+	</tr>
+</if>
+<tr>
+	<td class="tRight">地图放大倍数：</td>
+	<td class="tLeft" >
+		<input type="text" name="zoom"  class="bLeft" value="16"/> 1-19, 值越大表示放大的越大,默认值是16
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >排序：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$new_sort}"  />
+	</td>
+</tr>
+
+
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

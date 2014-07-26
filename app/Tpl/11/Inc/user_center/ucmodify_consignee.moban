@@ -1,0 +1,165 @@
+{include file="Inc/header.moban" }
+<script type="text/javascript">
+var USER_TOO_SHORT = '{$lang.USER_TOO_SHORT}';
+var PWD_TOO_SHORT = '{$lang.PWD_TOO_SHORT}';
+var PWD_CONFIRM_FAILED = '{$lang.PWD_CONFIRM_FAILED}';
+var EMAIL_FORMAT_ERROR =	'{$lang.EMAIL_FORMAT_ERROR}';
+var NO_SELECT = '{$lang.NO_SELECT}';
+
+function selectRegion(obj,region_id,lvl)
+{
+	var id=obj.value;
+	var origin_html = "<option value='0'>"+NO_SELECT+"</option>";
+	html = origin_html;
+	switch(lvl)
+	{				
+		case 1:	
+			if(id > 0)
+			{
+				var evalStr="regionConf.r"+id+".c";
+				var regionConfs=eval(evalStr);
+				evalStr+=".";
+				for(var key in regionConfs)
+				{
+					html+="<option value='"+eval(evalStr+key+".i")+"'>"+eval(evalStr+key+".n")+"</option>";
+				}
+			}
+
+			$("#region_lv2_"+region_id).html(html);
+			$("#region_lv3_"+region_id).html(origin_html);
+			$("#region_lv4_"+region_id).html(origin_html);
+			break;
+		case 2:
+			if(id > 0)
+			{
+				var evalStr="regionConf.r"+$("#region_lv1_"+region_id).val()+".c.r"+id+".c";
+				var regionConfs=eval(evalStr);
+				evalStr+=".";
+				for(var key in regionConfs)
+				{
+					html+="<option value='"+eval(evalStr+key+".i")+"'>"+eval(evalStr+key+".n")+"</option>";
+				}
+			}
+			
+			$("#region_lv3_"+region_id).html(html);
+			$("#region_lv4_"+region_id).html(origin_html);
+			break;
+		case 3:
+			if(id > 0)
+			{
+				var evalStr="regionConf.r"+$("#region_lv1_"+region_id).val()+".c.r"+$("#region_lv2_"+region_id).val()+".c.r"+id+".c";
+				var regionConfs=eval(evalStr);
+				evalStr+=".";
+				for(var key in regionConfs)
+				{
+					html+="<option value='"+eval(evalStr+key+".i")+"'>"+eval(evalStr+key+".n")+"</option>";
+				}
+			}
+			
+			$("#region_lv4_"+region_id).html(html);
+			break;
+	}
+}
+</script>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="settings-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$page_title}</h2>
+							<ul class="filter">
+								<li {if $current_page eq 'UCMODIFY_INDEX'}class="current"{/if}><a href="<?php echo a_u('UcModify/index') ?>">{$lang.UCMODIFY_INDEX}</a></li>
+								<li {if $current_page eq 'UCMODIFY_AVATAR' }class="current"{/if}><a href="<?php echo a_u('UcModify/avatar') ?>">{$lang.UCMODIFY_AVATAR}</a></li>
+								<li {if $current_page eq 'UCMODIFY_CONSIGNEE' }class="current"{/if}><a href="<?php echo a_u('UcModify/consignee') ?>">{$lang.UCMODIFY_CONSIGNEE}</a></li>
+							</ul>
+						</div>
+						<div class="sect">
+						<script type="text/javascript" src="{$TEMP_PATH}Public/regionConf.js"></script>
+							<form name="modify" action="{$POST_URL}" method="post">
+								<load href='Public/regionConf.js' />
+							<div class="order-check-form has-credit">
+							<div class="consignee-box order-pay-credit">
+								
+								<div class="field consignee">
+									<label for="settings-consignee">{$lang.CONSIGNEE}：</label>
+									<input type="text" size="30" name="consignee" id="delivery-consignee" class="f-input" value="{$consignee_info.consignee}" /><span class="red">*</span>
+								</div>
+								<div class="field region">
+									<label>{$lang.REGION_INFO}：</label>
+									{$lang.REGION_LV1_NAME}：<select name="region_lv1" id="region_lv1_0" onchange="selectRegion(this,0,1);">
+										<option value="0" >{$lang.NO_SELECT}</option>
+										{foreach from="$region_lv1_list" item="region_lv1_item"}
+										<option value="{$region_lv1_item.id}" {if $region_lv1_item['id'] eq $consignee_info['region_lv1']}selected="selected"{/if} >{$region_lv1_item.name}</option>
+										{/foreach}
+									</select>
+									
+									{$lang.REGION_LV2_NAME}：<select name="region_lv2" id="region_lv2_0" onchange="selectRegion(this,0,2);">
+										<option value="0">{$lang.NO_SELECT}</option>
+										{foreach from="$region_lv2_list" item="region_lv2_item"}
+										<option value="{$region_lv2_item.id}" {if $region_lv2_item['id'] eq $consignee_info['region_lv2']}selected="selected"{/if} >{$region_lv2_item.name}</option>
+										{/foreach}
+									</select>
+									
+									{$lang.REGION_LV3_NAME}：<select name="region_lv3" id="region_lv3_0" onchange="selectRegion(this,0,3);">
+										<option value="0" >{$lang.NO_SELECT}</option>		
+										{foreach from="$region_lv3_list" item="region_lv3_item"}
+										<option value="{$region_lv3_item.id}" {if $region_lv3_item['id'] eq $consignee_info['region_lv3']}selected="selected"{/if} >{$region_lv3_item.name}</option>
+										{/foreach}	
+									</select>
+									
+									{$lang.REGION_LV4_NAME}：<select name="region_lv4" id="region_lv4_0" onchange="selectRegion(this,0,4);">
+										<option value="0" >{$lang.NO_SELECT}</option>
+										{foreach from="$region_lv4_list" item="region_lv4_item"}
+										<option value="{$region_lv4_item.id}" {if $region_lv4_item['id'] eq $consignee_info['region_lv4']}selected="selected"{/if} >{$region_lv4_item.name}</option>
+										{/foreach}	
+									</select>
+									<span class="red">*</span>
+								</div>
+								<div class="field address">
+									<label for="delivery-address">{$lang.ADDRESS}：</label>
+									<input type="text" size="30" name="address" id="delivery-address" class="f-input" value="{$consignee_info.address}" /><span class="red">*</span>
+								</div>
+								<div class="field zip">
+									<label for="delivery-zip">{$lang.ZIP}：</label>
+									<input type="text" size="30" name="zip" id="delivery-zip" class="f-input" value="{$consignee_info.zip}"  /><span class="red">*</span>
+								</div>
+								<div class="field fix-phone">
+									<label for="delivery-fax-phone">{$lang.FIX_PHONE}：</label>
+									<input type="text" size="30" name="fix_phone" id="delivery-fix-phone" class="f-input" value="{$consignee_info.fix_phone}" />
+								</div>
+								<div class="field mobile-phone">
+									<label for="delivery-mobile-phone">{$lang.MOBILE_PHONE}：</label>
+									<input type="text" size="30" name="mobile_phone" id="delivery-mobile-phone" class="f-input" value="{$consignee_info.mobile_phone}"  /><span class="red">*</span>
+								</div>
+								<div class="clear"></div>
+                            </div>
+						</div>
+								<div class="clear"></div>
+								<div class="act">
+									<input type="hidden" name="id" value="{$consignee_info.id}" />
+									<input type="hidden" name="m" value="UcModify" />
+									<input type="hidden" name="a" value="doConsignee" />
+									<input type="submit" value="{$lang.XY_CHANGE}" name="commit" id="settings-submit" class="formbutton"/>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

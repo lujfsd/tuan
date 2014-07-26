@@ -1,0 +1,84 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+	var PLEASE_SELECT = '{%NO_SELECT}';
+	function loadLang()
+	{
+				  $.ajax({
+				  url: APP+'?'+VAR_MODULE+'='+CURR_MODULE+'&'+VAR_ACTION+'=getLangFileList&lang='+$("#lang").val(),
+				  cache: false,
+				  success:function(data)
+				  {
+					  if(data!=null)
+					  {
+						  $("#lang_file").empty();
+						  $("#lang_file").empty();
+						  var files = $.evalJSON(data);
+						  for(var i=0;i<files.length;i++)
+						  {
+							  $("#lang_file").append("<option value='"+files[i]+"'>"+files[i]+"</option>");
+						  }
+						  loadLangFile();
+					  }					  
+				  }
+				}); 
+	}
+	function loadLangFile()
+	{
+				  $.ajax({
+					  url: APP+'?'+VAR_MODULE+'='+CURR_MODULE+'&'+VAR_ACTION+'=readLangContent&lang='+$("#lang").val()+'&lang_file='+$("#lang_file").val(),
+					  cache: false,
+					  success:function(data)
+					  {
+						 $("#lang_file_content").val(data);			  
+					  }
+				}); 
+	}
+
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">语言包设置</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Editor/updateLang')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">语言包：</td>
+	<td class="tLeft" >
+		<select name="lang" onchange="loadLang();" id="lang" >
+			<foreach name="langs" item="lang">
+			<option value="{$lang}">{$lang}</option>
+			</foreach>
+		</select>
+		<span style="color:#f30;">修改语言仅修改相应的文字，请勿修改文件格式，以免造成系统异常</span>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">语言包文件：</td>
+	<td class="tLeft" >
+		<select name="lang_file" onchange="loadLangFile();" id="lang_file" >
+		</select>
+	</td>
+</tr> 
+<tr>
+	<td class="tRight" width="120">语言包内容：</td>
+	<td class="tLeft" >
+		<textarea name="lang_file_content" id="lang_file_content" cols=160 rows=30></textarea>
+	</td>
+</tr> 
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> 
+	</div></td>
+</tr>
+</form>
+</table>
+<script type="text/javascript">
+loadLang();
+</script>
+</div>
+</div>

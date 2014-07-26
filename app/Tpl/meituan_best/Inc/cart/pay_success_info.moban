@@ -1,0 +1,68 @@
+						<div class="goods-info">
+							{foreach from=$goods_list item=goods}
+								<a href="{$goods.url}">{$goods.goods_name}</a>&nbsp;
+								<?php echo sprintf($GLOBALS['Ln']['JJ_ALREADY_APPLY'],$this->_var['goods']['buy_count']); ?>
+								{if $goods.complete_time gt 0 and $goods['is_group_fail'] neq 1}，{$lang.JJ_GB_SUCCESS}{/if}。<br>
+							{/foreach}
+						</div>
+						
+						{if $group_bond_count gt 0}
+							<div class="group-bond">
+								<div class="tltle">
+									<h3>
+										<?php echo sprintf($GLOBALS['Ln']['JJ_GET_GROUPBOND'], $this->_var['GROUPBOTH']); ?>
+									</h3>
+									<p>
+										<?php echo sprintf($GLOBALS['Ln']['JJ_USE_GROUPBOND'], $this->_var['GROUPBOTH']); ?>
+									</p>
+								</div>
+								
+								<div class="group-bond-box">
+									{if a_fanweC('IS_SMS') eq 1 and $group_bond_count_no_send gt 0 and $allow_sms eq 1}
+										<p>
+											<?php echo sprintf($GLOBALS['Ln']['JJ_RETRIEVAL_METHOD'], $this->_var['GROUPBOTH']); ?>
+										</p>
+										<div class="item">
+											<strong>{$lang.JJ_CALL_WAVE}</strong>
+											<div>
+												<form method="post">
+													<?php echo sprintf($GLOBALS['Ln']['JJ_PASSWORD_MOBILE'],$this->_var['GROUPBOTH']); ?>
+													<input id="mobile_phone" name="mobile_phone" class="f-input" value="{if $mobile_phone}{$mobile_phone}{else}{$lang.JJ_MOBILE_EMPTY}{/if}">
+													
+													<input class="formbutton" id="sms-submit" value="{$lang.CONFIRM}" type="submit">
+													<input type="hidden" name="m" value="UcGroupBond" />
+													<input type="hidden" name="a" value="order" />
+													<input type="hidden" name="sn" value="{$order_sn}" />
+												</form>
+											</div>
+										</div>
+										<div class="item">
+											<strong>{$lang.JJ_TWO_PRINT}</strong>
+											<div>
+												<?php echo sprintf($GLOBALS['Ln']['JJ_GROUPBOND_PRINT'],$this->_var['GROUPBOTH'],$this->_var['ugb_urlweb'], $this->_var['GROUPBOTH']); ?>
+											</div>
+										</div>
+									{else}
+										<p>
+											<?php echo sprintf($GLOBALS['Ln']['JJ_RECEIVE'], $this->_var['GROUPBOTH']); ?>
+										</p>
+										<div class="item">
+											<strong>{$lang.JJ_ONE_PRINT}</strong>
+											<div>
+												<?php echo sprintf($GLOBALS['Ln']['JJ_GROUPBOND_PRINT'],$this->_var['GROUPBOTH'], $this->_var['ugb_urlweb'], $this->_var['GROUPBOTH']); ?>
+											</div>
+										</div>
+									{/if}
+								</div>
+							</div>
+						{/if}
+						<div class="referrals-box">
+							<strong>{$lang.JJ_INVITE}</strong>
+							<p>
+								<?php echo sprintf($GLOBALS['Ln']['JJ_YOUR_URL'],$this->_var['referralsMoney']); ?>
+							</p>
+							<div>						
+								<input id="share-copy-text" class="f-input" value="{$urlweb}" size="60">
+								<input id="share-copy-button" class="formbutton" value="{$lang.JJ_COPY}" type="button">
+							</div>
+						</div>

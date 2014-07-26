@@ -1,0 +1,39 @@
+{include file="Inc/header.moban"}
+<style type="text/css">
+#articleInfo li{list-style:square;}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="about learn">
+                    <div class="dashboard">
+							{foreach from=$help_center item=help_cate name="help_cate"}
+							{if $help_cate.id eq $article_info.cate_id}
+								{foreach from=$help_cate.list item=article_item}
+								<li  {if $smarty.request.id eq $article_item.id}class="current"{/if}><a href="{$article_item.url}">{$article_item.name_1}</a><span></span></li>
+								{/foreach}
+							{/if}
+						{/foreach}
+						</div>
+				<div class="box" style="clear:both;">
+			<div id="content" class="about">
+                            
+                                    
+					<div class="box-top"></div>
+					<div class="box-content">
+						
+						<div class="sect guide" id="articleInfo">
+							{$article_info.content_1}
+							<div class="blank"></div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		</div>
+		<div id=sidebar>
+			{include file="Inc/common/right.moban"}
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

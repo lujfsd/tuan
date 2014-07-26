@@ -1,0 +1,68 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u('Lottery/index',array('goods_id'=>$goods_id))}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Lottery/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">团购ID：</td>
+	<td class="tLeft" >
+		<input type="text" name="goods_id" class="bLeftRequire" value="{$goods_id}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">抽奖券：</td>
+	<td class="tLeft" >
+    	<input type="text" name="sn" class="bLeftRequire" value="{$vo.sn}"/>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">会员ID：</td>
+	<td class="tLeft" >
+    	<input type="text" name="user_id" class="bLeftRequire" value="{$vo.user_id}"/>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">邀请人ID：</td>
+	<td class="tLeft" >
+    	<input type="text" name="invite_user_id" class="bLeftRequire" value="{$vo.invite_user_id}"/>
+	</td>
+</tr>
+
+
+
+<tr>
+	<td class="tRight">邀请日期：</td>
+	<td class="tLeft" >
+		<input type="text" name="invite_time" id="invite_time" class="bLeft" value="{$vo.invite_time|toDate='Y-m-d H:i'}">
+        <input type="button" name="btn_invite_time" id="btn_invite_time" onclick="return showCalendar('invite_time', '%Y-%m-%d %H:%M', false, false, 'btn_invite_time');" value="{$Think.lang.SELECT}" class="button"/>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">订单编号：</td>
+	<td class="tLeft" >
+    	<input type="text" name="order_id" class="bLeft" value="{$vo.order_id}"/>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div>
+    </td>
+</tr>
+</table>
+</form>
+</div>
+</div>

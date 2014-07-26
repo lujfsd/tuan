@@ -1,0 +1,137 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Js/article.js' />
+<script type="text/javascript">
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var DIY_URL = '{%DIY_URL}';
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Article/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.ARTICLE_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" />
+		<input type="hidden" name="type" value="{$vo.type}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">URL别名：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="u_name" class="bLeft" />
+	</td>
+</tr>
+<tr <if condition="$vo['type'] eq 1">style="display:none;"</if>>
+			<td class="tRight" width="80">{$Think.lang.ARTICLE_CATE}：</td>
+			<td class="tLeft" >
+				<select name="cate_id" class="bLeftRequire">
+				<option value="0" <if condition="$vo['cate_id'] eq 0">selected="selected" </if>>{$Think.lang.NO_CATE_SELECT}</option>
+				<foreach name="cate_list" item="cate_item" >
+					<option value="{$cate_item.id}" <if condition="$vo['cate_id'] eq $cate_item['id']">selected="selected" </if>>{$cate_item[$select_dispname]}</option>
+				</foreach>
+				</select>
+			</td>
+		</tr>
+
+<!-- 
+del by chenfq 2010-05-06
+<tr>
+	<td class="tRight">{$Think.lang.ARTICLE_PREVIEW}：</td>
+	<td class="tLeft" >
+		<input type="file" name="preview" class="bLeft" /> <if condition="$vo['preview'] neq ''"><a href="__ROOT__{$vo.preview}" target="_blank">{%VIEW}</a>&nbsp;&nbsp;<a href="{:u("Article/deletePreview",array('id'=>$vo['id']))}" target="_blank">{%_DELETE_DATA}</a></if>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="80">{$Think.lang.ARTICLE_AUTHOR}：</td>
+	<td class="tLeft" >
+		<input type="text" name="author" class="bLeft" value="{$vo.author}"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="80">{$Think.lang.ARTICLE_BRIEF}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="brief" class="bLeft" cols="50" rows="2" />
+	</td>
+</tr>
+-->
+
+<tr>
+	<td class="tRight" width="80">{$Think.lang.ARTICLE_REF_LINK}：</td>
+	<td class="tLeft" >
+		<input type="text" name="ref_link" class="bLeft" value="{$vo.ref_link}"/>
+	</td>
+</tr>
+
+
+<tr>
+	<td class="tRight" >{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$vo.sort}" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="80">{$Think.lang.SEO_KEYWORD}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="seokeyword" class="bLeft" cols="50" rows="2" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="80">{$Think.lang.SEO_CONTENT}：</td>
+	<td class="tLeft" >
+		<fanwe:textarea name="seocontent" class="bLeft" cols="50" rows="2" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="80">{$Think.lang.ARTICLE_CONTENT}：</td>
+	<td class="tLeft" >
+	<fanwe:editor  name="content" type="KindEditor"  style="width:670px;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+
+<!-- 
+del by chenfq 2010-05-06
+<tr>
+	<td class="tRight">{$Think.lang.ATTACHMENT_LIST}：[<a href="javascript:;" onclick="addUploadList()">+</a>]</td>
+	<td class="tLeft" >
+		<div id="uploadList">
+			<foreach name="upload_list" item="upload_item" >
+				<div style='padding-bottom:5px;'><input type='hidden' name='uploadids[]' class='uploadids' value="{$upload_item['id']}" /><input type='file' name='attachment[]' class='bLeft' style="display:none;" /><input type='text' name='attachment[]' class='bLeft' style="display:none;" /> <a href='<if condition="$upload_item.is_ref eq '1'">{$upload_item.file_path}<else />__ROOT__{$upload_item.file_path}</if>' target='_blank'>下载</a>&nbsp;
+				<foreach name="upload_item['names']" item="names_item" >
+				&nbsp;<input type='text' name='{$names_item.key}' class='bLeft' value="{$names_item.value}" /> ({$names_item.lang_name})
+				</foreach>
+				&nbsp;[<a href='javascript:;' onclick='removeUploadList_ajax(this);'>-</a>]</div>
+			</foreach>
+		</div>
+	</td>
+</tr>
+ -->
+<tr>
+	<td class="tRight">新窗口打开：</td>
+	<td class="tLeft" >
+		<input type="radio" name="target" value="0" id="target_0"  <if condition="$vo['target'] eq 0">checked="checked"</if> /><Lable for="target_0">否</Lable>
+		<input type="radio" name="target" value="1" id="target_1" <if condition="$vo['target'] eq 1">checked="checked"</if> /><Lable for="target_1">是</Lable>
+	</td>
+</tr> 
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" value="{$vo.id}" name="id" id="article_id" />
+	<input type="hidden" name="status" value="1" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

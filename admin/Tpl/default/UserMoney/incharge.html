@@ -1,0 +1,56 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+
+
+<div class="operate">
+<form method='get' action="__APP__">
+				充值单号: <input type="text" name="sn" title="充值单号" class="medium" id="c_sn" value="{:trim($_REQUEST['sn'])}" style="width:90px;" >  
+				会员名称: <input type="text" name="user_name" class="medium"  id="c_user_name" value="{:trim($_REQUEST['user_name'])}"  style="width:90px;" />
+				
+				支付方式: <select name="payment" id="c_payment_id">
+					<option value="">=全部=</option>
+					<foreach name="payment_list" item="payment_item">
+					<option value="{$payment_item.id}" <if condition="$_REQUEST['payment'] eq $payment_item['id']">selected="selected"</if>>{$payment_item.name_1}</option>
+					</foreach>
+				</select>
+			
+<input type="hidden" name="m" value="UserMoney" />
+<input type="hidden" name="a" value="incharge" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+
+</form>
+</div>
+
+
+<!-- 列表显示区域  -->
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="userMoney" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|8%,sn:{%USERMONEY_SN},money|priceFormat:{$Think.lang.MONEY_VALUE},payment_fee|priceFormat:{$Think.lang.PAYMENT_FEE},payment_money|priceFormat:{$Think.lang.PAYMENT_MONEY},create_time|toDate:{$Think.lang.INCHARGE_CREATE_TIME},update_time|toDate:{$Think.lang.INCHARGE_UPDATE_TIME},user_id|getUserName:{$Think.lang.USER_NAME},payment|getPaymentName:{%PAYMENT_NAME}" 
+	actionlist="status|showStatusIncharge=$userMoney['id'],foreverdelIncharge:{$Think.lang._DELETE_DATA}:id" /> 
+</div>
+<!--  分页显示区域 -->
+<div class="page">{$page}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

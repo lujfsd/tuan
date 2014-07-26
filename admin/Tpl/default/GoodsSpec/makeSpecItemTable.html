@@ -1,0 +1,120 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<if condition="count($spec_list) gt 0">
+<div class="spec_type_item" id="spec_table">
+	<table width=100%>
+	<tr>
+		<th>{%SPEC_SN}({%SPEC_SN_TIP})</th>
+		<if condition="$spec_type1">
+		<th>{$spec_type1.name_$DEFAULT_LANG_ID}</th>
+		</if>
+		<if condition="$spec_type2">
+		<th>{$spec_type2.name_$DEFAULT_LANG_ID}</th>
+		</if>
+		<th>{%WEIGHT}</th>
+		<th>{%GOODS_STOCK}</th>
+		<th>{%SHOP_PRICE}</th>
+		<th>{%COST_PRICE}</th>
+		<th>{%USER_PRICE}</th>
+		<th>{%OPERATION} </th>
+	</tr>
+	<foreach name="spec_list" item="spec_item">
+	<tr>
+		<td>
+		<input type="hidden" class="bLeft select_spec_item_id" name="spec_item_id[]" value="{$spec_item.id}"  />
+		<input type="text" class="bLeft" name="spec_item_sn[]" value="{$spec_item.sn}" size=30 />
+		</td>
+		<if condition="$spec_type1">
+		<td>
+		<input type="hidden" name="spec_type1_value_id[]" value="{$spec_item.spec_type1.id}" />
+		{$spec_item.spec_type1.spec_name_$DEFAULT_LANG_ID}
+		</td>
+		</if>
+		<if condition="$spec_type2">
+		<td>
+		<input type="hidden" name="spec_type2_value_id[]" value="{$spec_item.spec_type2.id}" />
+		{$spec_item.spec_type2.spec_name_$DEFAULT_LANG_ID}
+		</td>
+		</if>
+		<td><input type="text" class="bLeft" name="spec_item_weight[]" value="{$spec_item.weight|floatval}" size=3 /></td>
+		<td><input type="text" class="bLeft" name="spec_item_stock[]" value="{$spec_item.stock}" size=3 /></td>
+		<td>{:sprintf(fanweC("BASE_CURRENCY_UNIT"),"")} <input type="text" class="bLeft" name="spec_item_shop_price[]" value="{$spec_item.shop_price|priceVal}" size=10 /></td>
+		<td>{:sprintf(fanweC("BASE_CURRENCY_UNIT"),"")} <input type="text" class="bLeft" name="spec_item_cost_price[]" value="{$spec_item.cost_price|priceVal}" size=10 /></td>
+		<td>
+		<foreach name="spec_item_user_group" item="group_item">
+		<input type="hidden" name="user_group_{$group_item['id']}[]" class="user_group_{$group_item['id']} us_group" value="{$group_item[intval($spec_item['id'])]['price']|priceVal}"  />
+		</foreach>
+		<a href="{:u('GoodsSpec/userPrice')}" class="user_price_trigger">{%USER_PRICE}</a></td>
+		<td><input type="button"  value="{%_DELETE_DATA}" onclick="delSpecItem(this)" /></td>
+	</tr>
+	</foreach>
+	</table>
+
+</div>
+
+
+
+
+
+
+
+<div id="user_price" class="jqmDialog jqmWindow">
+<div class="jqmdTC">{%EDIT_USER_PRICE}</div>
+<div class="jqmdBL"><div class="jqmdBR"><div class="jqmdBC">
+
+<div class="jqmdMSG">
+</div>
+
+</div></div></div>
+<input type="hidden" value="1" id="is_close_user" />
+<input type="button" value="{%CLOSE}" class="jqmdX jqmClose" onclick="$('#is_close_user').val(0);"/>
+<input type="button" value="{%SAVE_DATA}" class="jqmdX jqmClose" />
+</div>
+
+<script type="text/javascript">
+//编辑会员
+var ut = $('#user_price div.jqmdMSG');	  
+$('#user_price').jqm({
+  trigger: 'a.user_price_trigger',
+  url: '@href', /* Extract ajax URL from the 'href' attribute of triggering element */
+  target: ut,
+  modal: true, /* FORCE FOCUS */	
+  onShow:function(h)
+  {						   
+	   h.w.show(100); // hide window	 
+  },
+  onHide: function(h) { 
+  	
+	  if($("#is_close_user").val()==1)
+	  {
+		 var price_boxes = $(".user_price_box");
+		 var user_price = new Array();
+		 for(var i=0;i<price_boxes.length;i++)
+		 {
+			 var group_id = price_boxes[i].id;
+			 group_id = group_id.split("_");
+			 user_price_obj = new Object();
+			 user_price_obj.user_price = price_boxes[i].value;
+			 user_price_obj.user_group_id = group_id[1];
+			 
+			 $(h.t.parentNode).find(".user_group_"+user_price_obj.user_group_id).val(user_price_obj.user_price);
+			 user_price.push(user_price_obj);
+		 }
+		 user_price = $.toJSON(user_price);
+		 
+		 
+		 h.o.remove(); // remove overlay
+	     h.w.hide(100); // hide window	   
+	  }
+	  else
+	  {
+		  $("#is_close_user").val(1);
+		  h.o.remove(); // remove overlay
+	      h.w.hide(100); // hide window	   
+	  }
+       
+  },
+  overlay: 10});
+
+</script>
+</if>

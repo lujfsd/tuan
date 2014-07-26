@@ -1,0 +1,44 @@
+{if $best_coupon_list}	
+<div class="sbox side-text-tip">
+	<div class="sbox-top"></div>
+	<div class="sbox-content cf">
+		<div class="tip">
+			<h2>{$lang.BEST_YOUHUI}</h2>
+			<div class="best_coupon">
+							
+								{foreach from=$best_coupon_list item=coupon}
+								<div>	
+									<a href="{$coupon.url}" title="{$coupon.name}" class="coupon_name">[{$coupon.sname}]{$coupon.name}</a>			
+								</div>
+								{/foreach}
+			</div>
+	
+		</div>
+	</div>
+	<div class="sbox-bottom"></div>
+</div>
+{/if}
+<div class="blank"></div>
+{if $hot_coupon_list}	
+<div class="sbox side-text-tip">
+	<div class="sbox-top"></div>
+	<div class="sbox-content cf">
+		<div class="tip">
+			<h2>{$lang.HOT_YOUHUI}</h2>
+			<div class="hot_coupon">
+							
+								{foreach from=$hot_coupon_list item=coupon}
+								<div>																	
+									<a href="{$coupon.url}" title="{$coupon.name}"><img height="90" width="150" src="{$CND_URL}/{$coupon.icon}" alt="{$coupon.name}" /></a>
+									<br />
+									<a href="{$coupon.url}" title="{$coupon.name}" class="coupon_name">[{$coupon.sname}]{$coupon.name}</a>			
+								</div>
+								{/foreach}
+			</div>
+	
+		</div>
+	</div>
+	<div class="sbox-bottom"></div>
+</div>
+{/if}
+

@@ -1,0 +1,58 @@
+{include file="Inc/header.moban"}
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/forum.css" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div class="forum-top"></div>
+		<div class="forum-content">
+			<div class="head">
+				<h2>{$lang.FORUM_BOARD}&nbsp;&nbsp;<span><a href="{function name="a_u" a="Forum/index"}" style="font-size:14px">返回列表</a></span></h2>
+			</div>
+			<div class="sect">
+				
+				<div class="pl" id="REPLY-BOX" name="REPLY-BOX">
+					{if $smarty.session.user_id}
+					<form action="{$POST_URL}" method="post"  id="forum-form" name="forum">
+					<table class="plh">
+						<tr>
+							<td class="pls">
+								<div class="avatar">
+									<img src="{$CND_URL}/{if $post_user_face}{$post_user_face}{else}{$TMPL_PATH}Public/images/forum/noavatar_middle.gif{/if}" width="120" height="120" />
+								</div>
+							</td>
+							<td class="plc">
+								<div class="blank"></div>
+								{$lang.MESSAGE_TITLE} <input type="text" class="f-input" name="tg_title" id="tg_title" style="width:60%" />
+								<div class="blank"></div>
+								<script type='text/javascript'  src='{$__ROOT__}/global/kindeditor/kindeditor.js'></script>
+								<script type="text/javascript" src="{$__ROOT__}/global/kindeditor/lang/zh_CN.js"></script>
+								  <script type='text/javascript'>
+									    var editor;
+									    KindEditor.ready(function(K){
+									    editor= K.create("#tg_content",{uploadJson : ROOT_PATH + '/index.php?m=FileUpload&a=doUpload',allowFileManager : false,resizeMode : 0,items : ['fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist','insertunorderedlist', 'emoticons', 'image', 'link']});
+									    });
+								  </script>
+									<textarea id='tg_content' name='tg_content' style='width:100%;height:230px;' ></textarea>
+									<div class="blank"></div>
+									<p class="commit">
+										<input type="hidden" name="m" value="Forum" />
+										<input type="hidden" name="a" value="insert" />
+										<input type="hidden" name="pid" value="0" />
+										<input type="submit" value="{$lang.JJ_SUBMIT}" name="commit" class="formbutton"/>
+									</p>
+								<div class="blank"></div>
+							</td>
+						</tr>
+					</table>
+					</form>
+					{else}
+						<div class="notice">
+						请先<a href="{function name="a_u" a="User/login"}">登录</a>或<a href={function name="a_u" a="User/register"}"">注册</a>再回复
+						</div> 					
+					{/if}
+				</div>
+			</div>
+		</div>
+		<div class="forum-bottom"></div>
+	</div>
+</div>
+{include file="Inc/footer.moban"}

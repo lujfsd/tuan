@@ -1,0 +1,12 @@
+<div class="more"><span>{$lang.MORE_GROUP_INFO}{$HTTP_URL}</span></div>
+<div class="sub-nav">
+<a href="./m.php?s={$s}"><strong>{$lang.TODAY_GROUP}</strong></a><span>|</span><a href="./m.php?m=Goods&a=other&s={$s}">{$lang.SAME_GROUP}</a><span>|</span><a href="./m.php?m=Coupon&a=index&s={$s}">{$CFG.GROUPBOTH}{$lang.GROUPBOND_VERYFY}</a><span>|</span>
+	{if $user_info.id neq 0}
+		<span class="s-nav"><a href="m.php?m=User&a=doLoginOut"}">{$lang.LOGOUT}</a> </span>
+	{else}
+		<span class="s-nav"><a href="m.php?m=User&a=login&s={$s}">{$lang.LOGIN}</a> </span>
+	{/if}
+</div>
+</div>
+</body>
+</html>

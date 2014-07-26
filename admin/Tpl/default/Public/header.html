@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$SHOP_NAME}团购管理系统</title>
+<load href='__TMPL__ThemeFiles/Css/style.css' />
+<load href="__TMPL__ThemeFiles/Js/Base.js" />
+<load href="__TMPL__ThemeFiles/Js/prototype.js" />
+<load href="__TMPL__ThemeFiles/Js/mootools.js" />
+<load href="__TMPL__ThemeFiles/Js/Ajax/ThinkAjax.js" />
+<load href="__TMPL__ThemeFiles/Js/common.js" />
+<load href="__TMPL__ThemeFiles/Js/Util/ImageLoader.js" />
+<script type='text/javascript' charset='utf-8' src='__TMPL__ThemeFiles/Js/kindeditor/kindeditor.js'></script>
+<script type='text/javascript' charset='utf-8' src='__TMPL__ThemeFiles/Js/kindeditor/lang/zh_CN.js'></script>
+<script language="JavaScript">
+<!--
+//指定当前组模块URL地址 
+var URL = '__URL__';
+var ROOT_PATH = '__ROOT__';
+var admin_file = '{:fanweC("ADMIN_FILE_NAME")}';
+var APP	 =	 '__APP__';
+var PUBLIC = '__TMPL__ThemeFiles';
+ThinkAjax.image = [	 '__TMPL__ThemeFiles/Images/loading2.gif', '__TMPL__ThemeFiles/Images/ok.gif','__TMPL__ThemeFiles/Images/update.gif' ]
+ImageLoader.add("__TMPL__ThemeFiles/Images/bgline.gif","__TMPL__ThemeFiles/Images/bgcolor.gif","__TMPL__ThemeFiles/Images/titlebg.gif");
+ImageLoader.startLoad();
+var VAR_MODULE = '{:c('VAR_MODULE')}';
+var VAR_ACTION = '{:c('VAR_ACTION')}';
+var CURR_MODULE = '{$module_name}';
+//-->
+</script>
+<script language="JavaScript">
+//定义JS中使用的语言变量
+var VIEW = '{$Think.lang.VIEW}';
+var CONFIRM_DELETE = '{$Think.lang.CONFIRM_DELETE}';
+var CONFIRM_DELETE_IMAGE = '{$Think.lang.CONFIRM_DELETE_IMAGE}';
+var NO_SELECT = '{$Think.lang.NO_SELECT}';
+var CHOOSE_RECYCLE_ITEM = '{$Think.lang.CHOOSE_RECYCLE_ITEM}';
+var SELECT_EDIT_ITEM = '{$Think.lang.SELECT_EDIT_ITEM}';
+var SELECT_DEL_ITEM	=	'{$Think.lang.SELECT_DEL_ITEM}';
+var CONFIRM_DELETE_FILE = '{$Think.lang.CONFIRM_DELETE_FILE}';
+var CONFIRM_FOREVER_DELETE = '{$Think.lang.CONFIRM_FOREVER_DELETE}';
+var CONFIRM_DELETE_USER_DATA = '{$Think.lang.CONFIRM_DELETE_USER_DATA}';
+var CONFIRM_RESTORE = '{$Think.lang.CONFIRM_RESTORE}';
+var ATTR_PRICE	=	'{%ATTR_PRICE}';
+var ATTR_STOCK	=	'{%ATTR_STOCK}';
+
+//ThinkAjax.send(ROOT_PATH+'/services/ajax.php?run=autoSendMail','',doDelete);
+//ThinkAjax.send(ROOT_PATH+'/services/ajax.php?run=autoSend','',doDelete);
+</script>
+</head>
+
+<body onload="loadBar(0)">
+
+<div id="loader" >{$Think.lang.PAGE_LOADING}</div>

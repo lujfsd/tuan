@@ -1,0 +1,142 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+<form method='post' action="{:u($module_name.'/index')}">
+<div class="operate" >
+<fanwe:imageBtn name="delete" value="{$Think.lang._DELETE_DATA}" click="foreverdel()" style="impBtn hMargin fLeft shadow" />
+<input type="button" name="send" value="发放" class="add imgButton" onclick="sendLottery()" />
+<input type="button" name="clear" value="取消" class="edit imgButton" onclick="clearLottery()"/>
+<input type="button" name="sendAll" value="全部发放" class="sendemail imgButton" onclick="sendLotteryAll()"/>
+<input type="button" name="clearAll" value="全部取消" class="sendemail imgButton" onclick="clearLotteryAll()"/>
+<input type="button" name="empty" value="清空" class="edit imgButton" onclick="emptyData()"/>
+<!-- 查询区域 -->
+<select name="index" id="index" style="width:150px;">
+	<option value="0">中奖项目</value>
+    <foreach name="lotteryItems" item="litem">
+    <option value="{$litem.index}" <if condition="$litem['index'] eq $index">selected</if>>{$litem.name}</value>
+    </foreach>
+</select>
+<select name="status">
+	<option value="-1" <if condition="$status eq -1 ">selected</if>>=发放状态=</value>
+	<option value="0" <if condition="$status eq 0">selected</if>>未发放</option>
+    <option value="1" <if condition="$status eq 1">selected</if>>已发放</option>
+</select>
+<input type="text" name="user_name" value="{$user_name}" class="medium"  style="width:100px;">
+<input type="hidden" name="SEARCH_TYPE" value="like" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+
+
+</div>
+<!-- 高级查询区域 -->
+
+</form>
+
+<!-- 功能操作区域结束 -->
+
+<!-- 列表显示区域  -->
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="lottery" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|6%,lottery_name:活动名称,item_name:中奖项目,user_name:中奖用户,create_time|toDate:中奖时间,update_time|toDate:发放时间"
+	actionlist="status|getLotteryUserStatus=$lottery['id'],foreverdel:{$Think.lang._DELETE_DATA}:id" /> 
+</div>
+<!--  分页显示区域 -->
+<div class="page">{$page}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+<script type="text/javascript">
+function updateLotteryUserStatus(id,obj)
+{
+	if (window.confirm("你确定要进行此操作吗？"))
+	{
+		$.ajax({
+			url: APP+"?"+VAR_MODULE+"=LotteryUser&"+VAR_ACTION+"=updateLotteryUserStatus&id="+id,
+			cache: false,
+			dataType:"json",
+			success:function(data)
+			{
+				$(obj).html(data.html);
+				$(obj).css({"color":data.color});
+				$(obj).parent().prev().html(data.date);
+			}
+		});
+	}
+}
+
+function sendLottery()
+{
+	var keyValue = getSelectCheckboxValues();
+	
+	if (!keyValue)
+	{
+		alert("请选择发放奖品的项");
+		return false;
+	}
+
+	if (window.confirm("你确定要发放奖品吗？"))
+	{
+		location.href="{:u('LotteryUser/send')}ids="+keyValue;
+	}
+}
+
+function sendLotteryAll()
+{
+	if (window.confirm("你确定要发放所有奖品吗？"))
+	{
+		location.href="{:u('LotteryUser/sendAll')}";
+	}
+}
+
+function clearLottery()
+{
+	var keyValue = getSelectCheckboxValues();
+	
+	if (!keyValue)
+	{
+		alert("请选择取消奖品的项");
+		return false;
+	}
+
+	if (window.confirm("你确定要取消奖品吗？"))
+	{
+		location.href="{:u('LotteryUser/clear')}ids="+keyValue;
+	}
+}
+
+function clearLotteryAll()
+{
+	if (window.confirm("你确定要取消所有奖品吗？"))
+	{
+		location.href="{:u('LotteryUser/clearAll')}";
+	}
+}
+
+function emptyData()
+{
+	if (window.confirm("你确定要清空所有奖品吗？"))
+	{
+		location.href="{:u('LotteryUser/emptyData')}";
+	}
+}
+</script>
+

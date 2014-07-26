@@ -1,0 +1,208 @@
+{include file="Inc/header.moban"}
+<style>
+#content .field{ width:95%}
+#content .field .f-input{width:160px; margin-right:8px;}
+</style>
+<script type="text/javascript">
+	function lottery_click(){
+		var mobile = $.trim($("#lottery-subscribe-mobile").val());
+		var goods_id = $.trim($("#goods_id").val());
+		if(!$.checkMobilePhone(mobile))
+		{
+			alert(LANG.JS_ELEVEN_MOBILE_EMPTY);
+			return false;
+		}
+		
+		var query = new Object();
+		query.run = "smsLottery";
+		query.mobile = mobile;
+		query.goods_id = goods_id;
+		//alert('services/ajax.php?run=smsLottery&mobile=' + mobile + '&goods_id='+ goods_id);
+		$.ajax({
+			url: "services/ajax.php",
+			data:query,
+			cache:false,
+			dataType:"json",
+			success:function(data)
+			{
+				if(data.type == 0)
+				{
+					alert(data.message);
+				}
+				else if(data.type == 3)
+				{
+					alert('请5分钟后再试!');
+				}
+				else
+				{
+					alert('短信已经发送,请查收!');
+				}
+				return false;
+			}
+		});
+		return false;
+	}	
+	
+	
+function lottery_done2(){
+	$("#lottery_done_btn2").attr("disabled",true);
+	var query = new Object();
+
+	query.m = "Lottery";
+	query.a = "done";
+		
+	query.goods_id = $.trim($("#goods_id").val());
+	query.mobile_phone2 = $.trim($("#lottery-subscribe-mobile2").val());	
+	
+	var url = "services/cart.php";
+	
+	$.ajax({
+		url: url,
+		cache: false,
+		type: "POST",
+		data: query,
+		dataType:"json",
+		success:function(data)
+		{
+			var rs = data;
+			if (rs.status == false){
+				alert(rs.error);
+				$("#lottery_done_btn").attr("disabled",false);
+			}else{
+				var url = "index.php?m=Order&a=pay&pay=1&id=" + rs.order_id+"&accountpay_str=" + rs.accountpay_str + "&ecvpay_str=" + rs.ecvpay_str;
+				if (rs.money_status == 2){
+					url = "index.php?m=Lottery&a=step2&id=" + rs.goods_id;
+				}
+				location.href = url; 
+			}							
+		},
+		error:function(a,b,c)
+		{
+			alert(a.responseText);
+		}
+	});
+	
+	$("#lottery_done_btn2").attr("disabled",false);
+}	
+	
+function lottery_done(){
+	$("#lottery_done_btn").attr("disabled",true);
+	var query = new Object();
+
+	query.m = "Lottery";
+	query.a = "done";
+	
+
+	query.code = $.trim($("#lottery-subscribe-verify").val());
+	if (query.code == ''){
+		alert('验证码不能为空！');
+		return false;
+	}
+		
+	query.goods_id = $.trim($("#goods_id").val());
+	
+	var url = "services/cart.php";
+	
+	$.ajax({
+		url: url,
+		cache: false,
+		type: "POST",
+		data: query,
+		dataType:"json",
+		success:function(data)
+		{
+			var rs = data;
+			if (rs.status == false){
+				alert(rs.error);
+				$("#lottery_done_btn").attr("disabled",false);
+			}else{
+				var url = "index.php?m=Order&a=pay&pay=1&id=" + rs.order_id+"&accountpay_str=" + rs.accountpay_str + "&ecvpay_str=" + rs.ecvpay_str;
+				if (rs.money_status == 2){
+					url = "index.php?m=Lottery&a=step2&id=" + rs.goods_id;
+				}
+				location.href = url; 
+			}							
+		},
+		error:function(a,b,c)
+		{
+			alert(a.responseText);
+		}
+	});
+	
+	$("#lottery_done_btn").attr("disabled",false);
+}	
+</script>
+<style>
+<!--
+#content .field label{font-weight:bold}
+#content .field label.had{ width:270px; height:auto;}
+-->
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals-n"  class="cf">
+			<div id="content">
+			<div id="g_recent" class="box"  >
+				<div class="box">
+					<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head">
+								<h2><img src="{$TMPL_PATH}/Public/images/yan-1.jpg" /></h2>
+							</div>
+							<div class="sect">
+								<div style="width:96%; margin:0px auto; text-align:center">{$goods.name_1}</div>
+								<div class="blank"></div>
+								<div class="blank"></div>
+								<div class="item" style="width:94%; margin:0px auto;">
+								
+								<form name="lottery-from1" id="lottery-from1">
+									{if $mobile_phone}
+										<div class="field">
+											<label class="had">您的手机号码已经于上次活动中验证过:<br>(不需要再验证)</label><input id="lottery-subscribe-mobile2" name="mobile_phone2" readonly type="text" class="f-input" value="{$mobile_phone}" />
+											<input id="lottery_done_btn2" onclick ="return lottery_done2()" type="button" value="直接确认" class="formbutton"/>
+											<div class="blank"></div>
+										</div>
+										
+										<div class="field">
+											<label class="had">若您需要更改为新的手机号,请重新验证:</label><input id="lottery-subscribe-mobile" name="mobile_phone" type="text" class="f-input" />
+											<input onclick ="return lottery_click()" type="button" value="发送认证码" class="formbutton"/>
+											<div class="blank"></div>
+										</div>
+										<div class="field">
+											<label class="had">{$lang.XY_VERIFY}</label><input id="lottery-subscribe-verify" name="lottery-subscribe-verify" type="text" class="f-input" />
+											<input id="lottery_done_btn" onclick ="return lottery_done()" type="button" value="确认"  class="formbutton">
+										</div>										
+									{else}
+										<div class="field">
+											<input id="lottery-subscribe-mobile2" name="mobile_phone2" readonly type="hidden" class="f-input" value="" />
+											
+											<label>{$lang.XY_MOBILE}</label><input id="lottery-subscribe-mobile" name="mobile_phone" type="text" class="f-input" />
+											<input onclick ="return lottery_click()" type="button" value="发送认证码" class="formbutton"/>
+											<div class="hint" >{$lang.XY_MOBILE_HIT}</div>
+										</div>
+										<div class="field">
+											<label>{$lang.XY_VERIFY}</label><input id="lottery-subscribe-verify" name="lottery-subscribe-verify" type="text" class="f-input" />
+											<input id="lottery_done_btn" onclick ="return lottery_done()" type="button" value="下一步"  class="formbutton">
+										</div>									
+									{/if}
+									
+									<input id="goods_id" name="goods_id" type="hidden" value = {$goods.id} >
+									<div class="blank"></div>
+								</form>
+								
+								
+								</div>
+							</div>
+						</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div></div>
+			<div id="sidebar">
+				{include file="Inc/side/side_notice.moban"}
+				{include file="Inc/side/side_aboutus.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

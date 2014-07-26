@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>导出商品数据</title>
+</head>
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/calendar.php?lang=zh-cn" ></script>
+<link rel="stylesheet" type="text/css" href="{$TMPL_PATH}Public/js/calendar/calendar.css" />
+<body>
+<form method="post" action="{$POST_URL}">
+	开始时间：<input type="text" name="starttime" id="starttime" onfocus="this.blur();" onclick="return showCalendar('starttime', '%Y-%m-%d', false, false, 'selbtn1');"/><input name="selbtn1" type="button" id="selbtn1" class="formbutton" onclick="return showCalendar('starttime', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.XY_SELECT}"/><br>
+	结束时间：<input type="text" name="endtime" id="endtime"  onfocus="this.blur();" onclick="return showCalendar('endtime', '%Y-%m-%d', false, false, 'selbtn2');" /><input name="selbtn2" type="button" id="selbtn2" class="formbutton" onclick="return showCalendar('endtime', '%Y-%m-%d', false, false, 'selbtn2');" value="{$lang.XY_SELECT}"/><br>
+	导出密码：<input type="text" name="passwordx" /><br>
+	<input type="submit" value="导出"/>
+	<input type="hidden" name="m" value="goods" />
+	<input type="hidden" name="a" value="export" />
+	<input type="hidden" name="act" value="doexport" />
+</form>
+</body>
+</html>

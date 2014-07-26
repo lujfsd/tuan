@@ -1,0 +1,211 @@
+{include file="Inc/header.moban" }
+<style type="text/css">
+#order_info{width:100%;background:#ccc;border-spacing:1px; border-collapse:separate;table-layout:fixed;}
+#order_info td{padding:6px;text-align:left;background:#f1f1f1;}
+#order_info .ltd{width:100px;}
+#order_info .rtd{background:#fff;}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}		
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_ORDER_INFO}</h2>
+						</div>
+						<div class="sect" style="padding-bottom:20px;">
+							<table cellspacing="1" cellpadding="0" border="0" id="order_info">
+								<tr>
+									<td class="ltd">{$lang.ORDER_SN}：</td>
+									<td colspan="3" class="rtd">{$order_info.sn}</td>
+								</tr>
+								<tr>
+									<td>{$lang.XY_GROUP_STATUS}</td>
+									<td colspan="3" class="rtd">{$order_info.order_status_format}</td>
+								</tr>
+								<tr>
+									<td>{$lang.PAYMENT_STATUS}：</td>
+									<td colspan="3" class="rtd">
+									{if $order_info.order_total_price gt 0}
+										{$order_info.money_status_format}
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										{$order_info.payment.name_1}
+										{if $order_info.money_status lt 2}
+											{$lang.PAY_AMOUNT}：{function name="a_formatPrice" a="$order_info.total_price_less|priceVal"}
+											&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo a_u("Order/pay","id-".$this->_var['order_info']['id']);?>">{$lang.PAY_NOW}</a>
+										{/if}
+										{if $order_info.money_status neq 2}
+											&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo a_u("UcOrder/modifyPayment","id-".$this->_var['order_info']['id']);?>">{$lang.MODIFY_PAYMENT}</a>
+										{/if}
+									{else}
+									{$lang.XY_FREE}
+									{/if}
+									</td>
+								</tr>
+								<tr>
+									<td>{$lang.ORDER_CREATE_TIME}：</td>
+									<td class="rtd">{$order_info.create_time_format}</td>
+									<td class="ltd">{$lang.ORDER_UPDATE_TIME}：</td>
+									<td class="rtd">{$order_info.update_time_format}</td>
+								</tr>
+								<tr>
+									<td colspan="4" class="rtd">
+										<table id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+											<tr>
+												<th style="width:200px;">{$lang.XY_GROUP_PROJECT}</th>
+												<th width="60">{$lang.XY_DEPOSIT}</th>
+												<th width="60">{$lang.UNIT_SCORE}</th>
+												<th width="70">{$lang.XY_ORDER_NUNBER}</th>
+												<th width="60">{$lang.XY_TOTAL_DEPOSIT}</th>
+												<th width="70">{$lang.TOTAL_SCORE}</th>
+											</tr>
+											{foreach from="$order_goods_list" item="goods_item" name="goods_item"}
+											<tr {if $smarty.foreach.goods_item.index mod 2 eq 1}class="alt"{/if}>
+												<td style="text-align:left;">
+													<a href="{$goods_item.url}">{$goods_item.data_name}</a>
+												</td>
+												<td>
+												{if $goods_item.data_price gt 0}
+												{$goods_item.data_price_format}
+												{else}
+												{$lang.XY_FREE}
+												{/if}
+												</td>
+												<td>{$goods_item.data_score}</td>
+												<td>{$goods_item.number}</td>
+												<td>
+												{if $goods_item.data_total_price gt 0}
+												{$goods_item.data_total_price_format}
+												{else}
+												{$lang.XY_FREE}
+												{/if}
+												</td>
+												<td>{$goods_item.data_total_score}</td>
+											</tr>
+											{if $goods_item.attr}
+											<tr {if $smarty.foreach.goods_item.index mod 2 eq 1}class="alt"{/if}>
+												<td style="text-align:left;" colspan="6">
+													{$lang.XY_GOODS_ATTR}<?php echo str_replace("<br />","　",nl2br($this->_var['goods_item']["attr"])); ?>
+												</td>
+											</tr>
+											{/if}
+											{/foreach}
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" class="rtd">
+										<p class="choose-type">{$lang.XY_TOTAL_PRICES}<span class="red">{$order_info.order_all_price_format}</span></p>
+										{if $order_info.order_all_price gt 0}
+										<div style="text-align:right; line-height:24px;">
+										{$lang.XY_TOTAL_G_PRICES}{$order_info.total_price_format} <br />	
+										{if $order_info.delivery_fee gt 0}
+										+ {$lang.DELIVERY_FEE}：{$order_info.delivery_fee_format}<br />
+										{/if}
+										{if $order_info.protect_fee gt 0}
+										+ {$lang.PROTECT_FEE}：{$order_info.protect_fee_format} <br />	
+										{/if}
+										+ {$lang.PAYMENT_FEE}：{$order_info.payment_fee_format} <br />
+										{if $order_info.tax eq 1}
+										+ {$lang.TAX_MONEY}：{$order_info.tax_money_format} <br />	
+										{/if}
+										{if $order_info.discount gt 0}
+										- {$lang.XY_RANK_DISCOUNT}{$order_info.discount_price_format} <br />	
+										{/if}
+										= {$lang.XY_MUSE_TOTAL_PAY}<span style="color:#a10000;">{$order_info.order_total_price_format}</span> <br/>
+										{if $order_info.ecv_money  gt 0}
+										- {$lang.XY_VOUCHER}{$order_info.ecv_money_format} <br />	
+										{/if}
+										- {$lang.PAID_AMOUNT}:{$order_info.order_incharge_format}<br />
+										= {$lang.XY_WAIT_MONEY}（{$order_info.payment.name_1}）:<span class="red">{$order_info.total_price_pay_format}</span>
+										{/if}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="head" id="consult-form-head" name="consult-form-head" style="margin:0;">
+							<h2 name="OrderMessage" id="OrderMessage">{$lang.XY_ORDER_MSG}</h2>
+						</div>
+						<div id="consult">
+						<div class="sect consult-list">
+							<ul class="list">
+								{foreach from="$message_list" item="message_item" name="message_item"}
+								<li {if $smarty.foreach.message_item.index mod 2 eq 0} class="alt"{/if} id="consult-entry-{$message_item.id}" name="consult-entry-{$message_item.id}">
+									<div class="item">
+										<p class="user"><strong>{$message_item.user_name}</strong><span>{$message_item.create_time_format}</span></p>
+										<div class="clear"></div>
+										<p class="text">{$message_item.content}</p>
+										{if $message_item.admin_reply.id neq 0}
+										<p class="reply">
+										<strong>{$lang.XY_REPLY}</strong>{$message_item.admin_reply.content}</p>
+										{/if}
+									</div>
+								</li>
+								{/foreach}
+							</ul>
+							<div class="blank"></div>
+							<form name="message" action="{$POST_URL}" id="consult-add-form" method="post" />
+							<table cellspacing="1" cellpadding="0" border="0" id="order_info">
+								<tr>
+									<td class="ltd">{$lang.XY_MSG_TYPE}</td>
+									<td class="rtd">
+										<label><input type="radio" name="rec_module" value="Order" checked="checked" />{$lang.XY_MSG_TYPE_1}</label>
+										{if $CFG.ALLOW_TK eq 1}
+										{if $order_info.order_all_price gt 0}
+										&nbsp;&nbsp;&nbsp;
+										<label><input type="radio" name="rec_module" value="OrderReConsignment" />{$lang.XY_MSG_TYPE_2}</label>
+										{/if}
+										{/if}
+										&nbsp;&nbsp;&nbsp;
+										<label><input type="radio" name="rec_module" value="Payment" />{$lang.XY_MSG_TYPE_4}</label>
+									</td>
+								</tr>
+								<tr>
+									<td>{$lang.XY_MSG_CONTENT}</td>
+									<td class="rtd">
+										<textarea class="f-textarea" cols="60" rows="5" name="content"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td class="rtd commit">
+										<input type="hidden" name="rec_id" value="{$rec_id}" />
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="add" />
+										<input type="submit" value="{$lang.XY_OK_TOSUBMIT}" name="commit" class="formbutton"/>
+									</td>
+								</tr>
+							</table>
+							</form>
+						</div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h3 class="first">{$lang.XY_WHAY_NOT_GROUPBOTH}{$CFG.GROUPBOTH}？</h3>
+							<p>{function name="sprintf" a=$lang.XY_WHAY_NOT_GROUPBOTH_MSG b=$CFG.GROUPBOTH}</p>
+							<h3>{$lang.XY_WHAT_IS_EXPIRED_ORDER}</h3>
+							<p>{$lang.XY_WHAT_IS_EXPIRED_ORDER_MSG}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

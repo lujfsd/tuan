@@ -1,0 +1,113 @@
+{include file="Inc/header.moban"}
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/coupon.js"></script>
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/coupon.css" />
+<div id="bdw" style="background:none;" >
+	<div id="bd" class="cf">
+		<div class="blank"></div>
+		<div>
+			<div id="content">
+				<div id="dashboard" class="dashboard" style="padding-top:0px; bottom:-1px;">
+					<ul>
+						   <li class="current m_ct" style="font-size:12px; "><a href="{function name="a_U" value="Youhui/index"}" style="_padding-top:10px; _height:26px;"><img src='{$CND_URL}/{$TMPL_PATH}/Public/images/m-normal.png' align="absmiddle" />&nbsp;{$lang.YOUHUI_CT_MODEL}</a><span></span></li>
+      					   <li class="m_dt" style="font-size:12px;"><a href="{function name="a_U" value="Youhui/ditu"}"  style="_padding-top:10px; _height:26px;"><img src='{$CND_URL}/{$TMPL_PATH}/Public/images/m-map.png' align="absmiddle" />&nbsp;{$lang.YOUHUI_DT_MODEL}</a><span></span></li>
+					</ul>
+				</div>
+				
+				<div class="box">
+					<div class="">
+						<div class="clear"></div>
+						
+						<div class="coupon_box cf">	
+							<span class="coupon_title">[{$coupon.supplier_name}]{$coupon.name}</span>
+							<span class="coupon_pub_time">{$lang.YOUHUI_PUB_TIME}：{function name="a_toDate" value=$coupon.create_time format="Y-m-d"}</span>
+							<span class="func_row">
+								<a href="{$coupon.url}" class="coupon_print" target="_blank">{$lang.YOUHUI_PRINT}</a>
+								{if $coupon.is_sms eq 1}
+								<a class="coupon_sms" href="javascript:void(0);" rel="{$coupon.id}" >{$lang.YOUHUI_SMS_DOWN}</a>
+								{/if}
+							</span>
+							<div class="blank"></div>
+							<div class="img_box">
+								<img src="{$CND_URL}/{$coupon.img}" alt="{$coupon.name}" />
+							</div>
+							<div class="blank"></div>
+							<span class="func_row">
+								<a href="{$coupon.url}" class="coupon_print" target="_blank">{$lang.YOUHUI_PRINT}</a>
+								{if $coupon.is_sms eq 1}
+								<a class="coupon_sms" href="javascript:void(0);" rel="{$coupon.id}" >{$lang.YOUHUI_SMS_DOWN}</a>
+								{/if}
+							</span>
+							<div class="blank"></div>
+							<div class="coupon_info">
+								<table>
+					
+									<tr>
+										<td class="tdtitle">{$lang.YOUHUI_SN}</td>
+										<td>{$coupon.sn}</td>
+										<td class="tdtitle">{$lang.YOUHUI_SUPPLIER_NAME}</td>
+										<td>{$coupon.supplier_name}</td>
+									</tr>
+									<tr>
+										<td class="tdtitle">{$lang.YOUHUI_COUNT}</td>
+										<td>{$coupon.count}</td>
+										<td class="tdtitle">{$lang.YOUHUI_END_TIME}</td>
+										<td>{if $coupon.end_time eq 0}{$lang.YOUHUI_NO_LIMIT}{else}{function name="a_toDate" value=$coupon.end_time format="Y-m-d"}{/if}</td>
+									</tr>
+									<tr>
+										<td colspan="4" class="tdtitle">{$lang.YOUHUI_CONTENT}</td>
+
+									</tr>
+									<tr>
+										<td colspan="4">{function name="nl2br" value=$coupon.content}</td>
+
+									</tr>
+								</table>
+							</div>
+							
+							<div class="blank"></div>
+							<div class="coupon_info">
+								<table>
+									<tr>
+										<th>{$lang.SUPPORT_DEPART}</td>
+
+									</tr>
+									{foreach from=$depart_list item=depart key=key}
+									<tr>
+										<td><?php echo intval($this->_var['key']+1); ?>.{$depart.depart_name}
+										<span class="depart_address">{$depart.address}</span> &nbsp;&nbsp;{$depart.tel}
+										</td>
+										
+									</tr>
+									{/foreach}
+								</table>
+							</div>
+							
+						</div>
+						
+					</div>
+				</div>
+			
+			</div>
+			<div class="coupon_right" style="width:230px">
+				{include file="Inc/side/side_youhui.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+
+<!--短信订阅的box-->
+<div class="coupon_sms_box">
+	<dl>
+		<dt><a href="javascript:;" class="close">{$lang.CLOSE}</a></dt>
+		<dd>
+			<div class="coupon_sms_form">
+
+			</div>
+		</dd>
+	</dl>
+</div>
+
+<!--end 短信订阅box-->
+{include file="Inc/footer.moban"}

@@ -1,0 +1,47 @@
+{include file="Inc/header.moban"}
+<style>
+#content .field{ width:95%; text-align:center;}
+#content .field .f-input{width:160px; margin-right:8px;}
+#content h1 {
+    font-family: '黑体',arial,sans-serif;
+    font-size: 22px;
+    line-height: 1.2;
+    padding: 0 50px 20px;
+}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals-n"  class="cf">
+			<div id="content">
+			<div class="box"  >
+				<div class="box">
+					<div class="box-top"></div>
+					
+						<div class="box-content">
+							<div class="head">
+								<h2><img src="{$TMPL_PATH}/Public/images/yan-2.jpg" /></h2>
+							</div>
+							<div class="sect">
+								<h1>感谢您参加{$SHOP_NAME}“{$goods.name_1}”活动！<a href="index.php?m=Lottery&a=view&id={$goods.id}">查看我的抽奖号</a></h1>
+								<div class="blank"></div>
+								<div class="blank"></div>
+								<div class="item" style="width:90%; margin:30px auto;">
+									<div class="field">
+										<input onclick="window.location.href='index.php?m=Lottery&a=step3&id={$goods.id}'" type="button" class="formbutton" value="邀请好友获得更多的抽奖号" />
+									</div>
+								</div>
+							</div>
+						</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div></div>
+			<div id="sidebar">
+				{include file="Inc/side/side_notice.moban"}
+				{include file="Inc/side/side_subscribe.moban"}
+				{include file="Inc/side/side_aboutus.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>						
+{include file="Inc/footer.moban"}

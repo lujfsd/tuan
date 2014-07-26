@@ -1,0 +1,1 @@
+a:1:{i:0;a:12:{s:2:"id";s:1:"1";s:4:"name";s:6:"兰山";s:7:"city_id";s:2:"16";s:4:"sort";s:1:"1";s:6:"status";s:1:"1";s:11:"api_address";s:6:"兰山";s:6:"xpoint";s:10:"118.354302";s:6:"ypoint";s:9:"35.070257";s:4:"zoom";s:2:"16";s:3:"pid";s:1:"0";s:3:"url";s:36:"/tuan/index.php?m=Goods&a=show&qid=1";s:11:"goods_count";s:1:"0";}}

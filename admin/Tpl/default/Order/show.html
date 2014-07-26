@@ -1,0 +1,447 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+<load href='__TMPL__ThemeFiles/Js/common.js' />
+<div class="main">
+<div class="title">
+	商品语言：{$vo.lang_name}&nbsp;&nbsp;&nbsp;
+	付款状态:&nbsp;{$vo.money_status_name}&nbsp;&nbsp;&nbsp;<if condition="$type_id eq 1">发货状态:&nbsp;{$vo.goods_status_name}&nbsp;&nbsp;&nbsp;</if>
+</div>
+	
+<div class="operate" >
+<if condition="($vo.order_total_price gt 0 || $vo.order_total_price eq 0) && $vo.status neq 2 ">
+		<switch name="vo.money_status">
+			<case value="0|1|3|4">
+				<INPUT TYPE="button" class="submit  small" value="收款..." onclick="javascript:doOrder('__APP__?m=Order&a=add_incharge&order_id={$vo.id}',{$vo.id})">
+			</case>
+		</switch>
+	
+		<switch name="vo.money_status">
+			<case value="1|2|3">
+				<INPUT TYPE="button" class="submit  small" value="退款..." onclick="javascript:doOrder('__APP__?m=Order&a=add_uncharge&order_id={$vo.id}',{$vo.id})"">
+			</case>
+		</switch>
+</if>
+			
+		<if condition="$type_id eq 1">
+		<switch name="vo.goods_status">
+			<case value="0|1|3|4">
+				<INPUT TYPE="button" class="submit  small" value="发货..." onclick="javascript:doOrder('__APP__?m=OrderConsignment&a=add&order_id={$vo.id}',{$vo.id})"">
+			</case>
+		</switch>	
+		
+		
+		<switch name="vo.goods_status">
+			<case value="1|2|3">
+				<INPUT TYPE="button" class="submit  small" value="退货..." onclick="javascript:doOrder('__APP__?m=OrderReConsignment&a=add&order_id={$vo.id}',{$vo.id})"">
+			</case>
+		</switch>	
+		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+		</if>
+		<if condition="$vo['status'] eq 0">
+		<switch name="offlinecomplete">
+			<case value="1">
+				<INPUT TYPE="button" class="submit" value="线下完成操作,发放返利" onclick="javascript:doOrder('__APP__?m=Order&a=offlinecomplete&order_id={$vo.id}',{$vo.id})"">
+			</case>
+		</switch>		
+		</if>
+
+	
+	{$pay_online}
+</div>
+
+<div class="tabItem" style="border-bottom:none">
+
+<TABLE cellpadding=3 cellspacing=3 width = "100%">
+	<!--<TR>
+		<TD class="tLeft" colspan =2>
+			<table id="checkList" class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th >商品货号</th>
+					<th>商品名称</th>
+					<th>赠送用户积分</th>
+					<th>成本价</th>
+					<th>销售价格</th>
+					<th>购买数量</th>
+					<th>积分小计</th>
+					<th>金额小计</th>
+					<th>发货数量</th>
+				</tr>
+			</table>
+		</TD>	
+	</TR>-->
+	<TR>
+		<TD class="tLeft" colspan =2>
+			<div id = "div_largessList" >
+				<table id="largessList" class="list" cellpadding=0 cellspacing=0>
+				   <div id = "div_largessList" >
+						<tr class="row">
+							<th>商品编号</th>
+							<th>商品名称</th>
+                            <th>商品属性</th>
+							<th>购买数量</th>
+							<th>积分小计</th>
+							<th>发货数量</th>
+						</tr>
+				   </div>	
+				</table>
+			</div>
+		</TD>	
+	</TR>	
+	
+	<TR class="row">
+		<th class="tLeft" colspan =2>
+			<if condition="$user.user_name neq ''"><a href="{:u("User/edit",array("id"=>$user['id']))}">【购买会员：{$user.user_name}】</a>&nbsp;  &nbsp;  &nbsp; </if>
+			<if condition="$type_id eq 1">收货人信息：&nbsp;&nbsp;{$vo.address}&nbsp;&nbsp;(收货人:&nbsp;{$vo.consignee} 固话:&nbsp;{$vo.fix_phone} 手机:&nbsp;{$vo.mobile_phone} 邮编:&nbsp;{$vo.zip})</if>
+		</th>		
+	</TR>
+	
+	<TR class="row">
+		<th class="tLeft" colspan =2>订单信息：</th>		
+	</TR>	
+	<TR>
+		<TD class="tLeft" colspan =2>	
+			<table cellpadding=0 cellspacing=0 class="dataEdit" >
+				<TR>
+					<TD class="tRight" >订单号：</TD>
+					<TD class="tLeft" >{$vo.sn}</TD>
+					
+					<TD class="tRight" >下单日期：</TD>
+					<TD class="tLeft" >{$vo.create_time}</TD>	
+				</TR>
+				<TR>
+					<TD class="tRight" >商品总金额：</TD>
+					<TD class="tLeft" >{$vo.total_price|priceFormat}</TD>
+					
+					<TD class="tRight" >支付币别：</TD>
+					<TD class="tLeft" >{$vo.currency_name}</TD>	
+				</TR>
+				<if condition="$type_id eq 1">
+				<TR>
+					<TD class="tRight" >配送方式：</TD>
+					<TD class="tLeft" >{$vo.delivery_name} {$vo.delivery_refer_order_id|getDeliveryRefer} {:getDeliveryOrderList($vo['id'])}</TD>
+								
+					<TD class="tRight" >配送费用：</TD>
+					<TD class="tLeft" >{$vo.delivery_fee|priceFormat}</TD>
+				</TR>
+				
+				<TR>
+					<TD class="tRight" >保价：</TD>
+					<TD class="tLeft" >{$vo.protect_fee|priceFormat}&nbsp;&nbsp;&nbsp;
+					</TD>
+					
+					<TD class="tRight" >商品重量：</TD>
+					<TD class="tLeft" >{$vo.order_weight}</TD>				
+				</TR>
+				</if>
+				<TR>
+					<TD class="tRight" >税金：</TD>
+					<TD class="tLeft" >{$vo.tax_money|priceFormat}&nbsp;&nbsp;&nbsp;
+					</TD>	
+					<TD class="tRight" >发票抬头：</TD>
+					<TD class="tLeft" >{$vo.tax_title}</TD>									
+				</TR>
+				<TR>
+					<TD class="tRight" >发票内容：</TD>
+					<TD class="tLeft" colspan = 3>{$vo.tax_content}</TD>			
+				</TR>
+				<TR>
+					<TD class="tRight" >支付方式：</TD>
+					<TD class="tLeft" >{$vo.payment_name}  [<a href="__APP__?m=Payment&a=payment_log&payment_id={$vo.payment}&order_sn={$vo.sn}&is_paid=-1" target="_blank">查看所有支付流水号</a>]</TD>	
+								
+					<TD class="tRight" >支付手续费：</TD>
+					<TD class="tLeft" >{$vo.payment_fee|priceFormat}</TD>
+				</TR>
+                
+                <TR>
+					<TD class="tRight" >等级折扣：</TD>
+					<TD class="tLeft" >－{$vo.discount|priceFormat}</TD>	
+								
+					<TD class="tRight" ><if condition="$vo['ecv_money'] gt 0">代金券：</if></TD>
+					<TD class="tLeft" ><if condition="$vo['ecv_money'] gt 0">－{$vo.ecv_money|priceFormat}&nbsp;&nbsp;【{:D('Ecv')->getEcvType($vo['ecv_id'])}】</if></TD>
+				</TR>						
+							
+				<TR>
+					<TD class="tRight" >订单总金额：</TD>
+					<TD class="tLeft" colspan = 3>{$vo.order_total_price|priceFormat}</TD>
+				</TR>
+				<if condition="$vo['memo'] neq ''">
+				<TR>
+					<TD class="tRight" >客户留言：</TD>
+					<TD class="tLeft" colspan = 3>{$vo.memo}</TD>
+				</TR>	
+				</if>			
+			</TABLE>		
+		</TD>	
+	</TR>	
+</TABLE>	
+</div>
+
+<div class="tabItem" style="border-bottom:none">
+<TABLE cellpadding=3 cellspacing=3 width = "100%">
+	<!--<TR>
+		<TD class="center" colspan =2>
+			<table class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th>优惠方案</th>
+					<th>优惠金额</th>
+				</tr>
+				
+				<iterate name="order_promote_list" id="c_vo">
+					<tr>
+						<td>{$c_vo.memo}{$c_vo.promote_data_name}</td>
+						<td>{$c_vo.promote_money|priceFormat}</td>
+					</tr>
+				</iterate>
+			</table>
+		</TD>	
+	</TR>-->
+</TABLE>
+</div>
+
+<div class="tabItem" >
+<TABLE cellpadding=3 cellspacing=3 width = "100%">
+	<if condition="$order_incharge_list">
+	<TR>
+		<TD class="center" colspan =2>
+			<table id="order_incharge_list" class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th>收款时间</th>
+					<th>收款帐户</th>
+					<th>收款金额</th>
+					<th>收款备注</th>
+					<th>支付单号</th>
+					<th>回执单号</th>
+					<th>操作</th>
+				</tr>
+				<iterate name="order_incharge_list" id="p_vo">
+					<tr>
+						<td>{$p_vo.create_time|toDate}</td>
+						<td>{$p_vo.PName}</td>
+						<td>{$p_vo.money|priceFormat}</td>
+						<td>{$p_vo.memo}</td>
+						<td>{$p_vo.pay_code}</td>
+						<td>{$p_vo.pay_back_code}</td>
+						<td>{$p_vo.autoRefund}</td>
+					</tr>
+				</iterate>
+			</table>
+		</TD>	
+	</TR>
+	</if>
+	<if condition="$order_uncharge_list">
+	<TR>
+		<TD class="center" colspan =2>
+			<table id="order_uncharge_list" class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th>退款时间</th>
+					<th>退款帐户</th>
+					<th>退款金额</th>
+				</tr>
+				<iterate name="order_uncharge_list" id="r_vo">
+					<tr>
+						<td>{$r_vo.create_time|toDate}</td>
+						<td>{$r_vo.PName}</td>
+						<td>{$r_vo.money|priceFormat}</td>
+					</tr>
+				</iterate>
+			</table>
+		</TD>	
+	</TR>
+	</if>
+	<if condition="$type_id eq 1">	
+		<if condition="$order_consignment_list">
+		<TR>
+			<TD class="center" colspan =2>
+				<table id="order_consignment_list" class="list" cellpadding=0 cellspacing=0>
+					<tr class="row">
+						<th>发货时间</th>
+						<th>物流名称</th>
+						<th>物流单号</th>
+						<th>物流费用</th>
+						<th>保价</th>
+						<th>收货人</th>
+						<th>配送方式</th>
+						<th>收货地址</th>
+					</tr>
+					
+					<iterate name="order_consignment_list" id="c_vo">
+						<tr>
+							<td>{$c_vo.create_time|toDate}</td>
+							<td>{$c_vo.express_name}</td>
+							<td>{$c_vo.delivery_code}</td>
+							<td>{$c_vo.delivery_fee|priceFormat}</td>
+							<td>{$c_vo.protect_fee|priceFormat}</td>
+							<td>{$c_vo.consignee}</td>
+							<td>{$c_vo.fname}</td>
+							<td>{$c_vo.address}</td>
+						</tr>
+					</iterate>
+				</table>
+			</TD>	
+		</TR>
+		</if>	
+		<if condition="$order_re_consignment_list">
+		<TR>
+			<TD class="center" colspan =2>
+				<table id="order_re_consignment_list" class="list" cellpadding=0 cellspacing=0>
+					<tr class="row">
+						<th>退货时间</th>
+						<th>物流单号</th>
+						<th>物流费用</th>
+						<th>保价</th>
+						<th>发货人</th>
+						<th>配送方式</th>
+						<th>收货地址</th>
+					</tr>
+					
+					<iterate name="order_re_consignment_list" id="re_c_vo">
+						<tr>
+							<td>{$re_c_vo.create_time|toDate}</td>
+							<td>{$re_c_vo.delivery_code}</td>
+							<td>{$re_c_vo.delivery_fee|priceFormat}</td>
+							<td>{$re_c_vo.protect_fee|priceFormat}</td>
+							<td>{$re_c_vo.consignee}</td>
+							<td>{$re_c_vo.fname}</td>
+							<td>{$re_c_vo.address}</td>
+						</tr>
+					</iterate>
+				</table>
+			</TD>	
+		</TR>		
+		</if>
+    </if>
+    
+	<if condition="$order_message_list">
+	<TR>
+		<TD class="center" colspan =2>
+			<table id="order_message_list" class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th width="80">留言类型</th>
+					<th>留言内容</th>
+					<th width="120">留言时间</th>
+					<th >回复内容</th>
+					<th >操作</th>
+				</tr>
+				<iterate name="order_message_list" id="m_vo">
+					<tr>
+						<td>{$m_vo.type_name}</td>
+						<td>{$m_vo.content}</td>
+						<td>{$m_vo.create_time|toDate}</td>
+						<td>{$m_vo.adm_content}</td>
+						<td><a href="javascript:showMsg({$m_vo.id})">查看与回复</a></td> 
+					</tr>
+				</iterate>
+			</table>
+		</TD>	
+	</TR>
+	</if>    
+</TABLE>
+
+</div>
+
+	
+	</div>
+	
+<script type="text/javascript">
+
+function showMsg(id){
+	location.href = "__APP__?m=Message&a=edit&id=" + id;
+}
+
+function formatPrice(price)
+{
+	return '{:sprintf(fanweC("BASE_CURRENCY_UNIT"),"")} ' + price;
+}
+
+function doOrder(url, id){
+	location.href = url;
+}
+
+function doStatus(id, status){
+	location.href = "__APP__?m=Order&a=setStatus&id=" + id + "&status=" + status;
+}
+
+ function newTr(rec_module, id, goods_sn, goods_name, cost_price, goods_price, num, goods_weight, goods_score, send_number,goods_attr) {
+
+	 cost_price = round(cost_price, 2); 
+	 goods_price = round(goods_price, 2);
+	 var rowkey = rec_module + '_' + id;
+	 
+	 if (rec_module == 'GoodsSpecItem'){
+	     var html = '<tr class="row" onmouseover="over(event)" onmouseout="out(event)"  id="tr' + rowkey+'">';
+	
+	     html += '<td>'+goods_sn+'</td>';
+	          
+	     html += '<td>'+goods_name+'</td>';
+		 
+		 html += '<td>'+goods_attr+'</td>';
+
+	     html += '<td>'+goods_score+'</td>';
+
+	     html += '<td>'+ formatPrice(cost_price) +'</td>';
+
+	     html += '<td>'+formatPrice(goods_price)+'</td>';
+
+	     html += '<td>'+num+'</td>';
+
+	     html += '<td>'+goods_score * num+'</td>';
+
+	     html += '<td>'+ formatPrice(goods_price * num)+'</td>';
+
+	     html += '<td>'+send_number+'</td>';
+	     
+	     html += '</tr>';
+	     $("#checkList").append(html);
+	 }else if (rec_module == 'ScoreGoods'||rec_module == 'PromoteGoods'){
+		 $("#div_largessList").show();
+
+		 var html = '<tr class="row" onmouseover="over(event)" onmouseout="out(event)"  id="tr' + rowkey+'">';
+	 
+
+		 html += '<td>'+goods_sn+'</td>';
+		 
+	     html += '<td >'+goods_name+'</td>';
+		 
+		 html += '<td >'+goods_attr+'</td>';
+
+	     html += '<td >'+num+'</td>';
+
+	     html += '<td >'+goods_score +'</td>';
+
+	     html += '<td >'+send_number+'</td>';
+
+	     html += '</tr>';
+	     $("#largessList").append(html);
+
+	}
+}
+
+
+$().ready(function() {
+	$("#div_largessList").hide();
+
+	<iterate name="orderGoodsList" id="child" key="k" >
+	<?php
+		$goodsAttr = preg_replace("/\\n|\\r/Um","<br/>",$child["attr"]); 
+	?>
+	newTr('{$child.rec_module}', 
+			'{$child.rec_id}', 
+			'{$child.data_sn}',
+			'{$child.data_name}',
+			'{$child.data_cost_price}',
+			'{$child.data_price}',
+			'{$child.number}',
+			'{$child.data_weight}',
+			'{$child.data_total_score}',
+			'{$child.send_number}','{$goodsAttr}');
+	</iterate>
+
+});
+
+</script>

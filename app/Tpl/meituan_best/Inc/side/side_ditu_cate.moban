@@ -1,0 +1,49 @@
+
+
+<div id="catalog" class="catalog cat-open">
+<div class="legend" onclick="open_cate();">查看选项</div>
+<div id="catalogMain" class="catalog-main">
+<div class="c-type yh-area">
+
+<div class="c-bd">
+
+<div class="ct-type ct-hot">
+<div class="ct-hd">
+<div id="hotArea" class="area-nav c-nav"><a class="first cur"><span class="nav-toggle"></span><em>{$lang.YOUHUI_BY_REGION}</em></a></div>
+</div>
+<div class="ct-bd">
+<div class="ct-content" id="hotAreaShow">
+<ul>
+{foreach from=$region_list item=region}
+	<li><a href="javascript:void(0);" title="{$region.name}" onclick="load_region({function name="intval" value=$region.id},this);" {if $region_id eq $region.id}class="actt"{/if}>{$region.name}</a>	</li>
+				
+{/foreach}
+
+
+
+
+</ul>
+</div>
+</div>
+</div>
+<div class="ct-type">
+<div class="ct-hd">
+<div class="area-nav c-nav" id="areaNav"><a href="javascript:;" class="first cur"><span class="nav-toggle"></span><em>{$lang.YOUHUI_BY_CATE}</em></a></div>
+</div>
+<div class="ct-bd">
+<div id="areaShow" class="ct-content">
+<ul>
+{foreach from=$cate_list item=cate}
+	<li><a href="javascript:void(0);" title="{$cate.name}" onclick="load_cate({function name="intval" value=$cate.id},this);" {if $cate_id eq $cate.id}class="actt"{/if}>{$cate.name}</a></li>							
+{/foreach}	
+
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div id="tog" class="tog" onclick="close_cate();"></div>
+</div>

@@ -1,0 +1,57 @@
+					<div class="box clear">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head">
+								<h2>{$lang.MESSAGE_BOARD}</h2>
+							</div>
+							<div class="sect consult-list">
+								<ul class="list">
+									{foreach from=$message_list item=message_item name="goods_item"}
+									<li {if $smarty.foreach.goods_item.index mod 2 eq 1} class="alt"{/if} id="consult-entry-{$message_item.id}" name="consult-entry-{$message_item.id}">
+										<div class="item">
+											<p class="user"><strong>{$message_item.user_name}</strong><span>{$message_item.create_time_format}</span></p>
+											<div class="clear"></div>
+											<p class="text">{$message_item.content}</p>
+											{if $message_item.admin_reply.id neq 0}
+											<p class="reply">
+											<strong>{$lang.XY_REPLY}</strong>{$message_item.admin_reply.content}</p>
+											{/if}
+										</div>
+									</li>
+									{/foreach}
+								</ul>
+								<div class="blank"></div>
+								<div style="text-align:right">
+									{$pages}
+								</div>
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+					<div class="box clear" style="margin-top:10px;">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head" id="consult-form-head" name="consult-form-head">
+								<h2>{$lang.XY_I_SENT_MSG}</h2>
+							</div>
+							<div class="sect consult-form">
+								{if $smarty.session.user_id gt 0}
+								<form name="message" action="<?php echo a_u('Message/add'); ?>" id="consult-add-form" method="post" />
+									<textarea class="f-textarea" cols="60" rows="5" name="content"></textarea>
+									<p class="commit">
+										<input type="hidden" name="rec_module" value="Message" />
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="add" />
+										<input type="hidden" name="city_id" value="{$currentCityID}" />
+										<input type="submit" value="{$lang.XY_OK_TOSUBMIT}" name="commit" class="formbutton"/>
+									</p>
+								</form>
+								{else}
+									{$lang.XY_PLEASE_FIRST}<a href="<?php echo a_u('User/login'); ?>">{$lang.XY_USER_LOGIN}</a>{$lang.XY_OR}<a href="<?php echo a_u('User/register'); ?>">{$lang.XY_USER_REG}</a>{$lang.XY_AND_SENT}
+								{/if}
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+				</div>
+				

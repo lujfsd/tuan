@@ -1,0 +1,84 @@
+{include file="Inc/header.moban"}
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/forum.css" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div class="forum-top"></div>
+		<div class="forum-content">
+			<div class="head">
+				<h2>{$lang.FORUM_BOARD}</h2>
+			</div>
+			<div class="sect">
+				<div class="btns">
+					<a href="{function name="a_u" a="forum/add"}"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/forum/forum_btns.jpg"/></a>
+					<span class="pages">{$pages}</span>
+					<div class="clear"></div>
+				</div>
+				<table class="datatable">
+					<thead class="colplural">
+						<tr>
+						<td class="filter_t">筛选：</td>
+						<th>
+						<ul class="itemfilter s_clear">
+						<li class="pipe">|</li>
+						<li>时间:</li>
+						<li><a href="index.php?m=Forum&a=index&orderby=lastpost"><span>全部</span></a></li>
+						<li><a href="index.php?m=Forum&a=index&orderby=lastpost&filter=86400"><span>一天</span></a></li>
+						<li><a href="index.php?m=Forum&a=index&orderby=lastpost&filter=172800"><span>两天</span></a></li>
+						<li><a href="index.php?m=Forum&a=index&orderby=lastpost&filter=604800"><span>周</span></a></li>
+						<li><a href="index.php?m=Forum&a=index&orderby=lastpost&filter=2592000"><span>月</span></a></li>
+						<li><a href="index.php?m=Forum&orderby=lastpost&filter=7948800"><span>季</span></a></li>
+						</ul>
+						</th>
+						<td class="author">作者/时间</td>
+						<td class="nums">回复&nbsp;查看</td>
+						<td class="lastpost"><cite>最后发表</cite></td>
+						</tr>
+						</thead>
+				{if $list}
+						{foreach from=$list item=mlist}
+						<tr>
+						<td class="folder">
+						<a href="" title="新窗口打开" target="_blank">
+						<img src="{$CND_URL}/{$TMPL_PATH}Public/images/forum/{if $mlist.is_top eq 1}pin_3{elseif $mlist.is_new}folder_new{else}folder_common{/if}.gif"></a>
+						</td>
+						<th class="subject common">
+						 <a href="<?php echo a_u("Forum/view","id-".$this->_var['mlist']['id'])?>">{$mlist.title}</a>{if $mlist.have_img eq 1}&nbsp;<img src="{$CND_URL}/{$TMPL_PATH}Public/images/forum/image_s.gif" align="absmiddle">{/if}{if $mlist.is_new eq 1}&nbsp;<span class="xi">New</span>{/if}
+						</th>
+						<td class="author">
+							<cite>{$mlist.user_name}</cite>
+							<em>{function name="a_toDate" a="$mlist.create_time" b='Y-m-d H:i:s'}</em>
+						</td>
+						<td class="nums">
+							<cite>{$mlist.reply_count}</cite>
+							<em>{$mlist.click_count}</em>
+						</td>
+						<td class="lastpost">
+							<cite>{$mlist.last_reply.user_name}</cite>
+							<em><?php echo a_toDate($this->_var['mlist']['last_reply']['create_time'],'Y-m-d H:i') ?></em>
+						</td>
+						</tr>
+						{if $viewBar neq 0 && $viewBar eq $mlist.id}
+						<tr class="ts">
+						<td>&nbsp;</td>
+						<th>版块主题</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+						</tr>
+						{/if}
+						{/foreach}
+					</table>
+				{else}
+					</table>
+					<div class="notice">
+						{$lang.FORUM_EMPTY}
+					</div>
+				{/if}
+				<div class="btns">
+					<a href="{function name="a_u" a="forum/add"}"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/forum/forum_btns.jpg"/></a>
+					<span class="pages">{$pages}</span>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		<div class="forum-bottom"></div>
+	</div>
+</div>
+{include file="Inc/footer.moban"}

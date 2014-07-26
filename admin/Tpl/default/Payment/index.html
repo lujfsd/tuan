@@ -1,0 +1,92 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<script type="text/javascript">
+	function confirm_redirect(msg, url)
+	{
+	  if (confirm(msg))
+	  {
+	    location.href=url;
+	  }
+	}
+	function install_pay(){
+		location.href="__APP__?m=Payment&a=install&code="+document.getElementById("pay_id").value;
+	}
+</script>
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">支付方式</div>
+<!--  功能操作区域  -->
+<div class="operate">
+<select name="pay_id" id="pay_id"  class="bLeftRequire">
+	<foreach name="pay_list" item="pay_item" >
+		<option value="{$pay_item.code}" >{$pay_item.name}</option>
+	</foreach>
+</select>
+<input type="button" value="安装" onclick ="install_pay()" class="button small">
+</div>
+<!-- 功能操作区域结束 -->
+
+<!-- 列表显示区域  -->
+<div class="list" >
+				
+<table id="list" class="list" cellpadding=0 cellspacing=0>
+  <tr class="row">
+    <th class="center" width = "22%">支付名称</th>
+    <th width = "10%">版本</th>
+    <th width = "15%">作者</th>
+    <th width = "10%">支付方式</th>
+    <th width = "15%">帐户余额</th>
+	<th width = "8%">付款日志</th>
+	<th width = "8%">充值日志</th>
+	<th width = "8%">排序</th>
+    <th width = "20%">操作</th>
+  </tr>
+	<iterate name="modules" id="module" >
+		<tr>
+			<td>{$module.name} <if condition="$module['class_name'] eq 'Alipay'"> [<a href="https://www.alipay.com/himalayas/practicality_customer.htm?customer_external_id=C4393319516691172112&market_type=from_agent_contract&pro_codes=61F99645EC0DC4380ADE569DD132AD7A" target="_blank" style="color:red;" >注册支付宝</a>] </if></td>
+			<td>{$module.version}</td>
+			<td>{$module.author}</td>
+			<td>{$module.online_pay_name}</td>
+			<td>
+				<if condition="$module.id gt 1">
+					<a href="__APP__?m=Payment&a=money_log&payment_id={$module.id}">
+						{$module.money|priceFormat}
+					</a>
+				<else/>
+					{$module.money|priceFormat}
+				</if>	
+			</td>
+			<td>
+					<a href="__APP__?m=Payment&a=payment_log&payment_id={$module.id}">
+						查看
+					</a>
+			</td>
+			<td>
+					<a href="__APP__?m=Payment&a=payment_log_UserIncharge&payment_id={$module.id}">
+						查看
+					</a>
+			</td>
+			<td>{$module.sort}</td>
+			<td>
+			  <if condition="$module.status eq 1">
+		      		<a href="__APP__?m=Payment&a=uninstall&id={$module.id}">禁用</a>
+		      		<a href="__APP__?m=Payment&a=delinstall&id={$module.id}">删除</a>
+		      		<a href="__APP__?m=Payment&a=edit&id={$module.id}">编辑</a>
+		      <else/>
+		      		<a href="__APP__?m=Payment&a=install2&id={$module.id}">启用</a>
+		      		<a href="__APP__?m=Payment&a=edit&id={$module.id}">编辑</a>
+		      </if>
+			</td>
+		</tr>
+	</iterate>  
+</table> 
+</div>
+</div>
+<!-- 主页面结束 -->

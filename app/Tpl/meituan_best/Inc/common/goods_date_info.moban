@@ -1,0 +1,30 @@
+
+							<div id="deal-timeleft-box">						
+									{if $goods.is_end}
+										<div class="deal-box deal-timeleft deal-off" id="deal-timeleft">
+											<h3>{$lang.XY_THIS_GROUP_END_TIME}</h3>
+											<div class="limitdate">
+												<p class="deal-buy-ended">
+													{function name="a_toDate" a1="$goods.promote_end_time" a2="$lang.XY_TIMES_MOD_1" }<br/>
+													{function name="a_toDate" a1="$goods.promote_end_time" a2="$lang.XY_TIMES_MOD_2" }
+												</p>
+											</div>
+										</div>
+									{elseif $goods.is_group_fail neq 1}
+									{if $goods.promote_begin_time gt $system_time and $goods.type_id neq 2}
+										<div id="deal-timeleft" class="deal-box deal-timeleft deal-on">
+											<h3>{$lang.XY_TIMES_LEFT}</h3>
+											<div class="limitdate">
+												<ul id="counter"></ul>
+											</div>
+										</div>	
+									{else}
+										<div id="deal-timeleft" class="deal-box deal-timeleft deal-on">
+											<h3>{$lang.XY_TIMES_LEFT}</h3>
+											<div class="limitdate">
+												<ul id="counter"></ul>
+											</div>
+										</div>										
+									{/if}
+								{/if}
+							</div>		

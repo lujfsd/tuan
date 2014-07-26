@@ -1,0 +1,358 @@
+<div id="bd" class="cf">
+		<form method="post">
+		<div id="content">
+			<div id="deal-buy" class="box">
+				<div class="box-top"></div>
+				<div class="box-content">
+					<div class="head">
+						<h2>{$lang.JJ_YOUR_ORDER}</h2>
+					</div>
+					<div class="sect">
+						<table class="order-table">
+							<tr>
+								<th class="deal-buy-desc">{$lang.JJ_PROJECT}</th>
+								<th style="width:80px">{$lang.JJ_PROPERTY}</th>
+								<th class="deal-buy-quantity">{$lang.JJ_QUANTITY}</th>
+								<th class="deal-buy-multi"></th>
+								<th class="deal-buy-price">{$lang.JJ_PRICE}</th>
+								<th class="deal-buy-equal"></th>
+								<th class="deal-buy-total">{$lang.JJ_TOTAL}</th>
+							</tr>
+							{foreach from=$cart_list item=cart_item}
+							<tr>
+								<td class="deal-buy-desc">{$cart_item.data_name}</td>
+								<td>{$cart_item.attr}</td>
+								<td class="deal-buy-quantity">{$cart_item.number}</td>
+								<td class="deal-buy-multi">x</td>
+								<td class="deal-buy-price" id="deal-buy-price">
+
+								{if $cart_item.goods_info.score_goods eq 1}
+										{$cart_item.data_score}{$lang.SCORE_UNIT}
+									{else}
+										{function name="a_formatPrice" value=$cart_item.data_unit_price}
+									{/if}
+								</td>
+								<td class="deal-buy-equal">=</td>
+								<td id="deal-buy-total">
+									{if $cart_item.goods_info.score_goods eq 1}
+										{$cart_item.data_total_score}{$lang.SCORE_UNIT}
+										{else}
+										{function name="a_formatPrice" value=$cart_item.data_total_price}
+										{/if}
+								</td>
+							</tr>
+							{/foreach}
+							<tr class="order-total">
+								<td class="deal-buy-desc"><strong>{$lang.JJ_TOTAL_AMOUNT}</strong></td>
+								<td></td>
+								<td class="deal-buy-quantity"></td>
+								<td class="deal-buy-multi"></td>
+								<td class="deal-buy-price"></td>
+								<td class="deal-buy-equal">=</td>
+								<td class="deal-buy-total">
+								{function name="a_formatPrice" value=$cart_total_price}
+								</td>
+							</tr>
+						</table>
+
+						{if $goods_type eq 1}
+						<!--拼单-->
+						{if $order_deliverys}
+						<div class="order-check-form  has-credit">
+							<div class="order-pay-credit">
+								<h3>{$lang.CHOICE_DELIVERY_ORDER}：</h3>
+								<div>
+									<table class="table-list">
+										<tr>
+										<td class='t1'>{$lang.CHOICE}</td>
+										<td class='t2'>{$lang.ORDER_SN}</td>
+										<td class='t3'>{$lang.CONSIGNEE_INFO}</td>
+										<td class='t4'>{$lang.ORDER_DELIVERY}</td>
+										</tr>
+
+										{foreach from=$order_deliverys item=order_delivery}
+										<tr>
+										<td class='t1'><input type="radio" name="delivery_refer_order_id" value="{$order_delivery.id}" onclick="reset_delivery();" /></td>
+										<td class='t2'>{$order_delivery.sn}</td>
+										<td class='t3'>[{$order_delivery.region_lv1_name}{$order_delivery.region_lv2_name}{$order_delivery.region_lv3_name}{$order_delivery.region_lv4_name}]{$order_delivery.address}收货人{$order_delivery.consignee}</td>
+										<td class='t4'>{$order_delivery.delivery_name}</td>
+										</tr>
+										{/foreach}
+									</table>
+								</div>
+							</div>
+						</div>
+						{/if}
+						<!--拼单-->
+						<script type="text/javascript" src="{$TEMP_PATH}Public/regionConf.js"></script>
+						<!--配送地址-->
+						<div  id="consignee_region_id" class="order-check-form has-credit">
+							<div class="consignee-box order-pay-credit">
+								<h3>{$lang.CONSIGNEE_INFO}：</h3>
+								<div class="field consignee">
+									<label for="settings-consignee">{$lang.CONSIGNEE}：</label>
+									<input type="text" size="30" name="consignee" id="delivery-consignee" class="f-input" value="{$consignee_info.consignee}" /><span class="red">*</span>
+								</div>
+								<div class="field region">
+									<label>{$lang.REGION_INFO}：</label>
+									{$lang.REGION_LV1_NAME}：<select name="region_lv1" id="region_lv1_0" onchange="selectRegionDelivery(this,0,1);">
+										<option value="0" >{$lang.NO_SELECT}</option>
+
+										{foreach from=$region_lv1_list item=region_lv1_item}
+										<option value="{$region_lv1_item.id}" {if $region_lv1_item.id eq $consignee_info.region_lv1}selected="selected"{/if} >{$region_lv1_item.name}</option>
+										{/foreach}
+									</select>
+
+									{$lang.REGION_LV2_NAME}：<select name="region_lv2" id="region_lv2_0" onchange="selectRegionDelivery(this,0,2);">
+										<option value="0">{$lang.NO_SELECT}</option>
+										{foreach from=$region_lv2_list item=region_lv2_item}
+										<option value="{$region_lv2_item.id}" {if $region_lv2_item.id eq $consignee_info.region_lv2}selected="selected"{/if} >{$region_lv2_item.name}</option>
+										{/foreach}
+									</select>
+
+									{$lang.REGION_LV3_NAME}：<select name="region_lv3" id="region_lv3_0" onchange="selectRegionDelivery(this,0,3);">
+										<option value="0" >{$lang.NO_SELECT}</option>
+										{foreach from=$region_lv3_list item=region_lv3_item}
+										<option value="{$region_lv3_item.id}" {if $region_lv3_item.id eq $consignee_info.region_lv3}selected="selected"{/if} >{$region_lv3_item.name}</option>
+										{/foreach}
+									</select>
+
+									{$lang.REGION_LV4_NAME}：<select name="region_lv4" id="region_lv4_0" onchange="selectRegionDelivery(this,0,4);">
+										<option value="0" >{$lang.NO_SELECT}</option>
+										{foreach from=$region_lv4_list item=region_lv4_item}
+										<option value="{$region_lv4_item.id}" {if $region_lv4_item.id eq $consignee_info.region_lv4}selected="selected"{/if} >{$region_lv4_item.name}</option>
+										{/foreach}
+									</select>
+									<span class="red">*</span>
+								</div>
+								<div class="field address">
+									<label for="delivery-address">{$lang.ADDRESS}：</label>
+									<input type="text" size="30" name="address" id="delivery-address" class="f-input" value="{$consignee_info.address}" /><span class="red">*</span>
+								</div>
+								<div class="field zip">
+									<label for="delivery-zip">{$lang.ZIP}：</label>
+									<input type="text" size="30" name="zip" id="delivery-zip" class="f-input" value="{$consignee_info.zip}"  /><span class="red">*</span>
+								</div>
+								<div class="field fix-phone">
+									<label for="delivery-fax-phone">{$lang.FIX_PHONE}：</label>
+									<input type="text" size="30" name="fix_phone" id="delivery-fix-phone" class="f-input" value="{$consignee_info.fix_phone}" />
+								</div>
+								<div class="field mobile-phone">
+									<label for="delivery-mobile-phone">{$lang.MOBILE_PHONE}：</label>
+									<input type="text" size="30" name="mobile_phone" id="delivery-mobile-phone" class="f-input" value="{$consignee_info.mobile_phone}"  /><span class="red">*</span>
+								</div>
+								<div class="clear"></div>
+                            </div>
+						</div>
+						<!--配送地址-->
+						<div class="order-check-form  has-credit">
+							<div class="delivery order-pay-credit">
+								<h3>{$lang.DELIVERY_LIST}：</h3>
+								<div id="cart_delivery">
+									<!--配送方式-->
+									<table class="table-list">
+
+										{foreach from=$delivery_list item=delivery_item}
+										<tr>
+											<td class='t1'><input id="check-{$payment_item.id}" type="radio" name="delivery" value="{$delivery_item.id}" onclick="deliveryChange(this);" {if $delivery_item.id eq $order.delivery}checked="true"{/if} /></td>
+											<td class='t2'>{$delivery_item.name_1}</td>
+											<td class='t3'>
+
+												{if $delivery_item.protect eq 1}
+												{$lang.PROTECT_RADIO}:{$delivery_item.protect_radio}&nbsp;&nbsp;
+												{$lang.PROTECT_PRICE}:{$delivery_item.protect_price}<br />
+												{/if}
+
+												{$delivery_item.desc_1}
+											</td>
+											<td class='t4'>
+												{if $delivery_item.protect eq 1}
+												<nobr><input type="checkbox" name="protect" value="1" class="protect" onclick="countCartTotal();" {if $delivery_item.id eq $order.delivery and  $order.protect eq 1}checked="true"{else}disabled="disabled"{/if}/>&nbsp;{$lang.PROTECT}</nobr>
+												{/if}
+											</td>
+										</tr>
+										{/foreach}
+									</table>
+									<!--配送方式-->
+								</div>
+							</div>
+						</div>
+						{/if}
+						<div class="order-check-form  has-credit">
+							<div class="delivery order-pay-credit">
+								<h3>{$lang.ORDER_MEMO}：</h3>
+								<table class="table-list">
+									<tr>
+										<td class='t1'>&nbsp;</td>
+										<td class='t8'><nobr>{$lang.ORDER_MEMO_CONTENT}：</nobr></td>
+										<td class='t9'><textarea name="memo" id="memo"></textarea></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<!--支付方式-->
+						{if $SHOW_PAYMENT_LIST}
+							  {if $TAX_RADIO gt 0 or a_fanweC('SHOW_TAX') eq 1}
+								<div class="order-check-form  has-credit">
+									<div class="tax order-pay-credit">
+										<h3><label>{$lang.IS_TAX}：<input type="checkbox" value="1" name='tax' id="tax" class="tax" onclick="checkTax(this);" /></label></h3>
+										<table class="table-list hidd" id="tax-table">
+											<tr>
+												<td class='t5'><nobr>{$lang.TAX_TITLE}：</nobr></td>
+												<td class='t6' >
+													<input type="text" size="50"  name="tax_title" id="tax_title" /></nobr>{$lang.TAX_RADIO}：{$TAX_RADIO}
+												</td>
+											</tr>											
+											<tr>
+												<td class='t5'><nobr>{$lang.TAX_CONTENT}：</nobr></td>
+												<td class='t6'>
+													<textarea name="tax_content" id="tax_content" disabled="true"></textarea>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							{/if}
+							<div class="paytype">
+								<div class="order-check-form has-credit">
+									<div class="order-pay-credit">
+										<h3>{$lang.JJ_PAYMENT}</h3>
+										{if $isAccountpay eq 1 and $user_info.money gt 0}
+										<p>{$lang.JJ_ACCOUNT_BALANCE}：<strong>{$user_info_money}</strong>
+											{if $PAY_SHOW_TYPE eq 1}
+											<span id="accountpay-desc"></span>
+											<input id="credit-text" class="f-input" type="hidden" name="credit" value="0"/>
+											<label id="credit-all" style="display:none;"><input type="checkbox" name="credit-all" value="0" id="is-credit-all" checked="checked" /></label>
+											{else}
+											，{$lang.JJ_USE_BALANCE} <input id="credit-text" class="f-input" type="text" name="credit" value="0" style="width:50px;"/>，<label id="credit-all"><input type="checkbox" name="credit-all" value="0" id="is-credit-all" checked="checked"/>{$lang.JJ_ALL_PAY}</label>
+											{/if}
+										{/if}
+									</div>
+									<div onclick="countCartTotal();" id="payment-list" style="display:none;">
+										<table class="table-list" style="margin-bottom:0">
+											{foreach from=$payment_list item=payment_item}
+												{if $payment_item.class_name neq 'Accountpay'}
+													<tr {if $payment_item.class_name  eq 'Cod'}id="payment_Cod" style="display:none;"{/if} >
+														<td class='t1' style="vertical-align:middle"><input id="check-{$payment_item.id}" type="radio" name="payment" value="{$payment_item.id}" /></td>
+														<td class='t2' style="vertical-align:middle; width:150px;">
+															{if $payment_item.logo neq ''}
+															<img for="check-{$payment_item.id}" src="{$CND_URL}{$payment_item.logo}" width="150" alt="{$payment_item.name_1}" title="{$payment_item.name_1}"/>
+															{else}
+															{$payment_item.name_1}
+															{/if}
+														</td>
+														<td style="vertical-align:middle; padding-left:20px;">
+
+														{if $payment_item.fee gt 0}
+														{$lang.PAYMENT_FEE}:{$payment_item.fee_format}<br />
+														{/if}
+														{$payment_item.description_1}
+														</td>
+													</tr>
+												{/if}
+											{/foreach}
+										</table>
+										<table class="table-list" style="margin-top:0">
+											<tr><td>
+											{$Bank_list}</td></tr>
+										</table>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+						{else}
+							<div id="accountpay" style="display:none;">
+								<input id="check-{$accountpay.id}" type="radio" name="payment" value="{$accountpay.id}" checked />
+							</div>
+						{/if}
+
+						<!--支付方式-->
+						<div id="cart_total_box"></div>
+						{if $sms_send eq 1}
+						<div class="delivery order-pay-credit" >
+							<h3>{$lang.JJ_MOBILEPHONE_CONFIRM}：</h3>
+							<!--手机号码框-->
+							<table class="table-list"  style="width:620px;">
+								<tr>
+									<td class='t1' style="width:620px;">
+										<input type="text" size="15" name="user_mobile_phone" id="user-mobile-phone" class="f-input" value="{$user_info.mobile_phone}"  />
+										{$lang.JJ_IMPORTANT_TIP}
+									</td>
+								</tr>
+							</table>
+							<!--手机号码框-->
+						</div>
+						{/if}
+						<div class="order-check-form ">
+							<p class="check-act">
+								<input type="hidden" name="m" value="Cart" />
+								<input type="hidden" name="a" value="done" />
+								<input id="order_done" type="button" value="{$lang.JJ_ORDERS_PAYMENT}" class="formbutton" disabled="disabled" />
+								<a href="{$ROOT_PATH}/index.php?m=Cart&a=index" style="margin-left:1em;">{$lang.JJ_BACK_ORDER}</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="box-bottom"></div>
+			</div>
+		</div>
+		<div id="sidebar" class="rail">
+
+			{if $cart_total_price gt 0 and a_fanweC("OPEN_ECV") eq 1}
+			<!--代金券-->
+			<div class="sbox">
+				<div class="sbox-top"></div>
+				<div class="sbox-content">
+					<div class="cardcode">
+						<h2>{$lang.XY_YOU_HAVA_VOUCHER}</h2>
+						<a href="javascript:void(0);" id="cardcode-link">{$lang.XY_HIT_ENTER_VOUCHER}</a>
+						<div class="act ecvinput">
+						<p id="cardcode-link-t">
+							<input id="cardcode-sn" class="f-input" type="text" name="ecvSn" maxlength="20" value="" autocomplete="off" />
+						</p>
+						<div class="clear"></div>
+						<a href="javascript:void(0);" id="cardpass-link">{$lang.XY_ENTER_VOUCHER_PASS}</a>
+						<p id="cardpass-link-t">
+							<input id="cardcode-pwd" class="f-input" type="password" name="ecvPassword" maxlength="20" value="" autocomplete="off" />
+							<input id="cardcode-verify" type="button" class="formbutton" value="{$lang.XY_CONFIRM}" />
+						</p>
+						</div>
+						<div class="act ecvinfo">
+							<p>{$lang.XY_TYPE}<span></span></p>
+							<p>{$lang.XY_THE_AMOUNT}<span></span></p>
+							<p>{$lang.XY_USE_START_TIME}<span></span></p>
+							<p>{$lang.XY_USE_END_TIME}<span></span></p>
+						</div>
+					</div>
+				</div>
+				<div class="sbox-bottom"></div>
+			</div>
+			<div class="blank"></div>
+			<!--代金券-->
+			<div class="blank"></div>
+			{/if}
+
+			{if $isAccountpay eq 1}
+			<div class="sbox">
+            	<div class="sbox-top"></div>
+            	<div class="sbox-content">
+					<div class="side-tip">
+						<h3 class="first">{$lang.JJ_WHAT_ACCOUNT_BALANCE}</h3>
+						<p>{$lang.JJ_AMOUNT_PAID}</p>
+						<h3>{$lang.JJ_GET_BALANCE}</h3>
+						<p>
+							<?php
+								echo sprintf($this->_var['lang']['JJ_INVITE_FRIENDS'],$this->_var['ROOT_PATH']."/index.php?m=Referrals&a=index");
+							?>
+						</p>
+					</div>
+            	</div>
+            	<div class="sbox-bottom"></div>
+        	</div>
+			{/if}
+   		</div>
+		</form>
+	</div>
+	<!-- bd end -->
+
+

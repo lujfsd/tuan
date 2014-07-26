@@ -1,0 +1,129 @@
+{include file="Inc/header.moban" }
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content" class="coupons-box">
+				<div class="dashboard" id="dashboard">
+					<ul>
+						{include file="Inc/user_center/user_center_menu.moban"}		
+					</ul>
+				</div>
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						
+						<div class="head">
+							<h2>{$page_title}</h2>
+							<ul class="filter">
+								<li class="label">{$lang.XY_CLASS_IFICATION} </li>
+								<li {if $current_page eq 'UCLOG_INDEX'}class="current"{/if}><a href="<?php echo a_u('UcLog/index') ?>">{$lang.XY_PRICE_LOG}</a></li>
+								<li {if $current_page eq 'UCLOG_LOGINDEX'}class="current"{/if}><a href="<?php echo a_u('UcLog/logIndex') ?>">{$lang.XY_INTEGRAL_LOG}</a></li>
+								{foreach from="$user_money_menu" item="menu_item"}
+									<li {if $menu_item.act eq 1} class="current"{/if}><a href="{$menu_item.url}" >{$menu_item.name}</a><li>
+								{/foreach}
+								{foreach from="$user_uncharge_menu" item="menu_item"}
+									<li {if $menu_item.act eq 1} class="current"{/if}><a href="{$menu_item.url}" >{$menu_item.name}</a><li>
+								{/foreach}
+							</ul>
+						</div>
+						{include file="Inc/user_center/uc_center_money.moban"}
+						<!--开头-->		
+<div class="sect">
+
+        	<table  id="order-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+        	<tr>
+        		<th>{$lang.MONEY_SN}</th>
+        		<th>{$lang.MONEY_VALUE}</th>
+				<th width="70">{$lang.PAYMENT_FEE}</th>
+				<th width="60">{$lang.PAYMENT_MONEY}</th>
+        		<th width="60">{$lang.MONEY_CREATE_TIME}</th>
+        		<th width="60">{$lang.MONEY_UPDATE_TIME}</th>
+				<th width="80">{$lang.STATUS}</th>
+				<th width="50">{$lang.OPERATE}</th>
+        	</tr>
+			
+			{foreach from=$incharge_list item=incharge_item name=incharge_item}
+			<tr {if $smarty.foreach.incharge_item.index mod 2 eq 1}class="alt"{/if}>
+        		<td>{$incharge_item.sn}</td>
+        		<td>{$incharge_item.money_format}</td>
+				<td>{$incharge_item.payment_fee_format}</td>
+				<td>{$incharge_item.payment_money_format}</td>
+        		<td>{$incharge_item.create_time_format}</td>
+        		<td>{$incharge_item.update_time_format}</td>
+				<td>{$incharge_item.status_format}</td>
+				<td>
+	
+				{if $incharge_item.status eq 0}
+				<a href="{$__ROOT__}/index.php?m=UcIncharge&a=modify&id={$incharge_item.id}">{$lang.MODIFY}</a>
+				{else}
+				{$lang.USER_MONEY_1}
+				{/if}
+				</td>
+        	</tr>
+			{/foreach}
+			</table>
+
+    </div><!--模块样式3-->
+	<div class="blank"></div>
+	<div style="padding:0 20px 0 0; text-align:right;">
+	{$pages}
+	</div>
+	<div class="blank"></div>
+	<div class="sect">
+    	
+        	<form name="incharge" action="<?php echo a_u('UcIncharge/insert') ?>" method="post" id="incharge-form" >
+										<table class="table-list" style="margin-bottom:0">
+											{foreach from=$payment_list item=payment_item}
+												{if $payment_item.class_name neq 'Accountpay'}
+													<tr {if $payment_item.class_name  eq 'Cod'}id="payment_Cod" style="display:none;"{/if} >
+														<td class='t1' style="vertical-align:middle"><input id="check-{$payment_item.id}" type="radio" name="payment" value="{$payment_item.id}" /></td>
+														<td class='t2' style="vertical-align:middle; width:150px;">
+															{if $payment_item.logo neq ''}
+															<img for="check-{$payment_item.id}" src="{$CND_URL}{$payment_item.logo}" width="150" alt="{$payment_item.name_1}" title="{$payment_item.name_1}"/>
+															{else}
+															{$payment_item.name_1}
+															{/if}
+														</td>
+														<td style="vertical-align:middle; padding-left:20px;">
+
+														{if $payment_item.fee gt 0}
+														{$lang.PAYMENT_FEE}:{$payment_item.fee_format}<br />
+														{/if}
+														{$payment_item.description_1}
+														</td>
+													</tr>
+												{/if}
+												{if $payment_item.selection}
+													<tr><td colspan = 3>
+														{$payment_item.selection}
+													</td></tr>
+												{/if}												
+											{/foreach}
+										</table>
+										<table class="table-list" style="margin-top:0">
+											<tr><td>
+											{$Bank_list}</td></tr>
+										</table>        	
+        	<div class="blank"></div>
+        	<div style="text-align:right; padding:0px 10px;">
+ 				        	<input type="hidden" name="m" value="UcIncharge"  />
+				        	<input type="hidden" name="a" value="insert"  />				        	        	
+        	{$lang.MONEY_VALUE}：<input type="text" name="money" id="money" class="f-input" /> <input type="submit" class="formbutton" value="{$lang.INCHARGE}" />
+			</div>
+			</form>
+
+    </div><!--模块样式3-->
+						<!--结束-->
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar" class="rail">
+				{include file="Inc/user_center/user_info.moban"}
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban" }

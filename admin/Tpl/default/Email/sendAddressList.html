@@ -1,0 +1,66 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST} [ <a href="{:u($module_name.'/editMail',array('id'=>$mail_id))}">{$Think.lang.BACK_DATA}</a> ]</div>
+<!--  功能操作区域  -->
+<div class="operate">
+<form method="get" action="{$POST_URL}">
+<select name="city_id">
+	<option value="0" <if condition="intval($_REQUEST['city_id']) eq 0"> selected="selected"</if>>所有城市</option>
+	<foreach name="city_list" item="city_item">
+		<option value="{$city_item.id}" <if condition="intval($_REQUEST['city_id']) eq $city_item['id']"> selected="selected"</if>>{$city_item.name}</option>
+	</foreach>
+</select>
+<input type="text" name="mail_address" value="{:trim($_REQUEST['mail_address'])}" />
+<input type="hidden" name="m" value="Email" />
+<input type="hidden" name="a" value="sendAddressList" />
+<input type="hidden" name="id" value="{:intval($_REQUEST['id'])}" />
+<input type="submit" class="button small" value="搜索">
+</form>
+</div>
+<!-- 列表显示区域  -->
+<form name="addressList" action="{:u('Email/saveSendAddress')}" enctype="multipart/form-data" method="post">
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="mailaddress" 
+	style="list" 
+	checkbox="true" 
+	datasource="list" 
+	preload="true"
+	show="id|getHiddenBox:{$Think.lang.ID}|8%,mail_address:{$Think.lang.MAIL_ADDRESS},user_id|getUserName:{$Think.lang.USER_NAME},city_id|getCityName:城市,is_push|getStatus:已发送" 
+/> 
+</div>
+
+
+<div class="operate" style="text-align: right; padding:12px;">
+<input type="hidden" value="{$mail_id}" name="mail_id" />
+<input type="hidden" value="{:intval($_REQUEST['city_id'])}" name="city_id" />
+{%CHECK_ALL_DATA}：<input type="checkbox" onclick="$('input').attr('checked',this.checked);" name="check_all" />
+
+<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small">
+<input type="reset" value="{$Think.lang.RESET_DATA}"  class="button small">
+<input type="button" value="清空所有"  class="button small" onclick="location.href='{:u("Email/saveSendAddress",array('mail_id'=>$mail_id,'city_id'=>-1,'check_all'=>1))}'" />
+</div>
+
+</form>
+
+<!--  分页显示区域 -->
+<div class="page">{$page}</div>
+</div>
+<!-- 功能操作区域结束 -->
+
+
+
+<!-- 列表显示区域结束 -->
+</div>
+

@@ -1,0 +1,118 @@
+{if $goods.type_id neq 2}
+	{if $goods.promote_begin_time gt $TIME}
+		<p class=deal-buy-tip-top><strong>{$lang.XY_GROUP_NO_START}</strong></p>
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_1}</p>
+		<p class="deal-buy-tip-notice">
+		{function name="sprintf" a1="$lang.GROUP_BEGIN_FORMAT" a2="$goods.promote_begin_time_format"}
+		</p>
+	{elseif $goods.is_group_fail eq 1}
+		<div class="deal-buy-expired-fail"></div>
+	{elseif $goods.is_none}
+		<div class="deal-buy-soldout"></div>
+		<p class="deal-buy-tip-total">{function name="sprintf" format="$lang.XY_GROUP_BUY_TOTAL" value="$goods.buy_count"}</p>
+	{elseif $goods.is_end}
+		<div class="deal-buy-expired-succ"></div>
+		{if $goods.buy_count gt 0}
+		<p class="deal-buy-tip-total">{function name="sprintf" format="$lang.XY_GROUP_BUY_TOTAL" value="$goods.buy_count"}</p>
+		{/if}
+	{elseif $goods.group_user eq 0}
+		{if $goods.buy_count gt 0}
+		<p class=deal-buy-tip-top><strong>{$goods.buy_count}</strong> {$lang.XY_GROUP_HAD_BUY}</p>
+		{/if}
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_2}</p>
+		<p class=deal-buy-on>{$lang.XY_GROUP_SUCCESS_BUY}</p>
+		{if $goods.complete_time gt 0}
+		<p class=deal-buy-tip-btm>{$goods.complete_time_format}{$lang.XY_GROUP_COMPLETE_BUY_1}</p>
+		{/if}
+	{elseif $goods.complete_time}
+		<p class=deal-buy-tip-top><strong>{$goods.buy_count}</strong> {$lang.XY_GROUP_HAD_BUY}</p>
+		{if $goods.stock gt 0}
+		{if $goods.stockbfb lt 20}
+		<p class="deal-buy-tip-notice">{function name="sprintf" format="$lang.XY_SURPLUS_COUNT" value="$goods.surplusCount"}</p>
+		{else}
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_2}</p>
+		{/if}
+		{/if}
+		<p class=deal-buy-on>{$lang.XY_GROUP_SUCCESS_BUY}</p>
+		<p class=deal-buy-tip-btm>{$goods.complete_time_format}{function name="sprintf" format="$lang.XY_GROUP_COMPLETE_BUY" value="$goods.group_user"}</p>
+	{else}
+		<p class=deal-buy-tip-top><strong>{$goods.buy_count}</strong> {$lang.XY_GROUP_HAD_BUY}</p>
+		{if $goods.stock gt 0}
+		{if $goods.stockbfb lt 20}
+		<p class="deal-buy-tip-notice">{function name="sprintf" format="$lang.XY_SURPLUS_COUNT" value="$goods.surplusCount"}</p>
+		{else}
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_2}</p>
+		{/if}
+		{/if}
+		<div class="progress-pointer" style="padding-left:<?php echo  ($this->_var['goods']['buy_count'] / intval($this->_var['goods']['group_user'])) * 194 - 5;?>px;"><span></span></div>
+		<div class="progress-bar">
+			<div class="progress-left" style="width:<?php echo  ($this->_var['goods']['buy_count'] / intval($this->_var['goods']['group_user'])) * 194;?>px;"></div>
+			<div class="progress-right "></div>
+		</div>
+		<div class="cf">
+			<div class="min">0</div>
+			<div class="max">{$goods.group_user}</div>
+		</div>
+		<p class="deal-buy-tip-btm">{function name="sprintf" format="$lang.XY_WILL_SUCCESS" value="$goods.rest_count"}</p>
+	{/if}
+{else}
+	{if $goods.promote_begin_time gt $TIME}
+		<p class=deal-buy-tip-top><strong>{$lang.XY_GROUP_NO_START}</strong></p>
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_1}</p>
+		<p class="deal-buy-tip-notice">
+			{function name="sprintf" a1="$lang.GROUP_BEGIN_FORMAT" a2="$goods.promote_begin_time_format"}
+		</p>
+	{elseif $goods.is_group_fail eq 1}
+		<div class="deal-buy-expired-fail"></div>
+	{elseif $goods.is_none}
+		<div class="deal-buy-soldout"></div>
+		<p class="deal-buy-tip-total">
+			<?php echo sprintf(a_L("XY_GROUP_SIGN_TOTAL"),"<strong>".$this->_var['goods']['buy_count']."</strong>")?>
+		</p>
+	{elseif $goods.is_end}
+		<div class="deal-buy-expired-succ"></div>
+		{if $goods.buy_count gt 0}
+		<p class="deal-buy-tip-total">
+			<?php echo sprintf(a_L("XY_GROUP_SIGN_TOTAL"),"<strong>".$this->_var['goods']['buy_count']."</strong>")?>
+		{/if}
+	{elseif $goods.group_user eq 0}
+		{if $goods.buy_count gt 0}
+		<p class=deal-buy-tip-top><strong>{$goods.buy_count}</strong> {$lang.XY_GROUP_HAD_SIGN}</p>
+		{/if}
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_2}</p>
+		<p class=deal-buy-on>{$lang.XY_GROUP_SUCCESS_SIGN}</p>
+		{if $goods.complete_time gt 0}
+		<p class=deal-buy-tip-btm>{$goods.complete_time_format}{$lang.XY_GROUP_COMPLETE_BUY_1}</p>
+		{/if}
+	{elseif $goods.complete_time}
+		<p class=deal-buy-tip-top><strong>{$goods.buy_count}</strong> {$lang.XY_GROUP_HAD_SIGN}</p>
+		{if $goods.stock gt 0}
+		{if $goods.stockbfb lt 20}
+		<p class="deal-buy-tip-notice">{function name="sprintf" format="$lang.XY_SURPLUS_COUNT" value="$goods.surplusCount"}</p>
+		{else}
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_2}</p>
+		{/if}
+		{/if}
+		<p class=deal-buy-on>{$lang.XY_GROUP_SUCCESS_SIGN}</p>
+		<p class=deal-buy-tip-btm>{$goods.complete_time_format}{function name="sprintf" format="$lang.XY_GROUP_COMPLETE_BUY" value="$goods.group_user"}</p>
+	{else}
+		<p class=deal-buy-tip-top><strong>{$goods.buy_count}</strong> {$lang.XY_GROUP_HAD_BUY}</p>
+		{if $goods.stock gt 0}
+		{if $goods.stockbfb lt 20}
+		<p class="deal-buy-tip-notice">{function name="sprintf" format="$lang.XY_SURPLUS_COUNT" value="$goods.surplusCount"}</p>
+		{else}
+		<p class="deal-buy-tip-notice">{$lang.XY_GROUP_BUY_NOTICE_2}</p>
+		{/if}
+		{/if}
+		<div class="progress-pointer" style="padding-left:<?php echo  ($this->_var['goods']['buy_count'] / intval($this->_var['goods']['group_user'])) * 194 - 5;?>px;"><span></span></div>
+		<div class="progress-bar">
+			<div class="progress-left" style="width:<?php echo  ($this->_var['goods']['buy_count'] / intval($this->_var['goods']['group_user'])) * 194;?>px;"></div>
+			<div class="progress-right "></div>
+		</div>
+		<div class="cf">
+			<div class="min">0</div>
+			<div class="max">{$goods.group_user}</div>
+		</div>
+		<p class="deal-buy-tip-btm">{function name="sprintf" format="$lang.XY_WILL_SUCCESS" value="$goods.rest_count"}</p>
+	{/if}
+{/if}

@@ -1,0 +1,81 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<script type="text/javascript">
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var DIY_URL = '{%DIY_URL}';
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('EcvType/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.ECV_NAME}：</td>
+	<td class="tLeft" >
+		<input type="text" name="name" class="bLeft" value="" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.ECV_MONEY}：</td>
+	<td class="tLeft" >
+    	<input type="text" name="money" class="bLeft" value="" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.ECV_USE_START_DATE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="use_start_date" id="use_start_date" class="bLeft" />
+        <input type="button" name="btn_use_start_date" id="btn_use_start_date" onclick="return showCalendar('use_start_date', '%Y-%m-%d %H:%M:%S', false, false, 'btn_use_start_date');" value="{$Think.lang.SELECT}" class="button"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.ECV_USE_END_DATE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="use_end_date" id="use_end_date" class="bLeft" />
+        <input type="button" name="btn_use_end_date" id="btn_use_end_date" onclick="return showCalendar('use_end_date', '%Y-%m-%d %H:%M:%S', false, false, 'btn_use_end_date');" value="{$Think.lang.SELECT}" class="button"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">类型：</td>
+	<td class="tLeft" >
+    	<label>代金券：<input type="radio" name="type"  value="0" checked="checked" /></label>
+		<label>充值券：<input type="radio" name="type"  value="1" /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">发放模式：</td>
+	<td class="tLeft" >
+    	<label>管理员发放：<input type="radio" name="exchange"  value="0" checked="checked" onclick="chk_exchange_box();" /></label>
+		<label>积分兑换：<input type="radio" name="exchange"  value="1" onclick="chk_exchange_box();" /></label>
+		<label id="exchange_score" style="display:none;">兑换所需积分：<input type="text" name="exchange_score" />
+		每个会员可兑换：<input type="text" name="exchange_limit" />张 ，不填写为无限制
+		</label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">使用次数：</td>
+	<td class="tLeft" >
+    	<input type="text" name="use_count" class="bLeft" value="1" />
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="status" value="1" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+	chk_exchange_box();
+</script>

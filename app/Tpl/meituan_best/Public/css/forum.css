@@ -1,0 +1,271 @@
+@charset "utf-8";
+/* CSS Document */
+.forum-content {
+	background: white;
+	border-left: 2px solid #89B4D6;
+	border-right: 2px solid #89B4D6;
+}
+.forum-content .head {
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+}
+.forum-content .head h2 {
+	display: inline;
+	font-size: 2em;
+	padding-left: 10px;
+}
+.forum-top {
+	background: url(../images/forum/bg-box-w.gif) no-repeat 0px 0px;
+	height: 20px;
+	overflow: hidden;
+}
+.forum-bottom {
+	background: url(../images/forum/bg-box-w.gif) no-repeat 0px -30px;
+	height: 20px;
+	overflow:hidden;
+}
+.forum-content .sect {
+	border-top:1px solid #DEF;
+	padding-bottom: 50px;
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-top: 20px;
+}
+.forum-content .btns {
+	line-height: 30px;
+	padding: 5px 0px 1em;
+}
+.forum-content .btns a {
+	float:left
+}
+.forum-content .btns span.pages {
+	float:right
+}
+.datatable {
+	width:100%
+}
+.datatable, .datatable th, .datatable td {
+	border-bottom:1px solid #E6E7E1
+}
+.datatable a {
+	color:#444;
+	font-size:12px
+}
+.itemfilter {
+	line-height: 18px;
+}
+.itemfilter * {
+	float: left;
+	height: 18px;
+	overflow: hidden;
+	font-size:12px;
+	font-weight:normal
+}
+.itemfilter a {
+	color:#0099CC
+}
+.filter_t {
+	font-size:12px;
+	text-align:right;
+	line-height:18px;
+	width:50px
+}
+.pipe {
+	color: #999;
+}
+.folder {
+	text-align:center;
+	width: 50px;
+}
+.subject a {
+	font-weight:normal
+}
+.subject a:hover {
+	color: #09C;
+}
+td.icon {
+	text-align: center;
+	width: 0px;
+}
+.nums {
+	text-align: center;
+	width: 80px;
+	font-size:12px
+}
+.nums cite {
+	color: #09C;
+}
+.nums em {
+	color: #444;
+	padding-left: 2px;
+}
+.forum, .author, .lastpost {
+	width: 110px;
+	text-align:center;
+	line-height:18px
+}
+.author {
+	text-align:left;
+	font-size:12px
+}
+.ts td ,.ts th
+{
+	background: #F2F2F2;
+	border-bottom-color: #CDCDCD;
+	padding: 3px 0px;
+	font-size:12px;
+	font-weight:normal
+}
+.subject{ font-size:14px;font-family: Tahoma, Helvetica, SimSun, sans-serif;}
+.lastpost cite{ font-size:12px; padding-right:15px;}
+.author cite, .lastpost cite, .nums cite {
+	clear:both;
+	display:block;
+	height: 1.6em;
+	margin-bottom: -5px;
+	overflow: hidden;
+	width: 105px;
+	
+}
+.author em, .lastpost em, .nums em {
+	display:block;
+	clear:both;
+	color: #999;
+	font-family: Arial, sans-serif;
+	font-size: 9px;
+	margin:0;
+	padding:0;
+}
+
+.nums em{ 
+	text-align:center;
+	width: 105px;
+	}
+.itemfilter li {
+	margin-right: 5px;
+}
+.lastpost cite, .lastpost em {
+	text-align:right
+}
+.datatable .colplural {
+	background-color: whiteSmoke;
+	border-top: 1px solid #E6E7E1;
+	border-bottom: 1px solid #E6E7E1;
+}
+.datatable .colplural th, .datatable .colplural td {
+	background: #EBF2F8;
+	padding: 7px 0px !important;
+}
+.forum-content .notice {
+	color: #999;
+	font-size: 16px;
+	font-weight: 700;
+	margin: 99px auto;
+	text-align: center;
+}
+.pl {
+	table-layout: fixed;
+	width: 100%;
+	border:1px solid #CDCDCD;
+	background:#fff
+}
+.plh {
+	line-height: 46px;
+	width:100%
+}
+.pls {
+	text-align:center;
+	font-size:12px;
+	background-color: #F2F2F2;
+	border-right: 1px solid #C2D5E3;
+	vertical-align: top;
+	width: 180px;
+}
+.plc {
+	padding: 0px 20px;
+	vertical-align: top;
+}
+.xg1, .xg1 a {
+	color: #999 !important;
+}
+.xs0 {
+	font-family: Tahoma, Helvetica, sans-serif;
+	font-size: 0.83em;
+	font-weight:400
+}
+h1.ts a {
+	color: #333;
+}
+.pipe {
+	color: #CCC;
+	margin: 0px 5px;
+}
+.ad .pls {
+	background: #CDCDCD;
+	height: 4px;
+	padding: 0px;
+}
+.ad .plc {
+	background: #F2F2F2;
+	overflow: hidden;
+	padding: 0px;
+}
+#tath {
+	line-height: 24px;
+ 	overflow:hidden;
+	padding: 10px 10px 10px 20px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 120;
+	word-wrap: normal;
+}
+#tath img {
+	height: 24px;
+	vertical-align: middle;
+	width: 24px;
+}
+
+.pi {
+	border-bottom: 1px dashed #CDCDCD;
+	height: 16px;
+	margin-bottom: 10px;
+	overflow: hidden;
+	padding: 10px 0px;
+	padding-left:15px;
+	color:#333;
+	line-height:normal;
+	font-weight: 700;
+}
+
+.pb {
+	border-top: 1px dashed #CDCDCD;
+	height: 16px;
+	overflow: hidden;
+	padding: 10px 0px;
+	color:#333;
+	line-height:normal;
+	font-weight: 700;
+}
+
+.xi{ font-weight:normal; font-size:12px; color:#F26C4F}
+
+.plc .pb  strong{ font-weight:normal}
+.plc .pb strong font{ float:right; font-size:12px}
+.plc .pb strong font a{ color:#333}
+.plc .pi {padding-left: 0px;}
+.pi .authi em,.pb .authi em{ font-style:normal; font-size:12px}
+.pb .authi em a{ color:#000}
+.vm {
+	vertical-align: middle;
+}
+
+.plc .pi strong{ font-weight:normal}
+
+.plc .pi strong font{ float:right; font-size:14px}
+.plc .pct{ padding-bottom:1em;}
+.pls .avatar {
+margin: 10px 20px;
+}
+.pls .avatar img{ border:5px solid #FFFFFF}

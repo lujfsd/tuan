@@ -1,0 +1,160 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<style type="text/css">
+#batch_result{ color:#f30; padding-left:20px;}
+</style>
+<script type="text/javascript">
+function SendMail(id)
+{
+	document.getElementById("loaderMail").innerHTML = "邮件发送中";
+	document.getElementById("loaderMail").style.display='block';
+	if(id)
+	{
+		$.ajax({
+			  url: "__ROOT__/services/admin.php?act=ajaxSendMail&id="+id,
+			  cache: false,
+			  success:function(data)
+			  {
+			  	data = $.evalJSON(data);
+			  	$("#Mail_result").append(data.html);
+			  	if(data.id!=0)
+			  	{
+			  		SendMail(data.id);
+				}	
+			  	else
+			  	{
+			  		$("#Mail_result").append("end");
+			  		document.getElementById("loaderMail").innerHTML = "";
+			  		document.getElementById("loaderMail").style.display='none';
+				}			
+			  },
+		error:function(a,b,c)
+		{
+			if(a.responseText)
+				alert(a.responseText);
+		}
+			});	
+	}
+	else
+	{
+		$("#Mail_result").html("");
+		$.ajax({
+			  url: "__ROOT__/services/admin.php?act=ajaxSendMail",
+			  cache: false,
+			  success:function(data)
+			  {
+			  	data = $.evalJSON(data); 
+			  	$("#Mail_result").append(data.html);
+			  	if(data.id!=0)
+			  	{
+			  		SendMail(data.id);
+				}	
+			  	else
+			  	{
+			  		$("#Mail_result").append("end");
+			  		document.getElementById("loaderMail").innerHTML = "";
+			  		document.getElementById("loaderMail").style.display='none';
+				}				
+			  },
+		error:function(a,b,c)
+		{
+			if(a.responseText)
+				alert(a.responseText);
+		}
+			});	
+	}
+}
+
+function SendSMS(id)
+{
+	document.getElementById("loaderSMS").innerHTML = "短信发送中";
+	document.getElementById("loaderSMS").style.display='block';
+	
+	if(id)
+	{
+		$.ajax({
+			  url: "__ROOT__/services/admin.php?act=ajaxSendSMS&id="+id,
+			  cache: false,
+			  success:function(data)
+			  {
+			  	data = $.evalJSON(data);
+			  	$("#SMS_result").append(data.html);
+			  	if(data.id!=0)
+			  	{
+			  		SendSMS(data.id);
+				}	
+			  	else
+			  	{
+			  		$("#SMS_result").append("end");
+			  		document.getElementById("loaderSMS").innerHTML = "";
+			  		document.getElementById("loaderSMS").style.display='none';
+				}			
+			  },
+		error:function(a,b,c)
+		{
+			if(a.responseText)
+				alert(a.responseText);
+		}
+			});	
+	}
+	else
+	{
+		$("#SMS_result").html("");
+		$.ajax({
+			  url: "__ROOT__/services/admin.php?act=ajaxSendSMS",
+			  cache: false,
+			  success:function(data)
+			  {
+			  	data = $.evalJSON(data); 
+			  	$("#SMS_result").append(data.html);
+			  	if(data.id!=0)
+			  	{
+			  		SendSMS(data.id);
+				}	
+			  	else
+			  	{
+			  		$("#SMS_result").append("end");
+			  		document.getElementById("loaderSMS").innerHTML = "";
+			  		document.getElementById("loaderSMS").style.display='none';
+				}				
+			  },
+		error:function(a,b,c)
+		{
+			if(a.responseText)
+				alert(a.responseText);
+		}
+			});	
+	}
+		
+}
+</script>
+<style>
+#Mail_result,#SMS_result{border:1px solid #ccc; height:260px;  overflow-x:hidden;overflow-y:scroll;width:500px}
+</style>
+如果出错,请在IE上直接执行(以确定出错原因):{$HTTP_URL}__ROOT__/services/admin.php?act=ajaxSendMail
+<div id="main" class="main" >
+<div class="content" >
+<div class="operate"  style="height:28px;">
+
+<div class="fLeft"><fanwe:imageBtn  value="开始发邮件" click="SendMail()" style="impBtn hMargin fLeft shadow" /></div>
+<div class="fLeft red ldb" style="line-height: 26px;padding-left:10px" id="loaderMail"></div>
+</div>
+<div style="padding-left:20px; line-height:30px;"></div>
+<div style="background:#fff">
+<div id="Mail_result"></div>
+
+
+<div style="height:10px; display:block;"></div>
+如果出错,请在IE上直接执行(以确定出错原因):{$HTTP_URL}__ROOT__/services/admin.php?act=ajaxSendSMS
+</div>
+<div class="operate"  style="height:28px;">
+<div class="fLeft"><fanwe:imageBtn  value="开始发短信" click="SendSMS()" style="impBtn hMargin fLeft shadow" /></div>
+<div class="fLeft red ldb" style="line-height: 26px;padding-left:10px" id="loaderSMS"></div>
+</div>
+<div style="background:#fff"><div id="SMS_result"></div></div>
+</div>
+
+
+

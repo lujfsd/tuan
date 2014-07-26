@@ -1,0 +1,1 @@
+{$lang.YOUR_CART_HAVE}<span id="FW_GOODS_COUNT">{$CARTNUM}</span>{$lang.UNIT_GOODS},{$lang.TOTAL_COUNT}<span  id="FW_TOTAL_PRICE">{$CARTTOTAL}</span><a href="{function name="a_u" a="Cart/index"}">{$lang.TOCHECK_OUT}</a>

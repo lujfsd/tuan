@@ -1,0 +1,16 @@
+<div id="main" class="main" >
+
+<div class="content">
+<ul id="tree">
+<foreach name="region_tree" item="lv1_region">
+	<li class="close"><input type="checkbox" class="region_ids" value="{$lv1_region.id}" />&nbsp;&nbsp;<span class="region_names"  onclick="loadRegion({$lv1_region.id},this);" >{$lv1_region.name}</span>
+	<ul >							
+													
+	</ul>
+	</li>
+</foreach>
+</ul>
+
+</div>
+</div>
+	

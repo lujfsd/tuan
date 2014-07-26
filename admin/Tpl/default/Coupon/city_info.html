@@ -1,0 +1,11 @@
+
+
+	<td class="tRight">请选择商圈：</td>
+	<td class="tLeft" >
+		<select name="region_id">
+			<foreach name="region_list" item="region">
+				<option value="{$region.id}" <if condition="$region['selected']">selected="selected"</if>>{$region.name}</option>
+			</foreach>
+		</select>
+	</td>
+

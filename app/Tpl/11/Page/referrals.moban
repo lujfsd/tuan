@@ -1,0 +1,94 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="referrals">
+			<div id="content" class="refers">
+				<div class="box clear">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.JJ_INVITE}</h2>
+						</div>
+						{if $smarty.session.user_id gt 0}
+						<div class="sect islogin">
+							<p class="intro">
+							{function name="sprintf" a="$lang.JJ_FIRED_INVITE_INFO" b="$SHOP_NAME" c="$CFG.REFERRALS_LIMIT_TIME" d="$referralsMoney" f="$SHOP_NAME"}
+							</p>
+							<div class="share-list">
+								<div class="blk im">
+									<div class="logo"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/logo_msn.png" /></div>
+									<div class="info">
+										<h4>{$lang.JJ_SEND_YOUR_URL}</h4>
+										<input id="share-copy-text" type="text" value="{$ref_urllink}" size="30" class="f-input" onfocus="this.select()" />
+										<input id="share-copy-button" type="button" value="{$lang.JJ_COPY}" class="formbutton" />
+									</div>
+								</div>
+								{if $goods}
+								<div class="blk last">
+									<div class="logo"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/logo_share.gif" /></div>
+									<div class="info">
+										<h4>{function name="sprintf" a="$lang.JJ_SHARE_TODAY_GB" b="$referralsMoney"}</h4>
+										<p class="deal-title">
+										<p style="padding:10px 20px 0 0;">
+										<a href="{$goods.url}">{$SHOP_NAME}</a>{$currentCity.desc}</p>
+										<div class="deal-info">
+											<p class="pic"><a href="{$goods.url}" target="_blank"><img src="{$CND_URL}{$goods.small_img}" width="150" height="90" /></a></p>
+											<p class="deal-title">{$goods.name_1}</p>
+										</div>
+										<div id="deal-share" >
+											<div class="deal-share-links">
+												<h4>{$lang.JJ_Share}</h4>
+												<ul class="cf">
+													{include file="Inc/others/referrals_url.moban" }
+												</ul>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								{/if}
+								<div class="clear"></div>
+							</div>
+						</div>
+						{else}
+						<div class="sect ">
+							<p class="intro">
+							{function name="sprintf" a="$lang.JJ_FIRED_INVITE_INFO" b="$SHOP_NAME" c="$CFG.REFERRALS_LIMIT_TIME" d="$referralsMoney" f="$SHOP_NAME"}
+							</p>
+							<p class="login">
+							<?php echo sprintf($GLOBALS['lang']['JJ_GET_YOUR_INVITE_URL'],a_u('User/login'),a_u("User/register"));?>
+							</p>
+						</div>
+						{/if}
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip referrals-side">
+							<h3 class="first">{$lang.JJ_WHERE_SEE_REBATES}</h3>
+							<p>{$lang.JJ_IF_INVITE_SUCCESS}</p>
+							<h3>{$lang.JJ_WHEN}</h3>
+							<p>{$lang.JJ_NOTICE_YOU_IN_DAY}</p>
+							<h3>{$lang.JJ_INVALID_INVITE}</h3>
+							<ul class="invalid">
+								<li>{$lang.JJ_INVITE_IN_TWO_DAYS}</li>
+								<li>{$lang.JJ_CLICK_OTHER_LINK}</li>
+								<li>{$lang.JJ_NOT_FIRST_BUY}</li>
+								<li>{$lang.JJ_GB_NOT_LIMIT_CANCEL}</li>
+							</ul>
+							<h3>{$lang.JJ_SELF_REFERRALS}</h3>
+							<p>{$lang.JJ_CANT_REFERRALS}</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

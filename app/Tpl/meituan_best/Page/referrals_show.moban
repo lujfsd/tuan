@@ -1,0 +1,50 @@
+{include file="Inc/header.moban"}
+<style type="text/css">
+.ref_show{ width:90%; margin:0 auto; border:1px solid #e2e2e2; border-bottom:0}
+.ref_show th{ text-align:center; background:#f3f3f3; padding:4px; border-bottom:1px solid #c30}
+.ref_show td{padding:3px;border-left:1px solid #e2e2e2; border-bottom:1px solid #e2e2e2; text-align:center;}
+.ref_show .rank{ width:15%}
+.ref_show .user{ text-align:left}
+.ref_show .unit{ width:20%}
+.ref_show .res{ color:#f30}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="learn">
+			<div id="content" class="about">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$page_title}</h2>
+						</div>
+						<div class="sect guide">
+							<table width="0" border="0" cellpadding="0" cellspacing="1" class="ref_show">
+                            <tr>
+                            	<th class="rank">{$lang.U_RANK}</th>
+                                <th class="user">{$lang.U_NAME}</th>
+                                <th class="unit">{if $smarty.request.a eq 'money'}{$lang.MONEY_VALUE}{else}{$lang.SCORE_UNIT}{/if}</th>
+                            </tr>
+							{foreach from="$refulist" item="list" name="list"}
+								 <tr>
+									<td>{$smarty.foreach.list.iteration}</td>
+									<td class="user">{$list.user_name}</td>
+									<td class="res">{if $smarty.request.a eq 'money'}{function name="a_formatPrice" a="$list.sum_res"}{else}{$$list.sum_res}{/if}</td>
+								</tr>
+							{/foreach}
+							</table>
+							<div class="blank"></div>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id=sidebar>
+				{include file="Inc/common/right.moban"}
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

@@ -1,0 +1,147 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+function getActionList(obj)
+{
+	$.ajax({
+		  url: APP+"?"+VAR_MODULE+"=Nav&"+VAR_ACTION+"=getActionList&rec_module="+obj.value,
+		  cache: false,
+		  success:function(data)
+		  {
+			data = $.evalJSON(data); 
+			var html = "<option value=''>{%NO_SELECT}</option>";
+			for(var i=0;i<data.length;i++)
+			{
+				html+="<option value='"+data[i].value+"'>"+data[i].name+"</option>";
+			}
+			$("#rec_action").html(html);
+		  }
+		}); 
+}
+jQuery(function($){
+	$("select[name='all_city']").bind("change",function(){
+		if($(this).val()=="1")
+		{
+			$("tr#city-list").hide();
+		}
+		else{
+			$("tr#city-list").show();
+		}
+	});
+	
+	$(".city_big_box input").click(function(){
+		if($(this).attr("checked")==true){
+			$(".city_small_box_"+$(this).val()+" input").attr("checked",true);
+		}
+	});
+});
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Nav/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.NAV_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" />
+		显示分类：
+		<input type="checkbox" name="show_cate" value="1" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.NAV_CONF}：</td>
+	<td class="tLeft" >
+		{%REC_MODULE}:
+		<select name="rec_module" onchange="getActionList(this);">
+			<option value=''>{%NO_SELECT}</option>
+			<foreach name="module_list" item="module_item">
+				<option value="{$key}">{:l("LANG_SHOW_MODULE_".$key)}</option>
+			</foreach>
+		</select>
+		{%REC_ACTION}:
+		<select name="rec_action" id="rec_action">
+			<option value=''>{%NO_SELECT}</option>
+		</select>
+		{%REC_ID}:
+		<input type="text" class="bLeft" name="rec_id" />
+		
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.NAV_URL}：</td>
+	<td class="tLeft" >
+		<input type="text" name="url" class="bLeft" value="" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.NAV_TYPE}：</td>
+	<td class="tLeft" >
+		<select name="type" class="bLeft">
+			<option value="2">{$Think.lang.NAV_TYPE_2}</option>
+            <option value="3">{$Think.lang.NAV_TYPE_3}</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$new_sort}" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >默认首页：</td>
+	<td class="tLeft" >
+		<label>否：<input type="radio" name="is_default" value="0" checked="checked" /></label>
+		<label>是：<input type="radio" name="is_default" value="1" /></label>
+		<div>{$Think.lang.NAV_URL}不为空的话无法生效</div>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >所有城市显示：</td>
+	<td class="tLeft">
+		<select name="all_city">
+			<option value="1">是</option>
+			<option value="0">否</option>
+		</select>
+	</td>
+</tr>
+<tr id="city-list" style="display:none">
+	<td class="tRight" >所属城市：</td>
+	<td class="tLeft">
+		<foreach name="city_list" item="city">
+			<if condition="$city['pid'] eq 0">
+			<div style="float:left;" class="city_big_box">
+				<label>
+					<input type="checkbox" value="{$city.id}" name="city_ids[]">{$city.name}：
+				</label>
+			</div>
+			<div style="float:left;" class="city_small_box_{$city.id}">
+				<foreach name="city_list" item="scity">
+					<if condition="$scity['pid'] eq $city['id']">
+					<label>
+						<input type="checkbox" value="{$scity.id}" name="city_ids[]">{$scity.name}
+					</label>
+					</if>
+				</foreach>	
+			</div>
+			<div class="blank1"></div>
+			</if>
+		</foreach>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

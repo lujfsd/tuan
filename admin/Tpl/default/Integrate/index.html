@@ -1,0 +1,49 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+
+<div id="main" class="main" >
+
+<script type="text/javascript">
+	function confirm_redirect(msg, url)
+	{
+	  if (confirm(msg))
+	  {
+	    location.href=url;
+	  }
+	}
+</script>
+<div class="content" >
+<div class="title">会员整合</div>
+<div class="title" style="height:auto" >
+    使用方法：<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:如果需要整合其他的用户系统，可以安装适当的版本号插件进行整合。<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:如果需要更换整合的用户系统，直接安装目标插件即可完成整合，同时自动卸载上一次整合插件。<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:如果不需要整合任何用户系统，请选择安装 fanwe 插件，即可卸载所有的整合插件。<br>
+</div>
+
+<div class="list" >
+<table id="list" class="list" cellpadding=0 cellspacing=0>
+  <tr class="row">
+    <th class="center" width = "30%">名称</th>
+    <th width = "20%">版本</th>
+    <th width = "20%">作者</th>
+    <th width = "30%">操作</th>
+  </tr>
+	<iterate name="modules" id="module" >
+		<tr>
+			<td>{$module.name}</td>
+			<td>{$module.version}</td>
+			<td>{$module.author}</td>
+			<td>
+			  <if condition="$module.installed eq 1">
+		      		<a href="__APP__?m=Integrate&a=setup&code={$module.code}">设置</a><if condition="$allow_set_points eq 1">&nbsp;<a href="__APP__?m=Integrate&a=points_set&code={$module.code}">&nbsp;&nbsp;&nbsp;积分兑换设置</a></if>
+		      <else/>
+		      		<a <if condition="$module.code neq 'fanwe' ">href="javascript:confirm_redirect('您确定要安装该会员数据整合插件吗？', '__APP__?m=Integrate&a=install&code={$module.code}')"<else/>href="__APP__?m=Integrate&a=install&code={$module.code}" </if>>安装</a>
+		      </if>
+			</td>
+		</tr>
+	</iterate>  
+</table> 
+</div>
+</div>
+

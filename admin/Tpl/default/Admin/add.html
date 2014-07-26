@@ -1,0 +1,58 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{:l('ADD_DATA')}[ <a href="{:u($module_name.'/index')}">{:l('BACK_LIST')}</a> ] </div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Admin/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{:l('ADMIN_NAME')}：</td>
+	<td class="tLeft" >
+<fanwe:textbox name="adm_name" class="bLeftRequire" /><label style="color: red">   账号名称至少为4个字符</label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{:l('ADMIN_PWD')}：</td>
+	<td class="tLeft" >
+		<input type="password" name="adm_pwd" class="bLeftRequire" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{:l('ADMIN_PWD_CONFIRM')}：</td>
+	<td class="tLeft" >
+		<input type="password" name="repassword" class="bLeftRequire" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{:l('ADMIN_ROLE')}：</td>
+	<td class="tLeft" >
+		<select name="role_id" class="bLeft">
+			<foreach name="role_list" item="role_item">
+				<option value="{$role_item.id}">{$role_item.name}</option>
+			</foreach>
+		</select>   {:l('ADMIN_ROLE_TIP')}
+	</td>
+</tr>
+ 
+<tr style="display:none;">
+	<td class="tRight" >管理的地区：</td>
+	<td class="tLeft" >
+		<foreach name="city_list" item="city_item">
+			<label style="padding:5px; display:block; float:left; background:#f7f7f7; margin:2px; border:#ccc solid 1px;"><span>{$city_item.name}：</span> <input type="checkbox" name="city_ids[]" value="{$city_item.id}" /></label>
+		</foreach>
+	</td>
+</tr>
+ 
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{:l('SAVE_DATA')}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{:l('RESET_DATA')}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

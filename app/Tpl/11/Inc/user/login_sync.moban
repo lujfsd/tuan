@@ -1,0 +1,65 @@
+{include file="Inc/header.moban"}
+<style>
+#deal-buy-login{ position:relative;}
+#deal-buy-login-form p span{ width:120px; }
+#content #deal-buy-login-form .act{ margin-left:130px;} 
+#deal-buy-login-form p{ margin:5px 0;}
+.box-content .sect{ background:none; padding-top:0 !important;}
+#content .sect{ padding-top:0px;}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="content">
+			<div class="box" id="deal-buy-box">
+				<div class="box-top"></div>
+				<div class="box-content" style="padding:10px;">
+                <div style=" padding:30px 10px 25px 40px; border-bottom:1px solid #ddeeff;">您好！您已经用合作账户成功登录{$SHOP_NAME}。</div>
+                 <div style="height:34px; padding:10px;">
+                 <input type="radio" value="1" name="signuped" onclick="document.getElementById('signup').style.display='block';document.getElementById('deal-buy-box_1').style.display='none';" checked="checked" />
+                 <span>已经注册过{$SHOP_NAME}帐号（绑定合作账户）</span>
+                 </div>
+			<div id="signup" style="background:none;"  >
+				<div >
+					<form action="{function name='a_u' value='User/doLogin'}" method="post" id="deal-buy-form-login">
+						<div id="deal-buy-login-form">
+							<p><span>{$lang.LOGIN_EMAIL}</span><input tabindex="1" type="text" size="30" name="email" id="login-email-address" class="f-input" value="{$user.email}"/>
+							</p>
+							<p>
+								<span>{$lang.XY_PASS}</span><input type="password" tabindex="2"  class="f-input" name="user_pwd" size="30" id="login-password"/>
+							</p>
+							{if a_fanweC('REGISTER_VERIFY') eq 1}
+							<p class="cf">
+								<span style="float:left;padding-top:3px;">{$lang.XY_VERIFY}</span><input type="text" size="30" name="login_verify" id="login_verify" class="f-input" style="width:100px;float:left;margin-right:9px;" /><img id="login-verify-img" style="float:left;cursor:pointer;height:auto;align="absmiddle" title="{$lang.XY_VERIFY_RESET}" onclick="this.src='{$HTTP_URL}/index.php?m=Ajax&a=verify&rand='+ Math.random();" src='{$HTTP_URL}/index.php?m=Ajax&a=verify&rand='+ Math.random();/>
+							</p>
+							{/if}
+							<p class="act">
+								<input type="hidden" name="redirect" value="{$redirect}" />
+								<input type="hidden" name="goods_id" value="{$goods_id}" />
+								<input type="hidden" name="number" value="{$number}" />
+								<input type="hidden" name="is_cart" value="1" />
+								
+								<input type="hidden" name="user_api_field_name" value="{$user_api_field_name}" />
+								<input type="hidden" name="user_api_field_value" value="{$user_api_field_value}" />
+								<input type="submit" value="{$lang.XY_USER_LOGIN}" name="commit" id="login-submit" class="formbutton"/>
+							</p>
+						</div>
+					</form>
+				</div>
+			</div>
+                <div style="height:34px; padding:10px;">
+                <input type="radio" value="" onclick="document.getElementById('signup').style.display='none';document.getElementById('deal-buy-box_1').style.display='block';" name="signuped" />
+                <span>还没有注册过{$SHOP_NAME}帐号（创建一个{$SHOP_NAME}帐号）</span>
+                </div>
+                <div id="deal-buy-box_1" style="display:none;">
+					{include file="Inc/user/reg_info.moban"}
+                 </div>
+				</div>
+				<div class="box-bottom"></div>
+			</div>
+            {include file="Inc/cart/cart_other_goods_list.moban"}
+		</div>
+		<div id="sidebar"> </div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

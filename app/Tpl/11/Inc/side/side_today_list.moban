@@ -1,0 +1,32 @@
+{if $today_list}
+<div class="sbox side-goods-tip">
+	<div class="sbox-top"></div>
+	<div class="sbox-content">
+			<h2>{$lang.XY_STIL_CAN_GROUP}</h2>
+		<ul>
+			{foreach from="$today_list" item="today_item"}
+				{if $today_item.id neq $goods.id}
+				<li>
+					<a href="{$today_item.url}" class="title">
+					{$today_item.name_1}
+					</a>
+					<a href="{$today_item.url}" class="img">
+					<img alt="{$today_item.name_1}' width="198" src="{$CND_URL}{$today_item.small_img}" />
+					</a>
+					<div class="clear price">
+						<span class="mk">原价：<b>{$today_item.market_price_format}</b></span>
+						<span class="db">折扣：<b>{function name="sprintf" a=$lang.JJ_DISCOUNT_POINT b=$today_item.discountfb}</b></span>
+						<span class="sp">现价：<b>{$today_item.shop_price_format}</b></span>
+						<span class="sav">节省：<b>{$today_item.save}</b></span>
+						<div class="clear"></div>
+						<a href="{$today_item.url}"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/buy.jpg" /></a>
+					</div>
+				</li>
+				{/if}
+			{/foreach}
+		</ul>
+	</div>
+	<div class="sbox-bottom"></div>
+</div>
+<div class="blank"></div>
+{/if}

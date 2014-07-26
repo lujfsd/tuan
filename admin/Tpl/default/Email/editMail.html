@@ -1,0 +1,83 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<script type="text/javascript">
+	function showcontent(obj)
+	{
+		if(obj.value == 0)
+		{
+			$("#mail_content").show();
+			$("#goods_id_row").find("input").val("");
+			$("#goods_id_row").hide();
+			
+		}
+		else
+		{
+			$("#mail_content").hide();
+			$("#goods_id_row").show();
+		}
+	}
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/mailList')}">{$Think.lang.BACK_LIST}</a> ]  [ <a href="{:u($module_name.'/sendAddressList',array('id'=>$vo['id']))}">{$Think.lang.SEND_ADDRESS_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Email/updateMail')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.TAG_DESC}：</td>
+	<td class="tLeft" >
+		<span>{</span><span>$</span>username<span>}</span>:{%RECIEVE_NAME}<br />	
+		<input type="hidden" name="is_html" value="1" />		
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="120">{$Think.lang.MAIL_TITLE}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeftRequire" name="mail_title" id="mail_title" value="{$vo.mail_title}"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" width="120">类型：</td>
+	<td class="tLeft" >
+		<select name="mailtype" onchange="showcontent(this);">
+			<option value="0" <if condition="$vo['goods_id'] eq 0">selected="selected"</if>>普通邮件</option>
+			<option value="1" <if condition="$vo['goods_id'] neq 0">selected="selected"</if>>团购通知</option>
+		</select>
+		<span id="goods_id_row" <if condition="$vo['goods_id'] eq 0">style="display:none;"</if>>
+			团购ID：<input type="text" name="goods_id" class="bLeft short_size" value="{$vo.goods_id}" /> <a href="javascript:void(0);" onclick="showMailDemo()">生成预览到编辑器 [可将源代码复制到第三方软件群发]</a>
+		</span>
+	</td>
+</tr>
+<tr id="mail_content" <if condition="$vo['goods_id'] neq 0">style="display:none;"</if>>
+	<td class="tRight" width="120">{$Think.lang.MAIL_CONTENT}：</td>
+	<td class="tLeft" >
+		<fanwe:editor  name="mail_content" id="mail_content_editor" type="emailEditor" dataSource="{$vo.mail_content}"  style="width:650px;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+
+        	<tr>
+                <td class="tRight" width="100px;">发送状态：</td>
+                <td class="tLeft" >
+                    <select name="status" id="mail_status" class="bLeft">
+                    	<option <if condition="$vo['status'] eq 0">selected="selected" </if> value="0">未发送</option>
+                    	<option <if condition="$vo['status'] eq 1">selected="selected" </if> value="1" >已发送</option>
+                    </select>
+                </td>
+            </tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

@@ -1,0 +1,88 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<style type="text/css">
+.spec_item{clear:both;}
+.spec_name{ width:80px;}
+.sortable{list-style-type: none; margin: 0; padding: 0; float:left;}
+.sortable li{margin: 3px 5px 3px 0; padding: 1px; float: left; width: 25px; height: 25px; font-size:12px;text-align: center; border:solid 1px #333; cursor:pointer;}
+.sortable li img{width:25px; height:25px; float:left;}
+.clear {clear:both; height:0; overflow:hidden; display:block;}
+.spec_gallrey_box{margin:0 0 2px 0; clear:both;}
+</style>
+<div>
+
+	<foreach name="spec_list" item="spec_type">
+	<div class="spec_type_item">
+		<div class="spec_type_title"><fanwe:label value="$spec_type.spec_type.name" ignore="1" isarray="1" /></div>
+		<foreach name="spec_type.spec_list" item="spec_item">
+		<div class="spec_item">		
+			<input type="checkbox" <if condition="$spec_item['id'] neq 0 && $spec_item['session_id'] eq ''">checked="checked"</if> value="{$spec_item['id']}" name='goods_spec_id[]' class="select_goods_spec spec_group_{$idx}" onclick="makeSpecItemTable();" />	
+			<input type="hidden" value="{$spec_item['id']}" name="spec_id[]" class="spec_id_hidden" />
+			<input type="hidden" value="{$spec_item['spec_type_id']}" name="spec_type_id[]" />
+            <input type="hidden" value="" class="spec_gallery" name="spec_gallery[]" />
+			<fanwe:textbox value="$spec_item.spec_name" name="spec_name" class="spec_name_box" ignore="1" />
+			<if condition="$spec_type['spec_type']['type'] eq 1">
+			<img src='<if condition="$spec_item['img'] neq ''">__ROOT__{$spec_item.img}<else />__ROOT__/admin/Tpl/default/ThemeFiles/Images/error.gif</if>' align="absmiddle" width=20 height=20 style="border:#ccc solid 1px;" id="spec_img_{$idx}_{$spec_item.id}"/>
+			<span id="image_browse_{$spec_item.id}"></span>
+			
+			
+			<script type="text/javascript">
+			var APP	 =	 '__APP__';
+			var PUBLIC = '__TMPL__ThemeFiles';
+			var spec_id = '{$spec_item.id}';
+			var idx = '{$idx}';
+		    var settings = {
+				flash_url : PUBLIC+"/Js/swfupload/swfupload.swf",
+				upload_url: APP,				
+				post_params: {"<php>echo C('VAR_MODULE');</php>":"Public","<php>echo C('VAR_ACTION');</php>":"uploadSpecIcon","spec_id":spec_id,"idx":idx},
+				file_size_limit : "<php>echo (fanweC('MAX_UPLOAD')/1000000)."MB";</php>",
+				file_types : "*.jpg;*.gif",
+				file_types_description : "{$Think.lang.GOODS_UPLOAD_MAX_TIP}<php>echo (fanweC('MAX_UPLOAD')/1000000)."MB";</php>",
+				file_upload_limit : 100,
+				file_queue_limit : 100,
+				custom_settings : {
+					progressTarget : "fsUploadProgress",
+					cancelButtonId : "btnCancel"
+				},
+				debug: false,
+
+				// Button settings
+				button_image_url: PUBLIC+"/Images/uploadSpec.gif",
+				button_width: "13",
+				button_height: "13",
+				button_placeholder_id: "image_browse_{$spec_item.id}",
+				
+				// The event handler functions are defined in handlers.js
+				file_queued_handler : fileQueued,
+				file_queue_error_handler : fileQueueError,
+				file_dialog_complete_handler : fileDialogComplete,
+				upload_start_handler : uploadStart,
+				upload_progress_handler : uploadProgress,
+				upload_error_handler : uploadError,
+				upload_success_handler : uploadSpecSuccess,
+				upload_complete_handler : uploadComplete,
+				queue_complete_handler : queueComplete	// Queue plugin event
+			};
+			var swfu_{$idx}_{$spec_item.id} = new SWFUpload(settings,'{$idx}_{$spec_item.id}');
+		</script>
+		
+			</if>
+			[<a href="javascript:;" onclick="addSpecRow(this,{$spec_item['id']},{$idx});">+</a>]
+			[<a href="javascript:;" onclick="delSpecRow(this,{$spec_item['id']},{$idx});">-</a>]
+			<a class="spec_gallrey_btn"<if condition="$spec_item['id'] neq 0 && $spec_item['session_id'] neq ''"> style="display:none;"</if>　specID="{$spec_item['id']}" href="javascript:;" onclick="popGoodsGallery(this);">设置关联相册</a>
+			<div class="spec_gallrey_box">
+                <ul class="sortable">
+                <foreach name="spec_item.gallerys" item="gallery" >
+                	<li galleryID="{$gallery.gallery_id}" title="拖动进行排序"><img alt="拖动进行排序" src='__ROOT__{$gallery.small_img}' /></li>
+                </foreach>
+                </ul>
+            </div>
+		</div>
+		</foreach>
+		
+	</div>
+	</foreach>
+</div>
+<script type="text/javascript">
+bindChangeValue();
+</script>

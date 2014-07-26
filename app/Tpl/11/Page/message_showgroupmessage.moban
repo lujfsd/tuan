@@ -1,0 +1,91 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="consult">
+			<div class="consult-bd consult-no-deal">
+				<div id="content">		
+				
+					<div class="box clear" >
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head">
+								<h2>{$msgData.tg_title}</h2>&nbsp;&nbsp;{$lang.JJ_SPONSOR}：{$msgData.user_name}
+								&nbsp;&nbsp;{$lang.JJ_PEOPLE_TIME}：{function name="a_toDate" value="$msgData.create_time"}
+							</div>
+							<div class="sect consult-list">
+								{$msgData.tg_content|nl2br}
+								<div class="blank"></div>								
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+					
+					<div class="box clear" style="margin-top:20px;">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head" id="consult-form-head" name="consult-form-head">
+								<h2>{$lang.JJ_REVIEW_LIST}</h2>
+							</div>
+							<div class="sect consult-list">
+								{foreach from="$msgData.comments" item="comments_item"}
+								<div>
+								<?php echo sprintf($GLOBALS['lang']['JJ_SEND_COMMENT'],$this->_var['comments_item']['user_name'],a_toDate($this->_var['comments_item']['create_time']))?><br />
+								{$comments_item.tg_content|nl2br}
+								</div>
+								{/foreach}
+								<div class="blank"></div>
+								<div style="text-align:right;">{$pages}</div>
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+					
+					<div class="box clear" style="margin-top:20px;">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head" id="consult-form-head" name="consult-form-head">
+								<h2>{$lang.JJ_POST_MESSAGE}</h2>
+							</div>
+							<div class="sect consult-form">
+								{if $smarty.session.user_id gt 0}
+								<form name="message" action="{$POST_URL}" id="tg-comment" method="post" />
+									<textarea class="f-textarea" cols="60" rows="5" name="tg_content" id="tg_content"></textarea>
+									<p class="commit">
+										<input type="hidden" name="pid" value="{$msgData.id}" />
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="addGroupMessageComment" />
+										<input type="submit" value="{$lang.JJ_SUBMIT}" name="commit" class="formbutton"/>
+									</p>
+								</form>
+								{else}
+								<?php echo sprintf($GLOBALS['lang']['JJ_regist'],a_u("User/login"),a_u("User/register"));?>	
+								{/if}
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+				</div>
+				<div id="sidebar">
+					<div class="sbox side-invite-tip">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="tip">
+							<h2>{$lang.XY_SENT_USER_INFO}</h2>
+							<p>{$lang.XY_SENT_MEMBER}{$msgData.user_name}<br />
+							{$lang.XY_SENT_TIMES}<span style="font-size:12px;">{function name="a_toDate" a=$msgData.create_time}</span><br />
+							{function name="sprintf" a=$Lang.XY_SENT_FOLLOW b=$msgData.follows)}<br />
+							<a href="<?php echo a_u("Message/followGroupMessage","id-".$this->_var['msgData']['id'])?>">{$lang.XY_SENT_FOLLOW_ON}</a>
+							
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+				<div class="blank"></div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

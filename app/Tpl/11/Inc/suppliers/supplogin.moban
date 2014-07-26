@@ -1,0 +1,55 @@
+<tagLib name="fanwe" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="login">
+			<div id="content" class="login-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_SUPPLIER_LOGIN}</h2>
+						</div>
+						<div class="sect">
+							<form name="reg_form" action="{$POST_URL}" method="post" >
+								<div class="field email">
+									<label for="login-email-address">{$lang.XY_SUPPLIER_NAME}</label>
+									<input tabindex="1" type="text" size="30" name="suppliers_name" id = "suppliers_name" class="f-input" value="{$suppliers.name}"/>
+								</div>
+								<div class="field password">
+									<label for="login-password">{$lang.XY_SUPPLIER_PASS}</label>
+									<input tabindex="2" type="password" size="30" name="pwd" id = "password" class="f-input" value="{$suppliers.pwd}"/>
+								</div>
+								<div class="act">
+									<input type="hidden" name="m" value="Suppliers" />
+									<input type="hidden" name="a" value="doLogin" />
+									<input type="submit" value="{$lang.XY_USER_LOGIN}" name="commit" id="login-submit" class="formbutton"/>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+<script type="text/javascript">
+jQuery(function($){
+	$("#login-submit").click(function(){
+		if($.trim($("#suppliers_name").val()).length == 0)
+		{
+			$.showErr("{$lang.XY_PLEASE_ENTER_SUP_NAME}");
+			$("#suppliers_name").focus();
+			return false;
+		}
+		
+		if(!$.minLength($("#password").val(),4,false))
+		{
+			$.showErr("{$lang.XY_PLEASE_ENTER_TRUE_PASS}");
+			$("#password").focus();
+			return false;
+		}
+	});
+});
+</script>

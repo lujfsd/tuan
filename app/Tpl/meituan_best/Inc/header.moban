@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Generator" content="Fanwe v{$CFG.SYS_VERSION}" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$site_info.title}</title>
+<meta name="keywords" content="{$site_info.keyword}" />
+<meta name="description" content="{$site_info.content}" />
+<link rel="icon" href="favicon.ico" type="/image/x-icon" />
+<link rel="shortcut icon" href="favicon.ico" type="/image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/style.css" />
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jquery.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jcarousellite.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/script.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jquery.pngFix.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}/Public/js/jquery.lazyload.pack.js"></script>
+<script type="text/javascript" src="{$CND_URL}/app/Runtime/js_lang.js"></script>
+<script language="JavaScript">
+<!--
+//指定当前组模块URL地址
+var CND_URL = '{$CND_URL}';
+var HTTP_URL = '{$HTTP_URL}';
+var ROOT_PATH = '{$__ROOT__}';
+var PUBLIC = '{$TMPL_PATH}Public';
+var VAR_MODULE = 'm';
+var VAR_ACTION = 'a';
+var FANWE_LANG_ID = '1';
+var cityID = '{$currentCity.id}';
+$(document).ready(function(){
+	$("#content img").lazyload({
+				placeholder : "{$CND_URL}/Public/img_loading.gif",
+				failurelimit : 10
+		 });
+});
+
+//-->
+</script>
+
+</head>
+<body class="bg-alt">
+<div id="doc">
+	<div id="hdw">
+		<div class="head">
+        <div id="hd">
+            <div id="logo">
+				<a class="link" href="{function name="a_fanweC" value="SHOP_URL"}"><img src="{$CND_URL}{function name="a_fanweC" value="SHOP_LOGO"}" /></a>
+			</div>
+            <div class="guides">
+                <div class="city">
+                    <h2>{$currentCity.name}</h2>
+                </div>
+                <div  class="change"><a href="{function name="a_u" a="City/more"}">[{$lang.XY_CHANGE_CITY}]</a></div>
+                
+            </div>
+            <ul class="nav cf">
+				{foreach from=$main_navs item=nav}
+				<li><a href="{$nav.url}"  target="{$nav.target}" {if $nav.act eq 1}class="current"{/if}>{$nav.name_1}</a></li>
+				{/foreach}
+            </ul>
+            <div class="logins">
+			{insert name="member_info"}
+			</div>
+<!--			<div class="ref"><a href="<?php echo a_u("Referrals/index","id-".intval($this->_var['goods']['id'])."|tid-".intval($this->_var['tid']));?>">{$lang.XY_REFERRALS} {$referralsMoney} </a></div>-->
+			<ul id="myaccount-menu">
+			{foreach from=$user_menu item=menu_item}
+			      	<li><a href="{$menu_item.url}">{$menu_item.name}</a></li>
+			{/foreach}
+            </ul>
+			{if $CFG.TEL}
+			<div id="head-tel">{$CFG.TEL}</div>
+			{/if}
+
+	
+				<div id="header-subscribe-body" class="body">
+					<FORM id="header-subscribe-form" method="post" action="{$__ROOT__}/index.php">
+                                            <div class="byemail">
+						<input class="f-text" name="uemail">
+						<input value="{$currentCity.id}" type="hidden" name="cityid">
+						<input value="Index" type="hidden" name="m">
+						<input value="malllist" type="hidden" name="a">
+						<input value="subScribe" type="hidden" name="do">                                           
+						<input value="{$lang.XY_SUBSCRIBE}" type="submit" class="commit">
+                                                    
+                                                    </div>
+                                            <div class="tip">
+                                                    <h3>关注我们</h3>
+                                                     <div class="list cf">
+                                                      <ul>
+                                                          <li><a class="sina" href="" target=_blank></a></li>
+                                                          <li><a class="kaixin" href="" target=_blank></a></li>
+														  <li><a class="renren" href="" target=_blank></a></li>							
+                                                     </ul>
+                                                    </div>
+                                                    </div>
+                                         </FORM>
+				</div>
+				
+			
+        </div>
+		</div>
+    </div>
+	{insert name="getGoodsStatus" id=$goods.id}
+	{insert name="getTooltipStatus" id=$goods.id}
+	<div class="align">
+	{insert name="advLayout" id="顶部通栏广告" file="adv/top_adv.moban"}
+	{insert name="advLayout" id="顶部通栏广告无框"}
+	</div>
+	
+	{if ($smarty.request.m eq 'Index' && $smarty.request.a eq 'index') || ($smarty.request.m eq 'Goods' && $smarty.request.a eq 'showcate')}
+	<div class="goods-cate-hd-list">
+	 {if $sidegoodscatelist}
+		<div class="goods_cate">
+		<span class="cate_title">分类：</span>
+		<span {if $pid eq 0}class="current"{/if}><a href="{function name="a_u" value="Index/index"}">全部</a></span>
+		{foreach from="$sidegoodscatelist" item="gclist" name="gclist"}
+			<span {if $pid eq $gclist.id}class="current"{/if}>
+				<a href="<?php echo a_u("Goods/showcate","id-".$this->_var['gclist']['id']."|menu-".$this->_var['gclist']['id'])?>" title="{$gclist.name}" shopping="food">{$gclist.name}[{$gclist.goods_count}]</a>
+			</span>
+		{/foreach}
+		</div>
+		{if $sub_cate_list}
+			<div class="cate_sub">
+				<span {if $catepid eq $pid}class="current"{/if}><a href="<?php echo a_u("Goods/showcate","id-".intval($this->_var['pid']))?>">全部</a></span>	
+				{foreach item=sub_item from=$sub_cate_list name="sub_item"}
+			     <span {if $catepid eq $sub_item.id}class="current"{/if}>
+                     <a href="<?php echo a_u("Goods/showcate","id-".$this->_var['sub_item']['id'])?>" title="{$sub_item.name}" shopping="food" {if $sub_item.id eq $catepid}class="current"{/if}>{$sub_item.name}({$sub_item.goods_count})</a>
+				 </span>
+				{/foreach}
+			</div> 
+		{/if}
+	 {/if}
+	 
+	 {if $quan_list}
+		<div class="shq">
+			<span class="cate_title">商圈：</span>	
+			<span {if intval($top_pid) eq 0}class="current"{/if}>
+				<a href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],0,$_REQUEST['gp'],$_REQUEST['sc']); ?>">全部</a>
+			</span>	
+			{foreach from="$quan_list" item="quan" name="quan"}
+			<span {if intval($top_pid) eq intval($quan.id)}class="current"{/if}>
+				<a href="{$quan.url}" title="{$quan.name}" shopping="food">{$quan.name}[{$quan.goods_count}]</a>
+			</span>			
+			{/foreach}
+		</div>
+		{if $sub_quan_list}
+			<div class="cate_sub">
+				<span {if intval($quan_id) eq intval($top_pid)}class="current"{/if}>
+					<a href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],intval($this->_var['top_pid']),$_REQUEST['gp'],$_REQUEST['sc']); ?>">全部</a>
+				</span>
+				{foreach from="$sub_quan_list" item="quan" name="quan"}
+				<span {if intval($quan_id) eq intval($quan.id)}class="current"{/if}>
+					<a href="{$quan.url}" title="{$quan.name}" shopping="food">{$quan.name}[{$quan.goods_count}]</a>
+				</span>			
+				{/foreach}
+			</div>
+		{/if}
+	 {/if}
+		<div class="good_sord cf">
+			 <div class="price">
+ 				<span class="cate_title span_left">价格区间：</span>
+				<a  class="{if $smarty.request.gp eq 'all'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],"all",$_REQUEST['sc']); ?>">全部</a>
+				<a  class="{if $smarty.request.gp eq '1'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],"1",$_REQUEST['sc']); ?>">100以内</a>
+				<a  class="{if $smarty.request.gp eq '2'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],"2",$_REQUEST['sc']); ?>">100~200</a>
+				<a  class="{if $smarty.request.gp eq '3'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],"3",$_REQUEST['sc']); ?>">200~300</a>
+				<a  class="{if $smarty.request.gp eq '5'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],"5",$_REQUEST['sc']); ?>">300~500</a>
+				<a  class="{if $smarty.request.gp eq 'gt5'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],"gt5",$_REQUEST['sc']); ?>">500以上</a>
+ 			</div>
+			 <form action="{function name="a_u" value="Goods/other"}"  method="POST" class="cf" onsubmit="return search(this)">
+				<input type="text" value="{$keywords}" name="keywords" class="f-input" />					
+				<input type="submit" value="搜索" name="submit" class="formbutton" />
+			 </form>
+		</div>
+		<div class="hd_page">
+			<span class="cate_title span_left">排序：</span>
+			 <span class="span_left">
+				<a  class="desc {if $smarty.request.sc eq 'new'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],$_REQUEST['gp'],"new"); ?>">最新</a>
+				<a  class="desc {if $smarty.request.sc eq 'sell'}current{/if}" href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],$_REQUEST['gp'],"sell"); ?>">销量</a>
+				<a  class="asc {if $smarty.request.sc eq 'price'}current{/if}"  href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],$_REQUEST['gp'],"price"); ?>">价格</a>
+				<a  class="asc {if $smarty.request.sc eq 'zhekou'}current{/if}"  href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],$_REQUEST['gp'],"zhekou"); ?>" >折扣</a>
+			 </span>
+			{$pages}			
+			<div class="clear"></div>   	
+		</div>					
+	</div>
+	{/if}
+	
+	<div id="sysmsg-error-box">
+		<div id="sysmsg-error" class="sysmsgw {if $error eq ''}hidd{/if}">
+			<div class="sysmsg"><span>{$error}</span><span class="close">{$lang.XY_CLOSE}</span></div>
+		</div>
+		<div id="sysmsg-success" class="sysmsgw {if $success eq ''}hidd{/if}">
+			<div class="sysmsg"><span>{$success}</span><span class="close">{$lang.XY_CLOSE}</span></div>
+		</div>
+	</div>
+

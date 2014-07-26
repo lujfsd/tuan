@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Generator" content="Fanwe v{$CFG.SYS_VERSION}" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$site_info.title}</title>
+<meta name="keywords" content="{$site_info.keyword}" />
+<meta name="description" content="{$site_info.content}" />
+<link rel="icon" href="favicon.ico" type="/image/x-icon" />
+<link rel="shortcut icon" href="favicon.ico" type="/image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/style.css" />
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jquery.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jcarousellite.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/script.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jquery.pngFix.js"></script>
+<script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}/Public/js/jquery.lazyload.pack.js"></script>
+<script type="text/javascript" src="{$CND_URL}/app/Runtime/js_lang.js"></script>
+<script language="JavaScript">
+<!--
+//指定当前组模块URL地址 
+var CND_URL = '{$CND_URL}';
+var HTTP_URL = '{$HTTP_URL}';
+var ROOT_PATH = '{$__ROOT__}';
+var PUBLIC = '{$TMPL_PATH}Public';
+var VAR_MODULE = 'm';
+var VAR_ACTION = 'a';
+var FANWE_LANG_ID = '1';
+var cityID = '{$currentCity.id}';
+$(document).ready(function(){
+	$("#contentW img,#content img").lazyload({ 
+				placeholder : "{$CND_URL}/Public/img_loading.gif",
+				failurelimit : 10
+		 });
+});
+
+//-->
+</script>
+
+</head>
+<body class="bg-alt">
+<div id="doc">
+	<div id="hdw">
+		<div class="head">
+        <div id="hd">
+            <div id="logo">
+				<a class="link" href="{function name="a_fanweC" value="SHOP_URL"}"><img src="{$CND_URL}{function name="a_fanweC" value="SHOP_LOGO"}" /></a>
+			</div>
+			<?php if(count($this->_var['city_list']) >1){ ?>
+	            <div class="guides">
+	                <div class="city">
+	                    <h2>{$currentCity.name}</h2>
+	                </div>
+	                <div class="change"><a href="{function name="a_u" value="City/more"}">{$lang.XY_CHANGE_CITY}</a></div>
+					<div class="wek">{$SHOP_NAME}已开通城市<?php
+					$citys = $this->_var['city_list'];
+					$ci = 0;
+					foreach($citys as $v)
+					{
+						if($v['status']==1)
+						{
+							++$ci;
+						}
+					}
+					echo $ci;
+					?></div>
+	            </div>
+            <?php } ?>
+            <ul class="nav cf">
+				{foreach from=$main_navs item=nav}
+				<li><a href="{$nav.url}"  target="{$nav.target}" {if $nav.act eq 1}class="current"{/if}>{$nav.name_1}</a></li>
+				{/foreach}
+            </ul>
+          
+            <div class="logins">
+			{insert name="member_info"}
+            </div>
+			<ul id="myaccount-menu">
+			{foreach from=$user_menu item=menu_item}
+			      	<li><a href="{$menu_item.url}">{$menu_item.name}</a></li>
+			{/foreach}
+            </ul>
+			
+			<div class="refer">
+			&raquo;&nbsp;<a href="{function name="a_u" a="Cart/index"}">购物车</a>&nbsp;&raquo;&nbsp;<a href="<?php echo a_u("Referrals/index","id-".intval($this->_var['goods']['id'])."|tid-".intval($this->_var['tid'])) ?>">{$lang.XY_REFERRALS} {$referralsMoney} </a>
+			</div>
+			
+			<div class="deal-subscribe">
+				<div id="deal-subscribe-body">
+					<FORM id="deal-subscribe-form" method="post" action="{$__ROOT__}/index.php">
+					<TABLE class="address">
+						<TBODY>
+							<tr><td colspan="2">想知道每天的的团购是什么？[<a href='javascript:;' class='unsubScribeBtn'>退订</a>]</td></tr>
+							<TR>
+								<TD><input class="f-text" name="email"></TD>
+								<TD><input value="{$currentCity.id}" type="hidden" name="cityid">
+									<input value="{$lang.XY_SUBSCRIBE}" type="submit" class="btn"></TD>
+							</TR>
+							<TR>
+								<TD>
+								{if $CFG.SMS_SUBSCRIBE eq 1}
+								<a href="javascript:;" id="smsSubscribe">» {$lang.XY_SMS_SUBSCRIBE}</a>&nbsp;&nbsp;
+								<a href="javascript:;" id="unSmsSubscribe">» {$lang.XY_SMS_UNSUBSCRIBE}</a>&nbsp;&nbsp;
+								{/if}</TD>
+							</TR>
+						</TBODY>
+						<input value="Index" type="hidden" name="m" />
+						<input value="malllist" type="hidden" name="a">
+						<input value="subScribe" type="hidden" name="do">
+					</TABLE>
+					</FORM>
+				</div>
+			</div>
+			
+        </div>
+		</div>
+    </div>
+    <?php
+                     $sidegoodscatelist = getGoodsCate();
+                     $now = a_gmtTime();
+                     foreach($sidegoodscatelist as $k =>$v)
+                     {
+                        $where = ' status = 1 and score_goods <> 1';
+                        
+                        $where .= " and (cate_id =".$v['id']." or extend_cate_id = ".$v['id']." )";
+
+                        $where .= " and promote_begin_time <=".$now." and promote_end_time>=".$now." ";
+
+                        $childIdsUtil = new ChildIds("group_city");
+                        $city_ids = $childIdsUtil->getChildIds(C_CITY_ID);
+                        array_push($city_ids,C_CITY_ID);
+                        $where .= " and (city_id in (".implode(",",$city_ids).") or all_show = 1) ";
+                        
+                        $sidegoodscatelist[$k]['goods_count'] = $GLOBALS['db']->getOne("SELECT count(*) FROM ".DB_PREFIX."goods where ".$where);
+                        $sidegoodscatelist[$k]['goods_count'] = intval($sidegoodscatelist[$k]['goods_count']);
+                     }
+                     $GLOBALS['tpl']->assign("sidegoodscatelist",$sidegoodscatelist);
+                     ?>
+	
+	<div style=" margin-left:4px;">
+	<div class="goods-cate-hd-list">
+		<span style=" width:30px;font-weight: bolder;font-size: 12px;color: #515151;">分类
+
+：</span>
+		{if $sidegoodscatelist}
+			{foreach from="$sidegoodscatelist" item="gclist" name="gclist"}
+			<span {if $smarty.request.id eq $gclist.id}class="current"{/if}><a 
+
+href="<?php echo a_u("Goods/showcate","id-".$this->_var['gclist']['id']."|menu-".$this->_var
+
+['gclist']['id'])?>" title="{$gclist.name}" shopping="food">{$gclist.name}[{$gclist.goods_count}]
+
+</span></a>
+			{if !$smarty.foreach.gclist.last}
+			&nbsp;|&nbsp;
+			{/if}
+			{/foreach}
+		{/if}
+	</div>
+	</div>
+	{insert name="getGoodsStatus" id=$goods.id}
+	{insert name="getTooltipStatus" id=$goods.id}
+	{insert name="advLayout" id="顶部通栏广告" file="adv/top_adv.moban"}
+	<div id="sysmsg-error-box">
+		<div id="sysmsg-error" class="sysmsgw {if $error eq ''}hidd{/if}">
+			<div class="sysmsg"><span>{$error}</span><span class="close">{$lang.XY_CLOSE}</span></div>
+		</div>
+		<div id="sysmsg-success" class="sysmsgw {if $success eq ''}hidd{/if}">
+			<div class="sysmsg"><span>{$success}</span><span class="close">{$lang.XY_CLOSE}</span></div>
+		</div>
+	</div>
+	
+	

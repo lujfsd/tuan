@@ -1,0 +1,8 @@
+User-agent: *
+Disallow:/admin/
+Disallow:/assistant/
+Disallow:/app/
+Disallow:/global/
+Disallow:/mobile/
+Disallow:/Public/
+Disallow:/services/

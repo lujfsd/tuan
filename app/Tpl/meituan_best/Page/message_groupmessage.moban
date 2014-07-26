@@ -1,0 +1,57 @@
+{include file="Inc/header.moban"}
+<style type="text/css">
+#recent-deals .pic .soldout {_background: transparent; _filter: progid:dximagetransform.microsoft.alphaimageloader(src={$TMPL_PATH}Public/images/bg-deals-default-soldout.png")}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals">
+			<div id="content">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content" style="position:relative;">
+						<div class="head" id="coupons">
+							<h2>{$lang.JJ_GROUP_BUY}</h2>
+							<a href="{function name="a_u" a="Message/addGroupMessage"}">{$lang.JJ_START_GB}</a>
+							{include file="Inc/common/message_menu.moban"}
+						</div>
+						<div class="sect">
+							{if $group_list}
+							<table cellpadding=0 cellspacing=0 class="group_message">
+								<tr>
+									<th>{$lang.JJ_THEME}</th>
+									<th>{$lang.JJ_SPONSOR}</th>
+									<th>{$lang.JJ_COMMENT}</th>
+									<th>{$lang.JJ_FAV_EXPONENTIAL}</th>
+									<th>{$lang.JJ_UP}</th>
+								</tr>
+								{foreach from="$group_list" item="group_item"}
+								<tr>
+									<td><a href="{$group_item.url}">{$group_item.tg_title}</a></td>
+									<td>{$group_item.user_name}</td>
+									<td>{$group_item.comments}</td>
+									<td>{$group_item.follows}</td>
+									<td><a href="{$group_item.follow_url}">{$lang.JJ_UP}</a></td>
+								</tr>
+								{/foreach}
+							</table>
+							<div class="blank"></div>
+							<div style="text-align:right">
+								{$pages}
+							</div>
+							{else}
+							<a href="{function name="a_u" a="Message/addGroupMessage"}">{$lang.JJ_START_GB}</a>
+							{/if}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id=sidebar>
+				{include file="Inc/side/side_referrals.moban"}
+				{include file="Inc/side/side_subscribe.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

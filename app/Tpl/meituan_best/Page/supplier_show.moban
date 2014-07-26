@@ -1,0 +1,182 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+	
+		<div id="recent-deals">
+			<div id="content">
+				
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$supplier_info.name}</h2>
+						</div>
+						<div class="sect cf">
+							<div class="left" style="width:402px;">
+							{if $supplier_info['img'] neq ''}
+							<img src="{$CND_URL}{$supplier_info.img}" width=400 style="border:1px #ccc solid;" />
+							{/if}
+							</div>
+							<div class="left" style="width:202px; padding-left:30px;">
+							{if $supplier_info.map_img}
+							<ul>
+										<li>
+										<span class="saler_map"><img src="{$supplier_info.map_img}" />
+										<a href='javascript:void(0);' id="show_map">{$lang.VIEW_BIG_MAP}</a>
+										<span id="saler_id">{$supplier_info.id}</span>
+										</span>
+										</li>
+							</ul>
+							{/if}
+							</div>
+							
+							<br clear="both" />
+							<br clear="both" />
+							<h4>{$lang.SUPPLIER_BRIEF}</h4>
+							<br />
+							{$supplier_info.desc}
+				
+							<br clear="both" />
+							<br clear="both" />
+							<h4>{$lang.SUPPLIER_DEPART}</h4>
+							<br />
+							<ul class="deals-list">
+							{foreach from="$supplier_info.depart" item="depart_info" name="depart"}
+							<li class="{if $smarty.foreach.depart.index mod 2 eq 1}alt{/if} {if $smarty.foreach.depart.index lt 2}first{/if}">
+							<h4>{$depart_info.depart_name}</h4>
+						
+							{$lang.SUPPLIER_ADDRESS}：{$depart_info.address}<br />
+							{$lang.SUPPLIER_BUS}：{$depart_info.bus}<br />
+							{$lang.SUPPLIER_TEL}：{$depart_info.tel}<br />
+							{$lang.SUPPLIER_OPERATING}：{$depart_info.operating}<br />
+							<a href="{$depart_info.map}" target="_blank">{$lang.XY_VIEW_MAP}</a>
+							</li>
+							{/foreach}
+						
+							</ul>
+							<br />
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+				<!--begin msg-->
+				<br />
+				<div class="box" id="g_recent">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$supplier_info.name}{$lang.SUPPLIER_COMMENT}</h2>
+						</div>
+						<div class="sect">
+							<span class="h_pin pinspan">
+								<span><a href="<?php echo a_u("Supplier/comment","supplier_id-".$this->_var['supplier_info']['id']."|score-3")?>">{$lang.PING_SCORE_3}({$h_pin})</a></span>
+								<div style="width:{$h_percent}%;"></div>
+							</span>
+							<span class="z_pin pinspan">
+								<span><a href="<?php echo a_u("Supplier/comment","supplier_id-".$this->_var['supplier_info']['id']."|score-2")?>">{$lang.PING_SCORE_2}({$z_pin})</a></span>
+								<div style="width:{$z_percent}%;"></div>
+							</span>
+							<span class="c_pin pinspan">
+								<span><a href="<?php echo a_u("Supplier/comment","supplier_id-".$this->_var['supplier_info']['id']."|score-1")?>">{$lang.PING_SCORE_1}({$c_pin})</a></span>
+								<div style="width:{$c_percent}%;"></div>
+							</span>
+							<div class="blank"></div>
+							<!--begin form-->
+							{if $smarty.session.user_id gt 0}
+								<form name="message" action="{$POST_URL}" id="consult-add-form" method="post" />
+									<div class="field">
+									<label>{$lang.D_PING}：</label>
+									<label class="lb_title">{$lang.PING_SCORE_3}：<input type="radio" name="score" value="3" checked="checked" /></label>
+									<label class="lb_title">{$lang.PING_SCORE_2}：<input type="radio" name="score" value="2" /></label>
+									<label class="lb_title">{$lang.PING_SCORE_1}：<input type="radio" name="score" value="1" /></label>
+									</div>
+									<div class="field">
+									<label>{$lang.SUPPLIER_COMMENT_CONTENT}：</label>
+									<textarea class="f-textarea" cols="60" rows="5" name="content" style="width:480px;"></textarea>
+									</div>
+									<div class="field">
+									<label> </label>
+										<input type="hidden" name="rec_module" value="Suppliers" />
+										<input type="hidden" name="rec_id" value="{$supplier_info.id}" />
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="addSupplierComment" />
+										<input type="submit" value="{$lang.XY_OK_TOSUBMIT}" name="commit" class="formbutton"/>
+									</div>
+									<div class="blank" style="height:1px;"></div>
+								</form>
+								{else}
+								{$lang.XY_PLEASE_FIRST}<a href="{function name="a_u" a="User/login"}">{$lang.XY_USER_LOGIN}</a>{$lang.XY_OR}<a href="{function name="a_u" a="User/register"}">{$lang.XY_USER_REG}</a>{$lang.XY_AND_SENT}
+								{/if}
+							<!--end form-->
+							
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+				<!--end msg-->
+				
+				<br />
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.GROUPON_LIST}</h2>
+						</div>
+						<div class="sect">
+							{if $goods_list}
+							<ul class="deals-list">
+								{foreach from="$goods_list" item="goods_item"}
+								<li class="{if $smarty.foreach.goods_item.index mod 2 eq 1}alt{/if} {if $smarty.foreach.goods_item.index lt 2}first{/if}">
+		<p class="time">{function name="a_toDate" a="$goods_item.promote_begin_time" b="Y-m-d"}</p>
+									<h4><a href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank">{$goods_item.name_1}</a></h4>
+									<div class="pic">
+										{if $goods_item.promote_begin_time lt $TIME && $goods_item.promote_end_time gt $TIME}
+										<div class="insale"></div>
+										{/if}
+										{if $goods_item.is_none}
+										<div class="soldout"></div>
+										{/if}
+										<a class="soldoutlink" href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank">{$goods_item.name_1}</a><a href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank"><img alt="{$goods_item.name_1}" src="{$CND_URL}{$goods_item.small_img}" width="200" height="121"></a></div>
+									<div class="info">
+										<p class="total"><strong class="count">{$goods_item.buy_count}</strong>{$lang.JJ_PEOPLE_BUY}</p>
+										<p class="price">{$lang.JJ_ORIGINAL_PRICE}：<strong class="old">{$goods_item.market_price_format}</strong><br />
+											{$lang.JJ_DISCOUNT}：<strong class="discount">{function name="sprintf" a="$lang.JJ_DISCOUNT_POINT" b="$goods_item.discountfb"}</strong><br />
+											{$lang.JJ_SHOP_PRICE}：<strong>{$goods_item.shop_price_format}</strong><br />
+											{$lang.JJ_SAVE}：<strong>{$goods_item.save}</strong><br />
+										</p>
+									</div>
+									<div class="clear"></div>
+									<div class="cf buy-comment">{if $goods_item.promote_begin_time lt $TIME && $goods_item.promote_end_time gt $TIME}<a href="<?php echo a_u("Cart/index","id-".$this->_var['goods_item']['id'])?>" class="buy-btn"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/tobuy.jpg"></a>{/if}<a href="<?php echo a_u('Message/commentList','id-'.$this->_var['goods_item']['id']) ?>"  class="comment-btn">
+					{if $goods_item.messageCount gt 0}
+						{$lang.JJ_DISCUSSION}[{$goods_item.messageCount}] 
+					{else}
+						{$lang.JJ_SEIZE_THE_SOFA}
+					{/if}
+				</a></div>
+	</li>
+								{/foreach}
+							</ul>
+							<div class="clear"></div>
+							<div style="text-align:right; padding:20px 0 0 0;">
+							{$pages}
+							</div>
+							{else}
+							<div class="notice">
+								 {$supplier_info.name}{$lang.NO_GROUPON}
+								</div>
+							{/if}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+				
+				
+			</div>
+			<div id="sidebar">
+				{include file="Inc/right.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}	

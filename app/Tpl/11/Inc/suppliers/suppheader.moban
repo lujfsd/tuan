@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$page_title}{$site_info.title}</title>
+<meta name="keywords" content="{$site_info.keyword}" />
+<meta name="description" content="{$site_info.content}" />
+<link rel="stylesheet" type="text/css" href="{$TMPL_PATH}Public/css/style.css" />
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/jquery.js"></script>
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/jcarousellite.js"></script>
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/script.js"></script>
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/jquery.pngFix.js"></script>
+<script type="text/javascript" src="{$__ROOT__}/app/Runtime/js_lang.js"></script>
+<script language="JavaScript">
+<!--
+var URL = '';
+var ROOT_PATH = '{$__ROOT__}';
+var APP	 =	 '__APP__';
+var PUBLIC = '{$TMPL_PATH}Public';
+var VAR_MODULE = 'm';
+var VAR_ACTION = 'a';
+var FANWE_LANG_ID = '1';
+var cityID = '{$currentCity.id}';
+var default_lang_id = '{$default_lang_id}';
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var ATTR_PRICE	=LANG.JS_ATTR_PRICE;
+//-->
+</script>
+</head>
+<body class="bg-alt">
+<div id="doc">
+	<div id="hdw">
+        <div id="hd">
+            <div id="logo">
+				<a class="link" href="{function name="a_fanweC" value="SHOP_URL"}"><img src="{$CND_URL}{function name="a_fanweC" value="SHOP_LOGO"}" /></a>
+			</div>
+			{if $smarty.session.suppliers_name}
+            <ul class="nav cf">
+				<li><a href="{function name="a_u" a="Suppliers/goodslist"}">{$lang.SUPPLIERS_LANG_1}</a></li>
+            	<li><a href="{function name="a_u" a="Suppliers/groupbond"}">{$lang.XY_MY}{$CFG.GROUPBOTH}</a></li>
+                <li><a href="{function name="a_u" a="Suppliers/reset"}">{$lang.XY_MODIFY_PASS}</a></li>
+				<li><a href="{function name="a_u" a="Suppliers/coupon"}">{$lang.YOUHUI_SUPPLIER}</a></li>
+            	<li><a href="{function name="a_u" a="Suppliers/grouplist"}">{$lang.SUPPLIERS_LANG_2}</a></li>
+				<li><a href="{function name="a_u" a="Suppliers/orderlist"}">{$lang.SUPPLIERS_LANG_3}</a></li> 
+                                <li><a href="{function name="a_u" a="Suppliers/balance"}">{$lang.SUPPLIERS_LANG_13}</a></li>   
+            </ul>
+			{/if}
+            <div class="logins" style="background:none">
+                <ul id="account">
+				 	{if $smarty.session.suppliers_name}
+					<li class="username">{$lang.XY_WELCOME}{$smarty.session.suppliers_name}！</li>
+					<li class="logout"><a href="{function name="a_u" a="Suppliers/logout"}">{$lang.XY_USER_LOGOUT}</a></li>
+					{else}
+                    <li class=login><a href="{function name="a_u" a="Suppliers/login"}">{$lang.XY_USER_LOGIN}</a></li>
+					{/if}
+                </ul>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+	<div id="sysmsg-error-box">
+		<div id="sysmsg-error" class="sysmsgw {if $error eq ''}hidd{/if}">
+			<div class="sysmsg"><span>{$error}</span><span class="close">{$lang.XY_CLOSE}</span></div>
+		</div>
+		<div id="sysmsg-success" class="sysmsgw {if $success eq ''}hidd{/if}">
+			<div class="sysmsg"><span>{$success}</span><span class="close">{$lang.XY_CLOSE}</span></div>
+		</div>
+	</div>

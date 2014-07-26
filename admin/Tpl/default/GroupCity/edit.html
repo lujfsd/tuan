@@ -1,0 +1,174 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+var lang_ids = '{$lang_ids}';
+var lang_names = '{$lang_names}';
+var DIY_URL = '{%DIY_URL}';
+</script>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('GroupCity/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="180">{$Think.lang.REGION_NAME}：</td>
+	<td class="tLeft" >
+		<input type="text" name="name" class="bLeft" value="{$vo.name}"  />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="120">拼音：</td>
+	<td class="tLeft" >
+		<input type="text" name="py" class="bLeft" value="{$vo.py}"  />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.PARENT_CATE}：</td>
+	<td class="tLeft" >
+		<select name="pid" class="bLeft" onchange="loadCateType(this);" id="pid">
+		<option value="0" <if condition="$vo['pid'] eq 0">selected</if>>{$Think.lang.TOP_CATE}</option>
+		<foreach name="cate_list" item="cate_item" >
+			<option value="{$cate_item.id}" <if condition="$vo['pid'] eq $cate_item['id']">selected="selected" </if>>{$cate_item['name']}</option>
+		</foreach>
+		</select>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight">{$Think.lang.GROUPCITY_DEFALUT}：</td>
+	<td class="tLeft" >
+		<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_defalut"  <if condition="$vo['is_defalut'] eq 1">checked="checked" </if> /></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_defalut"  <if condition="$vo['is_defalut'] eq 0">checked="checked" </if> /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">是否开通：</td>
+	<td class="tLeft" >
+		<label>{$Think.lang.YES}：<input type="radio" value="1" name="status"  <if condition="$vo['status'] eq 1">checked="checked" </if> /></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="status"  <if condition="$vo['status'] eq 0">checked="checked" </if> /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">通过验证：</td>
+	<td class="tLeft" >
+    	<label>{$Think.lang.YES}：<input type="radio" value="1" name="verify" <if condition="$vo['verify'] eq 1">checked="checked" </if>/></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="verify" <if condition="$vo['verify'] eq 0">checked="checked" </if> /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">开通优惠券：</td>
+	<td class="tLeft" >
+    	<label>{$Think.lang.YES}：<input type="radio" value="1" name="youhui" <if condition="$vo['youhui'] eq 1">checked="checked" </if>/></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="youhui" <if condition="$vo['youhui'] eq 0">checked="checked" </if> /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">热门城市：</td>
+	<td class="tLeft" >
+    	<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_hot" <if condition="$vo['is_hot'] eq 1">checked="checked" </if> /></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_hot" <if condition="$vo['is_hot'] eq 0">checked="checked" </if> /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">新开城市：</td>
+	<td class="tLeft" >
+    	<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_new" <if condition="$vo['is_new'] eq 1">checked="checked" </if> /></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_new"  <if condition="$vo['is_new'] eq 0">checked="checked" </if> /></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$vo.sort}"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">城市简介：</td>
+	<td class="tLeft" >
+		<textarea rows="5" cols="100" name="desc">{$vo.desc}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">提示消息：</td>
+	<td class="tLeft" >
+		<textarea rows="5" cols="100" name="tip">{$vo.tip}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">首页公告：</td>
+	<td class="tLeft" >
+		<fanwe:editor id="notice" name="notice" type="FckBasic" width="540px" height="150px"/>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">SEO标题：</td>
+	<td class="tLeft" >
+		<textarea rows="5" cols="100" name="seo_title">{$vo.seo_title}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">SEO关键词：</td>
+	<td class="tLeft" >
+		<textarea rows="5" cols="100" name="seo_keywords">{$vo.seo_keywords}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">SEO描述：</td>
+	<td class="tLeft" >
+		<textarea rows="5" cols="100" name="seo_description">{$vo.seo_description}</textarea>
+	</td>
+</tr>
+<tr>
+	<td class="tRight">QQ客服1：</td>
+	<td class="tLeft" >
+		<input type="text" name="qq_1" class="bLeft" value="{$vo.qq_1}"  />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">QQ客服2：</td>
+	<td class="tLeft" >
+		<input type="text" name="qq_2" class="bLeft" value="{$vo.qq_2}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">QQ客服3：</td>
+	<td class="tLeft" >
+		<input type="text" name="qq_3" class="bLeft" value="{$vo.qq_3}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">QQ客服4：</td>
+	<td class="tLeft" >
+		<input type="text" name="qq_4" class="bLeft" value="{$vo.qq_4}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">QQ客服5：</td>
+	<td class="tLeft" >
+		<input type="text" name="qq_5" class="bLeft" value="{$vo.qq_5}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">QQ客服6：</td>
+	<td class="tLeft" >
+		<input type="text" name="qq_6" class="bLeft" value="{$vo.qq_6}" />
+	</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" value="{$vo.id}" name="id" id="groupcity_id" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

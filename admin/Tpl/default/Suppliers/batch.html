@@ -1,0 +1,86 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<style type="text/css">
+#batch_result{ color:#f30; padding-left:20px;}
+</style>
+<script type="text/javascript">
+function batch(id)
+{
+	document.getElementById("loader").style.visibility = "visible";
+	document.getElementById("loader").style.display = "block";
+	document.getElementById("loader").style.width = "150px";
+	document.getElementById("loader").style.position = "absolute";	
+	document.getElementById("loader").style.left="";
+	document.getElementById("loader").style.right=0;
+	document.getElementById("loader").style.top=0;
+	document.getElementById("loader").innerHTML = "地图批量生成";
+	if(id)
+	{
+		$.ajax({
+			  url: APP+"?"+VAR_MODULE+"=Suppliers&"+VAR_ACTION+"=doBatch&id="+id,
+			  cache: false,
+			  success:function(data)
+			  {
+			  	data = $.evalJSON(data);
+			  	$("#batch_result").append(data.html);
+			  	if(data.id!=0)
+			  	{
+					batch(data.id);
+				}	
+			  	else
+			  	{
+			  		$("#batch_result").append("end");
+			  		document.getElementById("loader").innerHTML = "";
+			  		document.getElementById("loader").style.visibility = "hidden";
+			  		document.getElementById("loader").style.display = "none";
+				}			
+			  }
+			});	
+	}
+	else
+	{
+		$("#batch_result").html("");
+		$.ajax({
+			  url: APP+"?"+VAR_MODULE+"=Suppliers&"+VAR_ACTION+"=doBatch",
+			  cache: false,
+			  success:function(data)
+			  {
+			  	data = $.evalJSON(data); 
+			  	$("#batch_result").append(data.html);
+			  	if(data.id!=0)
+			  	{
+					batch(data.id);
+				}	
+			  	else
+			  	{
+			  		$("#batch_result").append("end");
+			  		document.getElementById("loader").innerHTML = "";
+			  		document.getElementById("loader").style.visibility = "hidden";
+			  		document.getElementById("loader").style.display = "none";
+				}				
+			  }
+			});	
+	}
+}
+</script>
+
+<div id="main" class="main" >
+
+<div class="operate"  style=";border-top:1px solid #9CB8CC">
+<fanwe:imageBtn  value="{$Think.lang.IMAGE_BATCH}" click="batch()" style="impBtn hMargin fLeft shadow" />
+<div class="fRig">
+<div class="fLeft"><span id="key"></span></div>
+</div>
+
+</div>
+<div  id="searchM" class=" none search cBoth" >
+</div>
+
+<div style="padding-left:20px; background:#fff; border-left:1px solid #9CB8CC;line-height:30px;">地图批量生成时请勿刷当前页</div>
+
+<div id="batch_result" style="background:#fff; border-left:1px solid #9CB8CC; border-bottom:1px solid #9CB8CC;"></div>
+</div>
+</div>
+

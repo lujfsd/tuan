@@ -1,0 +1,84 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('RoleNode/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="180">{$Think.lang.ROLE_NODE_TIP}：</td>
+	<td class="tLeft" >
+
+		{$Think.lang.ROLE_NODE_TIP_2}<br />
+		{$Think.lang.ROLE_NODE_TIP_3}<br />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.ACTION}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="action" class="bLeft" /><br />{$Think.lang.ACTION_TIP}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ACTION_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="action_name" class="bLeft" />
+	</td>
+</tr>
+
+ <tr>
+	<td class="tRight" >{$Think.lang.MODULE}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="module" class="bLeft" /><br />{$Think.lang.MODULE_TIP}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.MODULE_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="module_name" class="bLeft" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{$Think.lang.BELONG_TO_NAV}：</td>
+	<td class="tLeft" >
+		<select name="nav_id" class="bLeft">
+			<option value="0" <if condition="$vo['nav_id'] eq 0">selected="selected"</if>>{$Think.lang.NO_BELONG_TO_NAV}</option>
+			<foreach name="nav_list" item="nav_item">
+			<option value="{$nav_item.id}" <if condition="$vo['nav_id'] eq $nav_item['id']">selected="selected"</if>>{$nav_item.name} </option>
+			</foreach>
+		</select>
+	</td>
+</tr> 
+
+<tr>
+	<td class="tRight" >授权类型：</td>
+	<td class="tLeft" >
+		<select name="auth_type" class="bLeft">
+			<option value="0" <if condition="$vo['auth_type'] eq 0">selected="selected"</if>>{$Think.lang.AUTH_TYPE_0}</option>
+			<option value="1" <if condition="$vo['auth_type'] eq 1">selected="selected"</if>>{$Think.lang.AUTH_TYPE_1}</option>
+			<option value="2" <if condition="$vo['auth_type'] eq 2">selected="selected"</if>>{$Think.lang.AUTH_TYPE_2}</option>
+		</select>
+	</td>
+</tr> 
+
+<tr>
+	<td class="tRight" >{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" class="bLeft" value="{$vo.sort}"  />
+	</td>
+</tr>   
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

@@ -1,0 +1,28 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+<!-- 主体内容  -->
+<div class="title">团购券打印模板编辑</div>
+<!-- 列表显示区域  -->
+<div class="list" >
+<form method='post' id="form" name="form" action="{:u('Suppliers/updateTpl')}"  enctype="multipart/form-data">
+<fanwe:editor  name="content" dataSource="{$html}" type="KindEditor"  style="width:750px;height:500px;visibility:hidden;" />
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</table>
+</form>
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

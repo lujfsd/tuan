@@ -1,0 +1,56 @@
+<script type="text/javascript" src="{$TMPL_PATH}Public/js/calendar.php?lang=zh-cn" ></script>
+<link rel="stylesheet" type="text/css" href="{$TMPL_PATH}Public/js/calendar/calendar.css" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="coupons">
+			<div id="content">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$CFG.GROUPBOTH}{$lang.XY_MODIFY}</h2>
+						</div>
+						<div class="sect">
+							<form name="reg_form" action="{$POST_URL}" method="post" >
+								<div class="field email">
+									<label class="f-label" for="reset-password">{$lang.XY_GROUP_PROJECT}:</label>{$groupbond.goods_name}{if $groupbond.order_goods_number}&nbsp;[{$groupbond.order_goods_number}]{/if}
+								</div>							
+								<div class="field email">
+									<label class="f-label" for="reset-password">{$CFG.GROUPBOTH}:</label>{$groupbond.sn}
+								</div>
+								<div class="field email">
+									<label class="f-label" for="reset-password">{$lang.XY_BUY_DATE}:</label>{$groupbond.buy_time_format}
+								</div>
+								<div class="field email">
+									<label class="f-label" for="reset-password">{$lang.XY_EXPIRED_TIMES}:</label>{$groupbond.end_time_format}
+								</div>			
+								{if $suppliers.h_pwd_groupbond}
+									<div class="field email">
+										<label class="f-label" for="reset-password">{$lang.XY_COMMAND}:</label>
+										<input type="text" name="groupbond_pwd" class="input-text f-input" id="groupbond_pwd" value=""  style="width:100px;">
+									</div>
+								{/if}
+																											
+								<div class="field email">
+									<label class="f-label" for="reset-password">{$lang.XY_USE_TIME}:</label>
+									<input type="hidden" name="id" value="{$groupbond.id}" />
+									<input type="text" name="use_time" class="input-text f-input" id="use_time" value="{$groupbond.use_time_format}"  style="width:100px;" onfocus="this.blur();" onclick="return showCalendar('use_time', '%Y-%m-%d', false, false, 'selbtn1');"/>
+									&nbsp;&nbsp;<input name="selbtn1" type="button" id="selbtn1" class="formbutton" onclick="return showCalendar('use_time', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.XY_SELECT}"/>
+								</div>
+								<div class="act">
+									<input type="hidden" name="m" value="Suppliers" />
+									<input type="hidden" name="a" value="doUsetime" />
+									<input type="submit" class="formbutton" id="reset-submit" value="{$lang.XY_SAVE}" />
+									<input type="button" class="formbutton" onclick = "history.back()" value="{$lang.XY_REBACK}" />
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar"> </div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>

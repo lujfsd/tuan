@@ -1,0 +1,46 @@
+{if $goods_list}
+	<ul class="deals-list">
+	{foreach from=$goods_list item=goods_item name="goods_item"}
+	<li class="{if $smarty.foreach.goods_item.index mod 2 eq 1}alt{/if} {if $smarty.foreach.goods_item.index lt 2}first{/if}">
+		<p class="time">{function name="a_toDate" a="$goods_item.promote_begin_time" b="Y-m-d H:i;s"}</p>
+		<h4><a href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank">{$goods_item.name_1}</a></h4>
+		<div class="pic">
+			<a href="{$goods_item.url}" title="{$goods_item.name_1}" target="_blank"><img alt="{$goods_item.name_1}" src="{$CND_URL}{$goods_item.small_img}" width="200" height="121"></a>
+		</div>
+		<div class="info">
+			<p class="price">
+				{$lang.JJ_ORIGINAL_PRICE}：<span class="bod">{$goods_item.market_price_format}</span><br>
+				{$lang.JJ_SHOP_PRICE}：<span class="bod">{$goods_item.shop_price_format}</span><span class="red">&nbsp;</span><br>
+				{$lang.JJ_DISCOUNT}：<span class="bod">{function name="sprintf" format="$lang.JJ_DISCOUNT_POINT" value="$goods_item.discountfb"}</span>
+			</p>
+		</div>
+			<div class="clear"></div>
+			<div class="cf buy-comment"><a href="{$goods_item.url}" class="buy-btn"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/show.gif"></a><a href="<?php echo a_u('Message/commentList','id-'.$this->_var['goods_item']['id']) ?>"  class="comment-btn">
+					{if $goods_item.messageCount gt 0}
+						{$lang.JJ_DISCUSSION}[{$goods_item.messageCount}] 
+					{else}
+						{$lang.JJ_SEIZE_THE_SOFA}
+					{/if}
+				</a>
+			</div>
+	</li>
+	{/foreach}								
+	</ul>
+		<div class="blank"></div>
+		<div style="padding:0 20px 0 0; text-align:right;">
+		{$pages}
+		</div>
+{else}
+	<div class="notice">
+		{if !$keywords}
+{function name="sprintf" format="$lang.JJ_NOW_GROUP" value="$currentCity.name"}<br />
+		{if $currentCity.name neq $default_city.name}
+			<?php echo sprintf($this->_var['lang']['JJ_LOOK_NOW_GROUP'],a_u('Goods/index','cityname-'.$this->_var['default_city']['py']),$this->_var['default_city']['name']) ?>
+		{/if}
+{/if}
+	</div>
+{/if}
+
+
+
+

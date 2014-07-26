@@ -1,0 +1,15 @@
+{if $orderID gt 0 or $groupBondID gt 0}
+<div id="sysmsg-tip" class="order-bond-tip">
+	<div class="sysmsg-tip-top"></div>
+	<div class="sysmsg-tip-content">
+	{if $orderID gt 0}
+	{$lang.XY_UNPAID_ORDER}<a href="{$orderCheckUrl}">{$lang.XY_VIEW_PAY_ORDER}</a>
+	<span id="sysmsg-tip-close" class="sysmsg-tip-close">{$lang.XY_CLOSE}</span>
+	{else}
+	{$lang.XY_PAID_ORDER}<a href="{$groupBondUrl}">{$lang.XY_VIEW_GROUPBOTH}{$GROUPBOTH}</a>
+	<span id="sysmsg-tip-close" class="sysmsg-tip-close">{$lang.XY_CLOSE}</span>
+	{/if}
+	</div>
+	<div class="sysmsg-tip-bottom"></div>
+</div>
+{/if}

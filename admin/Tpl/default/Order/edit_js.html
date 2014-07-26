@@ -1,0 +1,659 @@
+<script language="javascript" type="text/javascript"> 
+
+var FCUR_RATE = 1; //货币换算比例
+
+ //类型（rec_module: Goods：商品规格； Gift:赠品），ID，货号，商品名称，成本价，商品价格，商品数量，重量，积分, 是否询价商品[0：否；1：是])
+ function newTr(rec_module, id, goods_sn, goods_name, cost_price, goods_price, num, goods_weight, goods_score, is_inquiry) {
+
+	 cost_price = round(cost_price * FCUR_RATE, 3); //价格*汇率
+	 goods_price = round(goods_price * FCUR_RATE, 3);
+	 var rowkey = rec_module + '_' + id;
+	 
+	 if (rec_module == 'GoodsSpecItem'){
+	     var html = '<tr class="row" onmouseover="over(event)" onmouseout="out(event)"  id="tr' + rowkey+'">';
+	
+	     html += '<td><input type="checkbox" name="key" value="'+ rowkey+'">';
+	     html += '<input type="hidden" name="rec_module_list[]" id="rec_module_'+rowkey+'" value="'+rec_module+'">';
+	     html += '<input type="hidden" name="goods_id_list[]" id="goods_id_'+rowkey+'" value="'+id+'">';
+	     html += '<input type="hidden" name="goods_weight_list[]" id="goods_weight_'+rowkey+'" value="'+goods_weight+'">';
+	     html += '<input type="hidden" name="goods_sn_list[]" id="goods_sn_'+rowkey+'" value="'+goods_sn+'">';
+	     html += '<input type="hidden" name="goods_name_list[]" id="goods_name_'+rowkey+'" value="'+goods_name+'">';
+	     html += '</td>';
+	
+	     html += '<td>'+goods_sn+'</td>';
+	          
+	     html += '<td>'+goods_name+'</td>';
+
+	     html += '<td><input size = "5" type="text" name="goods_score_list[]" id = "goods_score_'+rowkey+'" value='+goods_score+ ' onchange = "javascript:scoreChange(this.value,\''+rowkey+'\')"></td>';
+	     
+	     html += '<td><input size = "5" type="text" name="cost_price_list[]" id = "cost_price_'+rowkey+'" value='+cost_price+ '></td>';
+
+	     html += '<td><input size = "5" type="text" name="goods_price_list[]" id = "goods_price_'+rowkey+'" value='+goods_price+ ' onchange = "javascript:priceChange(this.value,\''+rowkey+'\')"></td>';
+	     
+	     html += '<td><input size = "5" type="text" name="goods_num_list[]" id = "goods_num_'+rowkey+'" value='+num+' onchange = "javascript:numChange(this.value, \''+rowkey+'\')"></td>';
+
+	     html += '<td><input size = "5" type="text" name="score_sum_list[]" id = "score_sum_'+rowkey+'" value='+goods_score * num+'></td>';
+	     
+	     html += '<td><input size = "5" type="text" name="price_sum_list[]" id = "price_sum_'+rowkey+'" value='+goods_price * num+' onchange = "sum_goods_money()"></td>';
+	     
+	     html += '<td><a href="javascript:delItemGoods(\'' + rowkey+'\')">删除</a></td>';
+	
+	     html += '</tr>';
+		  //alert(html);
+	     $("#checkList").append(html);
+	 }else if (rec_module == 'ScoreGoods'||rec_module == 'PromoteGoods'){
+	 	 showLargessList(true);
+
+		 var html = '<tr class="row" onmouseover="over(event)" onmouseout="out(event)"  id="tr' + rowkey+'">';
+	 	
+	     html += '<td><input type="checkbox" name="key" value="' + rowkey +'">';
+	     html += '<input type="hidden" name="rec_module_list[]" id="rec_module_'+rowkey+'" value="'+rec_module+'">';
+	     html += '<input type="hidden" name="goods_id_list[]" id="goods_id_'+rowkey+'" value="'+id+'">';
+	     html += '<input type="hidden" name="goods_weight_list[]" id="goods_weight_'+rowkey+'" value="'+goods_weight+'">';
+	     html += '<input type="hidden" name="goods_price_list[]" id="goods_price_'+rowkey+'" value="0">';
+	     html += '<input type="hidden" name="goods_sn_list[]" id="goods_sn_'+rowkey+'" value="'+goods_sn+'">';
+	     html += '<input type="hidden" name="goods_name_list[]" id="goods_name_'+rowkey+'" value="'+goods_name+'">';
+	     html += '<input type="hidden" name="price_sum_list[]" id="price_sum_'+rowkey+'" value="0">';
+	     html += '</td>';
+
+		 html += '<td>'+goods_sn+'</td>';
+		 
+	     html += '<td >'+goods_name+'</td>';
+
+	     html += '<td><input size = "5" type="text" name="goods_score_list[]" id = "goods_score_'+rowkey+'" value='+goods_score+ ' onchange = "javascript:scoreChange(this.value,\''+rowkey+'\')"></td>';
+
+	     html += '<td><input size = "5" type="text" name="cost_price_list[]" id = "cost_price_'+rowkey+'" value='+cost_price+ '></td>';
+	     
+	     html += '<td><input size = "5" type="text" name="goods_num_list[]" id = "goods_num_'+rowkey+'" value='+num+' onchange = "javascript:scoreNumChange(this.value, \''+rowkey+'\')"></td>';
+	     
+	     html += '<td><input size = "5" type="text" name="score_sum_list[]" id = "score_sum_'+rowkey+'" value='+goods_score * num+'></td>';
+	     
+	     html += '<td><a href="javascript:delItemGoods(\'' + rowkey+'\')">删除</a></td>';
+	
+	     html += '</tr>';
+		  //alert(html);
+	     $("#largessList").append(html);
+
+	}
+}
+
+ 
+ function delItemGoods(id) {
+ 	$('#tr'+id).remove();
+ 	sum_goods_money();
+ 	sum_goods_weight();
+ 	sum_goods_order_score();
+ 	selectFreightMode(null);
+ }
+ 
+function delItems() {
+	var obj = document.getElementsByName('key');
+	for (var i = obj.length - 1; i >= 0; i--)
+	{
+		if (obj[i].checked == true){
+			delItemGoods(obj[i].value);
+		}
+	}	
+}
+
+
+function scoreChange(score, goods_sn){
+	$('#score_sum_'+goods_sn).attr("value", score * $('#goods_num_'+goods_sn).val());
+
+	sum_goods_order_score();
+}
+
+function scoreNumChange(num, goods_sn){
+	$('#score_sum_'+goods_sn).attr("value", num * $('#goods_score_'+goods_sn).val());
+
+	sum_goods_order_score();
+	sum_goods_weight();
+	selectFreightMode(null);
+}
+
+
+function priceChange(price, goods_sn){
+	$('#price_sum_'+goods_sn).attr("value", round(price * $('#goods_num_'+goods_sn).val(), 3));
+
+	sum_goods_money();
+	selectFreightMode(null);
+}
+
+function numChange(num, goods_sn){
+	$('#price_sum_'+goods_sn).attr("value", round(num * $('#goods_price_'+goods_sn).val(), 3));
+	$('#score_sum_'+goods_sn).attr("value", num * $('#goods_score_'+goods_sn).val());
+
+	sum_goods_order_score();
+	sum_goods_money();
+	sum_goods_weight();
+	selectFreightMode(null);
+}
+
+function sum_goods_money(){
+	var price_sum_list = document.getElementsByName('price_sum_list[]');
+	var total_price = 0;
+	for (var j=0;j< price_sum_list.length;j++)
+	{
+		total_price = total_price + strToFloat(price_sum_list[j].value);
+	}		
+	$('#total_price').attr("value", round(total_price, 3));
+
+	sum_money(true,null);
+}
+
+function sum_goods_weight(){
+	var goods_weight_list = document.getElementsByName('goods_weight_list[]');
+	var goods_sum_list = document.getElementsByName('goods_num_list[]');
+	var order_weight = 0;
+	//alert(goods_weight_list.length);
+	for (var j=0;j< goods_weight_list.length;j++)
+	{
+		order_weight = order_weight + strToFloat(goods_weight_list[j].value) * strToFloat(goods_sum_list[j].value);
+	}		
+	$('#order_weight').attr("value", round(order_weight,3));
+
+}
+
+function sum_goods_order_score(){
+	var score_sum_list = document.getElementsByName('score_sum_list[]');
+	var total_order_score = 0;
+	for (var j=0;j< score_sum_list.length;j++)
+	{
+		total_order_score = total_order_score + strToFloat(score_sum_list[j].value);
+	}		
+	$('#order_score').attr("value", round(total_order_score,3));
+}
+
+function CheckAll2(strSection) {
+	var i;
+	var colInputs = document.getElementById(strSection).getElementsByTagName("input");
+	for (i = 1; i < colInputs.length; i++) {
+		if (colInputs[i].name == "key"){
+		 colInputs[i].checked = colInputs[0].checked;
+		} 
+	}
+}
+//=====================================================================
+
+function FillOptions(select, url, firstName, selectIndex, changeFreightMode){
+
+	//alert(url);
+	$.ajax({
+		  //type: "get",
+		  url: url,
+		  success:function(data)
+		  {
+			dataList = $.evalJSON(data);
+			if (dataList != null && dataList != "" && dataList != "-1" && isdigit(dataList) == false){
+				//alert(dataList);
+				$('#' + select).empty();
+				for (var i=0; i< dataList.length; i++){
+					$("<option value=" +dataList[i].id + ">" + dataList[i].name + "</option>").appendTo('#' + select);
+				}
+				if (firstName != ""){
+					AddOption(select, firstName,"-1",true,0);
+				}
+				
+				if (selectIndex != null){
+					$('#' + select).val(selectIndex);
+				}
+			}
+			if (changeFreightMode == true){
+				selectFreightMode(null);
+			}	
+			if (select == "payment"){
+				selectPaymentMode();
+			}	
+		  }
+		});
+	
+}
+
+function AddOption(select, text, value, selected, index) {
+	var obj = document.getElementById(select);
+	option = new Option(text, value);
+	obj.options.add(option, index);
+	obj.options[index].selected = selected;
+}
+
+function initPaymentList(currency_id){
+
+	$('#payment').empty();
+
+	FillOptions('payment', "__APP__?m=Payment&a=getPaymentList&currency_id="+currency_id, "", null, false);
+	
+}
+
+function region_lv1Change(region_lv1, region_lv2, changeFreightMode){
+
+	$('#region_lv3').empty();
+	AddOption("region_lv3", "请选择地市...","-1",true,0);
+	$('#region_lv4').empty();
+	AddOption("region_lv4", "请选择区县...","-1",true,0);
+
+	FillOptions('region_lv2', "__APP__?m=Order&a=getRegion3&pid="+region_lv1, "请选择省份...", region_lv2, changeFreightMode);
+	
+}
+
+function region_lv2Change(region_lv2, region_lv3, changeFreightMode){
+
+	$('#region_lv4').empty();
+	AddOption("region_lv4", "请选择区县...","-1",true,0);
+	
+	FillOptions('region_lv3', "__APP__?m=Order&a=getRegion3&pid="+region_lv2, "请选择地市...", region_lv3, changeFreightMode);
+		
+	
+}
+
+function region_lv3Change(region_lv3, region_lv4, changeFreightMode){
+	FillOptions('region_lv4', "__APP__?m=Order&a=getRegion3&pid="+region_lv3, "请选择地市...", region_lv4, changeFreightMode);	
+
+}
+
+function region_lv4Change(address, changeFreightMode){
+	//alert($("#address").attr("value"));
+	//alert($("#address").val());
+	var address = "";
+	if (address != null && address != ""){
+		address = address;
+	}else{
+		address = $('#region_lv1 option:selected').text()+$('#region_lv2 option:selected').text()+$('#region_lv3 option:selected').text()+$('#region_lv4 option:selected').text();
+	}	
+	
+	$("#address").attr("value",address);//填充内容 
+	//document.getElementById('address').value = address;
+
+	if (changeFreightMode == true){
+		selectFreightMode(null);
+	}
+}
+
+
+function csnetimeChange(selectedIndex){
+	if (selectedIndex == 3){
+		$("#div_deliver_goods_time").show();
+	}else{
+		//alert('hide');
+		$("#div_deliver_goods_time").hide();
+	}
+}
+
+function showLargessList(show){
+	if (show){
+		$("#div_largessList").show();
+	}else{
+		//alert('hide');
+		$("#div_largessList").hide();
+	}
+}
+
+function keydown(e){
+	var e = e || event;
+	if (e.keyCode==13)
+	{	
+		var userName = $("#userName").val();
+		if (userName != ""){
+			$.ajax({
+				  //type: "get",
+				  url: "__APP__?m=Order&a=getUserConsignee&user_name="+escape(userName),
+				  success:function(data)
+				  {
+					data = $.evalJSON(data); 
+					if (data == "-1"){
+						alert("无效的会员名称:" + userName);
+						$("#userName").attr("value","");
+					}else if(isdigit(data)){
+						$('#user_id').attr("value",data);
+					}
+					userConsigneeList(data, true);
+				  }
+				});	
+		}else{
+			userConsigneeList("", true);
+		}
+
+	}
+}
+
+function userConsigneeList(data, triggerEditCsne){
+	var tdhtml = null;
+	var userConsignee_id = -1;
+	if(isdigit(data)){
+		$('#user_id').attr("value",data);
+	};	
+	if (data != null && data != "" && data != "-1" && isdigit(data) == false){
+		for (var i=0;i<data.length;i++)
+		{
+			
+			$('#user_id').attr("value",data[0].user_id);
+			userConsignee_id = data[0].id;
+			
+			//福建-福州市-台江区 福建福州市台江区工业路110 (收货人：陈福权 电话：123456787 邮编：350001)
+			var address = "";
+			if (data[i].r1name != null && data[i].r1name != "")
+				address = data[i].r1name;
+			if (data[i].r2name != null && data[i].r2name != "")
+				address = address + '-' + data[i].r2name;
+			if (data[i].r3name != null && data[i].r3name != "")
+				address = address + '-' + data[i].r3name;
+			if (data[i].r4name != null && data[i].r4name != "")
+				address = address + '-' + data[i].r4name;
+												
+			address = address + '  ' + data[i].address;
+
+			var telephone = '';
+			if (data[i].mobile_phone != ""){
+				telephone = data[i].mobile_phone;
+			}else{
+				telephone = data[i].fix_phone;
+			}
+			
+			address = address + '  (收货人:' + data[i].consignee + ' 电话:' + telephone + ' 邮编:' + data[i].zip + ')';
+			if (tdhtml == null){
+				tdhtml = '<label><INPUT TYPE="radio" name="userConsignee" id = "userConsignee_'+data[i].id+'" value="'+data[i].id+'" onchange="javascript:editCsne(this.value, false)" >' + address + '</label>  <a onclick="javascript:editCsne('+data[i].id+', true)"><u>编辑</u></a><br>';
+			}else{
+				tdhtml = tdhtml + '<label><INPUT TYPE="radio" name="userConsignee" id = "userConsignee_'+data[i].id+'" value="'+data[i].id+'" onchange="javascript:editCsne(this.value, false)" >' + address + '</label>  <a onclick="javascript:editCsne('+data[i].id+', true)"><u>编辑</u></a><br>';
+			}	 
+		}
+	}
+	
+	if (tdhtml == null){
+		tdhtml = '<label><INPUT TYPE="radio" name="userConsignee" id = "userConsignee_-1" value="-1" onchange="javascript:editCsne(this.value, true)" >其他收货地址</label><br>';
+	}else{
+		tdhtml = tdhtml + '<label><INPUT TYPE="radio" name="userConsignee" id = "userConsignee_-1" value="-1" onchange="javascript:editCsne(this.value, true)" >其他收货地址</label><br>';
+	}
+
+	//$("#maList").text(tdhtml);
+	$('#maList').html(tdhtml);
+	if (triggerEditCsne == true){
+		editCsne(userConsignee_id, userConsignee_id == -1);
+	}
+	
+	
+}
+
+function editCsne(userConsignee_id, show){
+
+	if (show == true){
+		//alert('show');
+		$("#div_address_edit_2").show();
+		
+		$("#saveAddress").attr("checked",true);
+	}else{
+		//alert('hide');
+		$("#div_address_edit_2").hide();
+		$("#saveAddress").attr("checked",false);
+	}
+
+	$('#userConsignee_'+userConsignee_id).attr("checked",userConsignee_id);
+	
+	if (userConsignee_id == -1){
+	}else{
+		//alert('#userConsignee_'+userConsignee_id);
+		$.ajax({
+			  //type: "get",
+			  url: "__APP__?m=Order&a=getUserConsignee&UserConsignee_id="+userConsignee_id,
+			  success:function(data)
+			  {
+			  	//alert(data);
+				data = $.evalJSON(data); 
+				//alert(data);
+				if (data != null && data != "" && data != false){
+
+					$("#region_lv1").val(data.region_lv1);
+					
+					region_lv1Change(data.region_lv1, data.region_lv2, false);
+					region_lv2Change(data.region_lv2, data.region_lv3, false);
+					region_lv3Change(data.region_lv3, data.region_lv4, true);
+					region_lv4Change(data.address, false);
+					
+					//$("#address").attr("value",data.address);//收货地址
+					
+					$("#zip").attr("value",data.zip);//邮编
+					$("#consignee").attr("value",data.consignee);//收货人姓名
+					$("#fix_phone").attr("value",data.fix_phone);//联系电话
+					$("#mobile_phone").attr("value",data.mobile_phone);//移动电话
+				}else{
+					alert("无效的会员地址ID:" + userConsignee_id);
+				}
+			  }
+			});
+	}
+	
+}
+function change_cur_rate(cur_rate){
+	var cost_price_list = document.getElementsByName('cost_price_list[]');
+	var goods_price_list = document.getElementsByName('goods_price_list[]');
+	var price_sum_list = document.getElementsByName('price_sum_list[]');
+	var goods_num_list = document.getElementsByName('goods_num_list[]');
+	
+	var total_price = 0;
+	for (var j=0;j< cost_price_list.length;j++)
+	{
+		cost_price_list[j].value = round(strToFloat(cost_price_list[j].value) * cur_rate, 3);
+		goods_price_list[j].value = round(strToFloat(goods_price_list[j].value) * cur_rate, 3);
+
+		price_sum_list[j].value = round(strToFloat(goods_num_list[j].value) * strToFloat(goods_price_list[j].value), 3);
+	}		
+
+	//商品总金额
+	$("#total_price").attr("value", round($("#total_price").val() * cur_rate, 3));	
+
+	//配送费用
+	$("#delivery_fee").attr("value", round($("#delivery_fee").val() * cur_rate, 3));
+	$("#delivery_fee_old").attr("value", round($("#delivery_fee_old").val() * cur_rate, 3));
+
+	//保价
+	$("#protect_fee").attr("value", round($("#protect_fee").val() * cur_rate, 3));
+	$("#protect_fee_old").attr("value", round($("#protect_fee_old").val() * cur_rate, 3));
+		
+		
+	//促销优惠金额
+	$("#promote_money").attr("value", round($("#promote_money").val() * cur_rate, 3));
+	$("#promote_money_old").attr("value", round($("#promote_money_old").val() * cur_rate, 3));
+
+	//税金
+	$("#tax_money").attr("value", round($("#tax_money").val() * cur_rate, 3));
+	$("#tax_money_old").attr("value", round($("#tax_money_old").val() * cur_rate, 3));
+
+	//支付手续费
+	$("#payment_fee").attr("value", round($("#payment_fee").val() * cur_rate, 3));
+	
+	//订单总金额
+	$("#order_total_price").attr("value", round($("#order_total_price").val() * cur_rate, 3));		
+
+}
+
+//选择货币
+function selectCurrency(id){
+	if (id == "" || id == null)
+		  id = $("#currency_id").val();
+	  	
+	$.ajax({
+		  //type: "get",
+		  url: "__APP__?m=Currency&a=getCurrency&id="+id,
+		  success:function(data)
+		  {
+			data = $.evalJSON(data);
+			//alert(data);
+			if (data != null && data != "" && data != false){
+				$("#currency_radio").attr("value",data.radio);
+			}else{
+				$("#currency_radio").attr("value",1);
+			}
+
+			if (FCUR_RATE == 0) FCUR_RATE = 1;
+			
+			change_cur_rate(1/FCUR_RATE);
+			
+			FCUR_RATE = $("#currency_radio").val();
+
+			change_cur_rate(FCUR_RATE);
+
+			initPaymentList(data.id);
+
+			//selectFreightMode(null);
+			
+		  }
+		});	
+}
+
+//配送方式
+//保价费率(商品价格的2% ，不足￥10.00按￥10.00计算)。
+function selectFreightMode(id){
+	if (id == "" || id == null)
+	  id = $("#delivery").val();
+
+	var weight = $("#order_weight").val();
+	var money = $("#total_price").val();
+
+	var region_lv1 = $('#region_lv1 option:selected').val();
+	var region_lv2 = $('#region_lv2 option:selected').val();
+	var region_lv3 = $('#region_lv3 option:selected').val();
+	var region_lv4 = $('#region_lv4 option:selected').val();
+
+	var url = "__APP__?m=Delivery&a=getDelivery&id="+id+"&weight="+weight+"&money="+money+"&region_lv1="+region_lv1+"&region_lv2="+region_lv2+"&region_lv3="+region_lv3+"&region_lv4="+region_lv4;
+	//alert(url);
+	$.ajax({
+		  //type: "get",
+		  url: url,
+		  success:function(data)
+		  {
+			data = $.evalJSON(data); 
+			if (data != null && data != "" && data != false){
+				data.freight_fee = data.freight_fee * FCUR_RATE;
+				
+				$("#delivery_fee").attr("value",data.freight_fee);
+				$("#delivery_fee_old").attr("value",data.freight_fee);
+
+				//alert(url);
+				
+				var has_protect = data.protect;
+				//alert(has_protect);
+				//0:不支持物流保价；1：支持物流保价
+				if (has_protect == 1){
+					$("#protect_fee").attr("readonly",'');
+					$("#protect").attr("disabled",'');
+
+					data.protect_fee = data.protect_fee * FCUR_RATE;
+					$("#protect_fee_original").attr("value",data.protect_fee);
+
+					if($("#protect").attr('checked')==true){
+						$("#protect_fee").attr("value",data.protect_fee);
+						$("#protect_fee_old").attr("value",data.protect_fee);
+						$("#protect_fee_original").attr("value",data.protect_fee);
+					}
+				}else{
+					$("#protect_fee").attr("readonly",true);
+					$("#protect_fee").attr("value",0);
+					$("#protect_fee_original").attr("value",0);
+					$("#protect_fee_old").attr("value",0);
+										
+					$("#protect").attr("disabled",true);
+					$("#protect").attr("checked",'');
+				}
+				
+			}else{
+				$("#delivery_fee").attr("value",0);
+				$("#delivery_fee_old").attr("value",0);
+			}
+
+			sum_money(true,'');
+		  }
+		});	
+}
+
+//选择，取消  是否要保价
+function protectChange(checked){
+	//alert(checked);
+	//alert($("#protect_fee").val());
+	if (checked){
+		$("#protect_fee").attr("value",$("#protect_fee_original").val());
+		$("#protect_fee_old").attr("value",$("#protect_fee_original").val());		
+	}else{
+		$("#protect_fee").attr("value",0);
+		$("#protect_fee_old").attr("value",0);
+	}
+
+	sum_money(true, '');
+}
+
+//选择支付方式
+function selectPaymentMode(id){
+
+	if (id == "" || id == null)
+		  id = $("#payment").val();
+	  	
+	$.ajax({
+		  //type: "get",
+		  url: "__APP__?m=Payment&a=getPayment&id="+id,
+		  success:function(data)
+		  {
+			data = $.evalJSON(data);
+			//alert(data);
+			if (data != null && data != "" && data != false){
+				//1：固定费用
+				if (data.fee_type == 0){
+					data.fee = round(data.fee * FCUR_RATE, 3);
+				}
+				$("#payment_mode_fee").attr("value", data.fee);
+				$("#payment_mode_fix_fee").attr("value", data.fee_type);//0：按百分比计算；1：固定费用
+			}else{
+				$("#payment_mode_fee").attr("value", 0);
+				$("#payment_mode_fix_fee").attr("value", 0);
+			}
+			sum_money(true, "");
+		  }
+		});	
+}
+
+function save_old_value(id){
+	$("#" + id + "_old").attr("value", $("#" + id).val());
+}
+
+
+function change_order_weight(id){
+	if ( id == "" || id == null || $("#" + id + "_old").val() != $("#" + id).val()){
+		selectFreightMode(null);
+		sum_money(true, "");
+	}	
+}
+
+function sum_money(all, id){
+	
+	if ( id == "" || id == null || $("#" + id + "_old").val() != $("#" + id).val()){
+		//alert($("#" + id + "_old").val());
+		//alert($("#" + id).val());
+		
+		var payment_fee = 0;
+		//支付手续费 = (商品总金额 + 配送费用 + 保价 - 促销优惠金额  + 税金) * 支付费率
+		//订单总金额 = (商品总金额 + 配送费用 + 保价 - 促销优惠金额  + 税金  + 支付手续费
+		//total_price + delivery_fee + protect_fee - promote_money - discount + tax_money
+		var money = strToFloat($("#total_price").val()) + strToFloat($("#delivery_fee").val()) + strToFloat($("#protect_fee").val()) - strToFloat($("#promote_money").val())  + strToFloat($("#tax_money").val());
+	
+		if (all){
+			var payment_mode_fee = strToFloat($("#payment_mode_fee").val());//支付费率
+			payment_fee = money * payment_mode_fee /100;
+			$("#payment_fee").attr("value", round(payment_fee, 3));
+		}
+		payment_fee = strToFloat($("#payment_fee").val());
+	
+		var order_total_price = money + payment_fee;
+		$("#order_total_price").attr("value", round(order_total_price, 3));
+
+	}
+}
+
+
+function postForm(){
+	//1、商品记录空检查
+
+	//2、收货地址检查
+
+	//3、订单信息检查（订单号，金额
+	
+	document.getElementById('form1').submit();
+	return true;
+}
+
+</script>

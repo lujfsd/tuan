@@ -1,0 +1,6 @@
+<select name="quan_id" class="bLeft">
+	<option value="0">选择商圈</option>
+	<foreach name="quan_list" item="quan_item" >
+		<option value="{$quan_item.id}" <if condition="$quan_item['selected']"> selected="selected"</if>>{$quan_item.name}</option>
+	</foreach>
+</select>

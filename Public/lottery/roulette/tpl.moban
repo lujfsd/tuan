@@ -1,0 +1,88 @@
+<tagLib name="fanwe" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$lottery.name}</title>
+<style type="text/css">
+body{text-align:center;font-family:"宋体",Arial;font-size:13px;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p{padding:0; margin:0;}
+table,td,tr,th{font-size:12px;}
+li{list-style-type:none;}
+table{margin:0 auto;}
+img{vertical-align:top;border:0;}
+ol,ul {list-style:none;}   
+caption,th {text-align:left;}  
+a{text-decoration:none;}
+h1,h2,h3,h4,h5,h6 {font-size:12px;font-weight:normal;}
+.roulette{background:url(__ROOT__/Public/lottery/roulette/images/bg.jpg) repeat-x 0 0 #240101;}
+.roulette .r-1{width:1002px; margin:0 auto; height:154px;background:url(__ROOT__/Public/lottery/roulette/images/b1.jpg) no-repeat 0 0; position:relative;}
+.roulette .r-1 a{position:absolute; height:0; display:block; overflow:hidden; padding:15px 0 0 0; top:10px;}
+.roulette .r-1 a.login{background:url(__ROOT__/Public/lottery/roulette/images/b0-1.jpg) no-repeat 0 0; right:162px;width:34px; }
+.roulette .r-1 a.reg{background:url(__ROOT__/Public/lottery/roulette/images/b0-2.jpg) no-repeat 0 0; right:125px;width:37px; }
+.roulette .r-1 a.index{background:url(__ROOT__/Public/lottery/roulette/images/b0.jpg) no-repeat 0 0; right:20px;width:76px; }
+
+.roulette .r-2{width:100%; margin:0 auto; height:144px;background:url(__ROOT__/Public/lottery/roulette/images/b2_1.jpg) no-repeat center 0;}
+.roulette .r-2 div{width:1002px; margin:0 auto; height:144px;background:url(__ROOT__/Public/lottery/roulette/images/b2.jpg) no-repeat 0 0;}
+.roulette .r-3{width:100%; margin:0 auto; height:390px;background:url(__ROOT__/Public/lottery/roulette/images/b3_1.jpg) no-repeat center 0;}
+.roulette .r-3 .box{width:1002px; margin:0 auto; height:390px;background:url(__ROOT__/Public/lottery/roulette/images/b3.jpg) no-repeat 0 0; overflow:hidden;}
+.roulette .r-3 #lottery{width:736px; margin:0 0 0 136px; float:left; display:inline;}
+.roulette .r-4{width:100%; margin:0 auto; height:339px;background:url(__ROOT__/Public/lottery/roulette/images/b4_1.jpg) no-repeat center 0;}
+.roulette .r-4 .list{width:1002px; margin:0 auto; height:339px;background:url(__ROOT__/Public/lottery/roulette/images/b4.jpg) no-repeat 0 0;}
+.roulette .r-4 .list ul{float:left; padding:66px 0 0 26px;width:400px; height:228px;}
+.roulette .r-4 .list ul li{float:left; line-height:24px;width:400px; text-align:left;color:#fada8e;}
+.roulette .r-4 .list ul li a{color:#fada8e;}
+.roulette .r-4 .list ul li a:hover{color:#ff0;}
+.roulette .r-4 .list .pages{float:left; width:900px; text-align:left; padding:0 0 0 26px;color:#fada8e;}
+.roulette .r-4 .list .pages a{color:#fada8e;}
+.roulette .r-4 .list .pages a:hover{color:#ff0;}
+.roulette .r-4 .list .pages span{color:#ff0; font-weight:bold;}
+.roulette .r-5{padding:20px 0 50px 0; text-align:center; line-height:26px; color:#fada8e;}
+.roulette .r-5 a{color:#fada8e; text-decoration:none;}
+.roulette .r-5 a:hover{color:#ff0;}
+</style>
+<script type="text/javascript" src="__ROOT__/Public/swfobject.js"></script>
+</head>
+<body>
+    <div class="roulette">
+        <div class="r-1">
+			<if condition="!$is_login">
+			<a href="{:U('User/login')}" class="login">登陆</a>
+			<a href="{:U('User/register')}" class="reg">注册</a>
+			</if>
+			<a href="{:fanweC('SHOP_URL')}" class="index">返回首页</a>
+		</div>
+        <div class="r-2"><div></div></div>
+		<div class="r-3"><div class="box"><div id="lottery"></div></div></div>
+        <div class="r-4">
+			<div class="list">
+				<ul>
+					<if condition="$winningList">
+					<foreach name="winningList" item="winning">
+					<li>{$winning.user_name}&nbsp;喜获&nbsp;{$winning.name}</li>
+					</foreach>
+					<else/>
+					<li>&nbsp;</li>
+					</if>
+				</ul>
+				<div class="pages">
+				{$pages}
+				</div>
+			</div>
+		</div>
+        <div class="r-5">
+        	<p><volist name="foot_navs" id="nav"><if condition="$i neq 1">&nbsp;&nbsp;|&nbsp;&nbsp;</if><a href="{$nav.url}" target="_blank" ><fanwe:lang value="$nav.name" /></a></volist></p>
+            <p>{:stripslashes(fanweC('PAGE_BOTTOM'))}</p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+var baseUrl = "{:getDomain()}__ROOT__";
+var lotteryID = "{:intval($lottery['id'])}";
+var lotteryID1 = "{@user_id}";
+var background = "{$settings.background}";
+var flashvars = {"id":lotteryID,"id1":lotteryID1,"baseUrl":baseUrl,"bgUrl":background}; 
+var params = {wmode:"transparent"};
+swfobject.embedSWF("__ROOT__/Public/lottery/roulette/roulette.swf", "lottery", "736", "390", "9.0.0", "__ROOT__/Public/expressInstall.swf",flashvars,params);
+</script>
+</html>

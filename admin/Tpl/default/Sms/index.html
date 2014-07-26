@@ -1,0 +1,59 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<script type="text/javascript">
+	function sendDemo()
+	{
+		var mobile_number = document.getElementById("mobile_phone").value;
+		var info = document.getElementById("info").value;	
+		var smsurl = "services/ajax.php?run=sendDemo&number=" + mobile_number+"&info=" + info;
+		$.ajax({
+			url: smsurl,
+			cache:false,
+			success:function(data)
+			{
+				if (data == 1){
+					alert('短信已发送，请查收');
+				}	
+				else if(data == 2){
+					alert('发送过于频繁');
+				}else{
+					alert('短信已失败');
+				}
+			}
+		});			
+	}
+</script>
+
+<div id="main" class="main" >
+
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<div class="operate"  style="height:28px;">
+<form method='post' action="{:u($module_name.'/index')}">
+<input type="text" name="name" title="{$Think.lang.SMS_NAME}" class="medium" >
+<input type="hidden" name="SEARCH_TYPE" value="like" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+
+
+测试内容：<input type="text" name="info" id="info" value ="测试短信发送成功" />手机号：<input type="text" name="mobile_phone" id="mobile_phone" /> <input type="button" value="发送测试短信" onclick="sendDemo();" />
+</form>
+</div>
+
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="sms" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|8%,name:{$Think.lang.SMS_NAME}:edit" 
+	actionlist="edit:{$Think.lang._EDIT_DATA}:id,status|A('Sms')->getSmsStatus=$sms['id']" /> 
+</div>
+
+<div class="page">{$page}</div>
+</div>
+</div>

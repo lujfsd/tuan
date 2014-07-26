@@ -1,0 +1,45 @@
+
+                    <table cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+			<tr>
+				<th  width=160>名称</th>
+				<th  width=50>购买件数</th>						
+				<th  width=150>发货状态</th>
+				<th  width=50>结算状态</th>
+				<th  width=40>结算价</th>
+				<th  width=50>结算时间</th>
+				<th>结算备注</th>
+			</tr>
+			{foreach from=$dataList item=row key=key}
+			<tr {if $key mod 2 eq  1}class="alt"{/if}>
+				<td style="text-align:left;">
+					<span title="{$row.data_name}">{function name="a_msubstr" v=$row['data_name'] a1=0 a2=15}</span>								
+				</td>
+				<td style="text-align:center;">
+					{$row.number}
+				</td>
+				<td>
+                                       {function name="get_dstatus" v=$row['order_id']}
+				</td>
+				<td>										
+					<?php echo $GLOBALS['lang']['BALANCE_'.$this->_var['row']['is_balance']];?>
+				</td>
+				<td>
+					{$row.balance_total_price}
+				</td>
+				<td>
+					{$row.balance_time}
+				</td>
+				<td>
+					<span title="{$row.balance_memo}">{$row.balance_memo}	</span>	
+				</td>
+			</tr>
+			{/foreach}
+	</table>
+
+<div class="blank"></div>
+
+<div class="tr pd10">
+	未结算{$totalBalance0}，其中{$totalBalance1}待结算。 已结算{$totalBalance2}
+</div>
+<div style="padding:0 20px 0 0; text-align:right;">{$pages}</div>
+

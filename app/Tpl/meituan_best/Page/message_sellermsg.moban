@@ -1,0 +1,71 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="consult">
+			<div class="consult-bd consult-no-deal">
+				<div id="content">
+					<div class="box clear">
+						<div class="box-top"></div>
+						<div class="box-content" style="height:600px;">
+							<div class="head">
+								<h2>{$lang.JJ_PROVIDE_GB}</h2>
+							</div>
+							
+							<div class="sect consult-form">
+								
+								<form name="message" action="{$POST_URL}" id="seller_msg" method="post" />
+								
+									<div class="field_msg">
+									<label>{$lang.JJ_YOUR_NAME}</label>
+									<input tabindex="1" type="text" size="30" name="user_name" id="user_name" class="f-input" value=""/>
+									</div>
+									<div class="field_msg">
+										<label>{$lang.JJ_CONTACT}</label>
+										<input tabindex="2" type="text" size="30" name="title" id="title" class="f-input" value="{$password}" />
+										<span class="hint">{$lang.JJ_TEL_MAIL}</span>
+									</div>
+									<div class="field_msg">
+										<label>{$lang.JJ_GB_INFOR}</label>
+										<textarea class="f-textarea" cols="60" rows="5" name="content" id="content" style="margin-left:0px;"></textarea>
+									</div>
+									
+									<div class="field_msg">
+										<label>{$lang.JJ_BUSINESS_NAME}</label>
+										<input tabindex="2" type="text" size="30" name="groupon_seller_name" id="groupon_seller_name" class="f-input" value="" />
+									</div>
+									
+									<div class="field_msg">
+										<label>{$lang.JJ_GB_GOODS}</label>
+										<textarea class="f-textarea" cols="60" rows="5" name="groupon_goods" id="groupon_goods"></textarea>
+									</div>
+									
+									<div class="field_msg">
+										<label>{$lang.XY_VERIFY}</label>
+										<input type="text" size="20" name="groupon_verify" id="msg_verify" class="f-input" style="width:100px;" />
+										<img id="msg-verify-img" style="cursor:pointer;height:auto; margin:0px 2px 3px 6px; *margin-bottom:0px;" align="absmiddle" title="{$lang.XY_VERIFY_RESET}" onclick="this.src='{$HTTP_URL}/index.php?m=Ajax&a=verify&rand='+ Math.random();" src='{$HTTP_URL}/index.php?m=Ajax&a=verify&rand='+ Math.random();/>
+									</div>
+																		
+									<div class="field_msg">
+									<p class="commit">
+										<input type="hidden" name="rec_module" value="Seller" />										
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="addSellerMsg" />
+										<input type="submit" value="{$lang.JJ_SUBMIT}" name="commit" style="margin-left:110px;" class="formbutton"/>
+									</p>
+									</div>
+								</form>
+								
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+				</div>
+				<div id=sidebar>
+					{include file="Inc/right.moban"}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

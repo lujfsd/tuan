@@ -1,0 +1,150 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/tabs.js" />
+<style type="text/css">
+	.conf_btns li{ font-size:12px; display:inline-block; width:80px; height:23px; line-height:23px; float:left;
+		background:#f7f7f7; margin:1px; text-align:center; padding:2px 5px; cursor:pointer;
+	}
+	.conf_btns li.current{ background:#56B2DD; color:#fff;}
+	.conf_tabs table.conf_table{ margin:10px; }
+</style>
+
+<script type="text/javascript">
+function referralsPay(id,obj)
+{
+	/*alert(APP+"?m=Referrals&a=pay&id="+id);*/
+	$.ajax({
+		  url: APP+"?m=Referrals&a=pay&id="+id,
+		  cache: false,
+		  success:function(data)
+		  {
+			  $(obj).parent().append(data);
+			  $(obj).remove();
+		  }
+	});	
+	return false;
+}
+
+function referralsUnPay(id,obj)
+{
+	$.ajax({
+		  url: APP+"?m=Referrals&a=unPay&id="+id,
+		  cache: false,
+		  success:function(data)
+		  {
+			  $(obj).parent().append(data);
+			  $(obj).remove();
+		  }
+	});	
+	return false;
+}
+</script>
+<div id="main" class="main" >
+
+<div class="title">团购统计信息</div>
+
+
+<div class="tabItem">
+	<table id="user" class="list" cellpadding=0 cellspacing=0>
+		<tr>
+			<td class="tRight" width="120">商品名称：</td>
+			<td class="tLeft" >{$vo.name_1}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >有效订单数：</td>
+			<td class="tLeft" >{$vo.order_num} [所有有效的付款订单数，包括全部收款，部份收款，部份退款]</td>
+		</tr>			
+		<tr>
+			<td class="tRight" >有效订单应收金额：</td>
+			<td class="tLeft" >{$vo.order_total_price|priceFormat}</td>
+		</tr> 
+		<tr>
+			<td class="tRight" >有效订单已收金额：</td>
+			<td class="tLeft" >{$vo.order_incharge|priceFormat}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >付款订单数：</td>
+			<td class="tLeft" >{$vo.pay_order_num} [实际有付款的订单，除包括全部收款，部份收款，部份退款，还包括过期与重复支付的订单]</td>
+		</tr>			
+		<tr>
+			<td class="tRight" >付款订单应收金额：</td>
+			<td class="tLeft" >{$vo.pay_total_price|priceFormat}</td>
+		</tr> 
+		<tr>
+			<td class="tRight" >本团购实际收款：</td>
+			<td class="tLeft" >{$vo.pay_incharge|priceFormat} [实际的收款总数]</td>
+		</tr>
+		<tr>
+			<td class="tRight" >使用代金券金额：</td>
+			<td class="tLeft" >{$vo.ecv_money|priceFormat}</td>
+		</tr>
+		
+		<tr>
+			<td class="tRight" >已返利金额：</td>
+			<td class="tLeft" >{$vo.ref_money_1|priceFormat}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >已返利积分：</td>
+			<td class="tLeft" >{$vo.ref_score_1}</td>
+		</tr>	
+		
+		<tr>
+			<td class="tRight" >待返利金额：</td>
+			<td class="tLeft" >{$vo.ref_money_0|priceFormat}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >待返利积分：</td>
+			<td class="tLeft" >{$vo.ref_score_0}</td>
+		</tr>					
+	</table>
+</div>
+
+<if condition="$list">
+		<table id="order_list" class="list" cellpadding=0 cellspacing=0>
+			<tr class="row">
+				<th width="35">支付方式</th>
+				<th width="70">收款金额</th>
+				<th width="90">退款金额</th>
+				<th width="30">实收金额</th>
+			</tr>
+			<volist name="list" id="item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+				<td>{$item.name}</td>
+				<td>{$item.oimoney|priceFormat}</td>
+				<td>{$item.oumoney|priceFormat}</td>
+				<td>{$item.money|priceFormat}</td>
+			</volist>
+		</table>
+</if>
+
+		<table id="referrals_list" class="list" cellpadding=0 cellspacing=0>
+			<tr class="row">
+				<th width="35">编号</th>
+				<th width="70">会员</th>
+				<th width="70">推荐人</th>
+				<th width="30">返利金额</th>
+				<th width="30">返利积分</th>
+				<th width="70">操作</th>
+			</tr>
+			<volist name="referrals_list" id="item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+				<td>{$item.id}</td>
+				<td>{$item.user_name}</td>
+				<td>{$item.parent_name}</td>
+				<td>{$item.money|priceFormat}</td>
+				<td>{$item.score}</td>
+				<td>
+					<if condition="$item['is_pay'] eq 1">
+						<span><a href='javascript:;' onclick='referralsUnPay({$item.id},this);'>退回返利</a></span>
+					<else/>
+						<span><a href='javascript:;' onclick='referralsPay({$item.id},this);'>返利</a></span>
+					</if>					
+				</td>
+			</volist>
+		</table>
+		
+		{$pages}
+
+

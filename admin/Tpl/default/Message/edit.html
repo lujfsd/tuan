@@ -1,0 +1,100 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/'.$back_action,$param_back)}">{$Think.lang.BACK_LIST}</a> ]  
+
+<if condition="$vo['rec_module'] neq 'Seller' and $vo['rec_module'] neq 'Payment' and $vo['rec_module'] neq 'Feedback'">
+	<if condition="$vo['rec_id'] neq 0 and $vo['rec_module'] neq 'UcMessage'">
+		<if condition="$vo['rec_module'] eq 'Order' or $vo['rec_module'] eq 'OrderReConsignment' or $vo['rec_module'] eq 'OrderUncharge'">
+			[ <a href="{:u('Order/show',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		<else />
+			[ <a href="{:u($vo['rec_module'].'/edit',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		</if>
+		
+	</if>
+</if>
+
+		<if condition="$vo['rec_module'] eq 'Payment'">
+			[ <a href="{:u('Order/show',$rec_param)}">{$Think.lang.VIEW_REC_DATA}</a> ]
+		</if>
+		
+</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u($module_name.'/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="200"><if condition="$vo['rec_module'] neq 'Seller' and $vo['rec_module'] neq 'Feedback'">留言标题<else />联系方式</if>：</td>
+	<td class="tLeft" ><input type="text" name="title" value="{$vo.title}" style="width:60%" /> </td>
+</tr>
+<if condition="$vo['rec_module'] neq 'Seller' and $vo['rec_module'] neq 'Feedback'">
+<tr> 
+	<td class="tRight tTop">{$Think.lang.MESSAGE_USER}：</td>
+	<td class="tLeft">
+		{$vo.user_id|getUserName}
+	</td>
+</tr>
+</if>
+<tr> 
+	<td class="tRight tTop">{$Think.lang.MESSAGE_NAME}：</td>
+	<td class="tLeft">
+		{$vo['user_name']}
+	</td>
+</tr>
+
+
+<if condition="$vo['rec_module'] neq 'Seller' and $vo['rec_module'] neq 'Feedback'">
+<tr> 
+	<td class="tRight tTop">{$Think.lang.IS_TOP}：</td>
+	<td class="tLeft">
+		<label>{$Think.lang.YES}：<input type="radio" value="1" name="is_top" <if condition="$vo['is_top'] eq 1">checked="checked"</if> /></label>
+		<label>{$Think.lang.NO}：<input type="radio" value="0" name="is_top" <if condition="$vo['is_top'] eq 0">checked="checked"</if> /></label>
+	</td>
+</tr>
+</if>
+
+<tr> 
+	<td class="tRight tTop">{$Think.lang.MESSAGE_CONTENT}：</td>
+	<td class="tLeft">
+	
+	<fanwe:editor  name="content" id="content" type="KindEditor"  style="width:80%;height:200px;visibility:hidden;" />
+	</td>
+</tr>
+<if condition="$vo['reply_type'] eq 0 and $vo['rec_module'] neq 'Seller' and $vo['rec_module'] neq 'Feedback' and $vo['rec_module'] neq 'Suppliers'">
+<tr> 
+	<td class="tRight tTop">{$Think.lang.REPLY_CONTENT}：</td>
+	<td class="tLeft">
+     <fanwe:editor  name="adm_content" id="adm_content" type="KindEditor"  style="width:80%;height:200px;visibility:hidden;" />
+	
+	</td>
+</tr>
+</if>
+
+<if condition="$vo['reply_type'] eq 0 and $vo['rec_module'] eq 'Seller'">
+<tr> 
+	<td class="tRight tTop">团购商家名称：</td>
+	<td class="tLeft">
+		{$vo.groupon_seller_name}
+	</td>
+</tr>
+<tr> 
+	<td class="tRight tTop">团购物品：</td>
+	<td class="tLeft">
+		<fanwe:textarea name="groupon_goods" class="bLeft" rows="5" style="width:80%" />
+	</td>
+</tr>
+</if>
+
+<tr>
+	<td>&nbsp;</td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+
+</table>
+</form>
+</div>
+</div>

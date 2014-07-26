@@ -1,0 +1,100 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/adv.js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Adv/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.ADV_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" value="{$vo.name}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADV_TYPE}：</td>
+	<td class="tLeft" >
+		<select name="type" class="bLeft" onchange="changAdvType(this);" id="advtype">
+			<option value="1" <if condition="$vo['type'] eq 1">selected="selected"</if> >{$Think.lang.ADV_TYPE_1}</option>
+			<option value="2" <if condition="$vo['type'] eq 2">selected="selected"</if>>{$Think.lang.ADV_TYPE_2}</option>
+			<option value="3" <if condition="$vo['type'] eq 3">selected="selected"</if>>{$Think.lang.ADV_TYPE_3}</option>
+		</select>
+	</td>
+</tr>
+<tr>
+<td class="tRight"  >{$Think.lang.ADV_POSITION}：</td>
+	<td class="tLeft" >
+		<select name="position_id" class="bLeft">
+        	<option value="0">=={$Think.lang.ADV_POSITION}==</option>
+			<foreach name="positions" item="position">
+            <option value="{$position.id}" <if condition="$vo['position_id'] eq $position['id']">selected="selected"</if> >{$position.name}</option>
+			</foreach>
+		</select>
+	</td>
+</tr>
+<tr id="urlrow">
+<td class="tRight"  >{$Think.lang.ADV_URL}：</td>
+	<td class="tLeft" >
+			<input type="text" name="url" class="bLeft" value="{$vo.url}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADV_CODE}：</td>
+	<td class="tLeft" >
+		<div id="code">
+			<input type="file" name="code" />
+		</div>
+		
+	</td>
+</tr>
+<tr>
+<td class="tRight"  >{$Think.lang.ADV_DESC}：</td>
+	<td class="tLeft" >
+		<textarea name="desc" style="width:80%; height:80px;">{$vo.desc}</textarea>
+	</td>
+</tr>
+<tr>
+<td class="tRight"  >{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" value="{$vo.sort}">
+	</td>
+</tr>
+<tr>
+<td class="tRight"  >开始时间：</td>
+	<td class="tLeft" >
+		<input type="text" name="adv_start_time" id="adv_start_time" value="{$vo.adv_start_time|toDate='Y-m-d H:i'}"><input type="button" name="btn_adv_start_time" id="btn_adv_start_time" onclick="return showCalendar('adv_start_time', '%Y-%m-%d %H:%M', false, false, 'btn_adv_start_time');" value="选择" class="button">
+	</td>
+</tr>
+<td class="tRight"  >结束时间：</td>
+	<td class="tLeft" >
+		<input type="text" name="adv_end_time" id="adv_end_time" value="{$vo.adv_end_time|toDate='Y-m-d H:i'}"><input type="button" name="btn_adv_end_time" id="btn_adv_end_time" onclick="return showCalendar('adv_end_time', '%Y-%m-%d %H:%M', false, false, 'btn_adv_end_time');" value="选择" class="button">
+	</td>
+</tr>
+<td class="tRight"  >不统计点击数：</td>
+	<td class="tLeft" >
+		<label><input type="checkbox" <if condition="$vo['is_vote'] eq 1">checked</if> value="1"  name="is_vote" /> 是</label>
+		<div>打钩后直接跳转，不会统计点击次数</div>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" value="{$vo.id}" name="id" id="advid" />
+	<script type="text/javascript">
+		changAdvType(document.getElementById("advtype"));
+		</script>
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</table>
+</form>
+</div>
+</div>

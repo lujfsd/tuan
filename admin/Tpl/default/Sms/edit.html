@@ -1,0 +1,116 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">
+	{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]
+</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('Sms/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{%SMS_NAME}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.name}" name="name" />&nbsp;&nbsp;
+        <if condition="$vo['class_name'] eq 'Emay'">
+            <input type="button" value="查询余额" id="smsBalance" class="button small">&nbsp;
+            <input type="button" value="注册" id="smsLogin" class="button small">&nbsp;
+            <input type="button" value="注销" id="smsLogout" class="button small">
+        </if>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{%SMS_SERVICE}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.server_url}" name="server_url" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{%SMS_USER}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.user_name}" name="user_name" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" >{%SMS_PASSWORD}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" value="{$vo.password}" name="password" />
+	</td>
+</tr>
+
+<if condition="count($vo['config']) gt 0">
+<foreach name="vo.config" item="config_item">
+<tr>
+	<td class="tRight" >{:l("CONFIG_".strtoupper($vo['class_name']."_".$key))}：</td>
+	<td class="tLeft" >
+		<input type="text" class="bLeft" name="{$key}" value="{$config_item}" />
+	</td>
+</tr>
+<?php $desc = "CONFIG_".strtoupper($vo['class_name']."_".$key).'_DESC'; ?>
+<if condition="L($desc) neq $desc">
+<tr>
+	<td class="tRight" >&nbsp;</td>
+	<td class="tLeft" >
+		{:l($desc)}
+	</td>
+</tr>
+</if>
+</foreach>
+</if>
+<tr>
+	<td class="tRight" >&nbsp;</td>
+	<td class="tLeft">
+		<?php $smsdesc = "CONFIG_".strtoupper($vo['class_name']).'_DESC'; ?>
+        {:l($smsdesc)}
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="hidden" id="class_name" name="class_name" value="{$vo.class_name}" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small"  value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+jQuery(function($){
+	$("#smsBalance").click(function(){
+		smsQuery("smsBalance");				
+	});
+	
+	$("#smsLogin").click(function(){
+		smsQuery("smsLogin");				
+	});
+	
+	$("#smsLogout").click(function(){
+		smsQuery("smsLogout");				
+	});
+});
+
+function smsQuery(action)
+{
+	var query = new Object();
+	query.m = "Sms";
+	query.a = action;
+	query.class_name = $("#class_name").val();
+	
+	$.ajax({
+		url: APP,
+		data:query,
+		cache: false,
+		success:function(data)
+		{
+			alert(data);
+		}
+	});	
+}
+</script>

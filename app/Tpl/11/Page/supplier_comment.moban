@@ -1,0 +1,64 @@
+{include file="Inc/header.moban"}
+
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="consult">
+			<div class="consult-bd consult-no-deal">
+				<div id="content" >
+					<div class="box clear" id="coupons">
+						<div class="box-top"></div>
+						<div class="box-content">
+							<div class="head" >
+								<h2>{$supplier_info.name}</h2>
+								
+								
+							</div>
+							<div class="sect">
+								{$supplier_info.desc}
+							</div>
+							<div class="head" >
+								<h2>{$lang.SUPPLIER_COMMENT}</h2>
+								<ul class="filter">
+								<li {if $score eq 3}class="current"{/if}><a href="<?php echo a_u("Supplier/comment","supplier_id-".$this->_var['supplier_info']['id']."|score-3")?>">{$lang.PING_SCORE_3}</a></li>
+								<li {if $score eq 2}class="current"{/if}><a href="<?php echo a_u("Supplier/comment","supplier_id-".$this->_var['supplier_info']['id']."|score-2")?>">{$lang.PING_SCORE_2}</a></li>
+								<li {if $score eq 1}class="current"{/if}><a href="<?php echo a_u("Supplier/comment","supplier_id-".$this->_var['supplier_info']['id']."|score-1")?>">{$lang.PING_SCORE_1}</a></li>
+								
+								</ul>
+								
+							</div>
+							<div class="sect consult-list">
+								<ul class="list">
+									{foreach from="$comment_list" item="message_item" name="message_item"}
+									<li {if $smarty.foreach.message_item.index mod 2 eq 1}class="alt"{/if} id="consult-entry-{$message_item.id}" name="consult-entry-{$message_item.id}">
+										<div class="item">
+											<p class="user"><strong>{$message_item.user_name}</strong><span>{$message_item.create_time|toDate}</span></p>
+											<div class="clear"></div>
+											<p class="text">{$message_item.content}</p>
+											{if $message_item.admin_reply.id neq 0}
+											<p class="reply">
+											<strong>{$lang.XY_REPLY}</strong>{$message_item.admin_reply.content}</p>
+											{/if}
+										</div>
+									</li>
+									{/foreach}
+								</ul>
+								<div class="blank"></div>
+								<div style="text-align:right">
+									{$pages}
+								</div>
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+					
+				</div>
+				<div id="sidebar">
+					{include file="Inc/right.moban"}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+{include file="Inc/footer.moban"}

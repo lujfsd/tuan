@@ -1,0 +1,106 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+<script type="text/javascript">
+	function showdetail(id){
+		location.href = APP+'?m=User&a=showdetail&user_id='+id;
+	}	
+	function export_user()
+	{
+		var user_name = document.getElementById("c_user_name").value;
+		var email = document.getElementById("c_email").value;
+		var city_id = document.getElementById("c_city_id").value;
+		var mobile_phone = document.getElementById("c_mobile_phone").value;
+		var begintime = document.getElementById("c_begintime").value;
+		var endtime = document.getElementById("c_endtime").value;
+		var url = APP+'?m=User&a=expusercsv&user_name='+user_name+'&email='+email+'&city_id='+city_id+'&mobile_phone='+mobile_phone+'&begintime='+begintime+'&endtime='+endtime;
+		
+		location.href = url;
+	}
+	
+	function userforeverdel2(id){
+		var keyValue;
+		if (id)
+		{
+			keyValue = id;
+		}else {
+			keyValue = getSelectCheckboxValues();
+		}
+		if (!keyValue)
+		{
+			alert(SELECT_DEL_ITEM);
+			return false;
+		}
+
+		if (window.confirm(CONFIRM_DELETE_USER_DATA))
+		{
+			ThinkAjax.send(APP+'?m=User&a=foreverdelete&id='+keyValue+"&ajax=1",'',doDelete);
+		}
+	}
+	
+</script>
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<form method='get' action="__APP__">
+<div class="operate" >
+<fanwe:imageBtn name="add" value="{$Think.lang._ADD_DATA}" click="addData()" style="impBtn hMargin fLeft shadow" />
+<fanwe:imageBtn name="edit" value="{$Think.lang._EDIT_DATA}" click="editData()" style="impBtn hMargin fLeft shadow" />
+<fanwe:imageBtn name="delete" value="{$Think.lang._DELETE_DATA}" click="foreverdel()" style="impBtn hMargin fLeft shadow" />
+<div style="height:6px;overflow:hidden;clear:both; visibility:visible;"></div>
+<div style="float:left;padding-left:8px;">
+				帐号: <input type="text" name="user_name" title="{$Think.lang.USER_NAME}" class="medium" id="c_user_name" value="{:trim($_REQUEST['user_name'])}" style="width:90px;" >  
+				邮件: <input type="text" name="email" class="medium"  id="c_email" value="{:trim($_REQUEST['email'])}"  style="width:90px;" />
+				手机: <input type="text" name="mobile_phone" class="medium"  id="c_mobile_phone" value="{:trim($_REQUEST['mobile_phone'])}"  style="width:90px;" />
+				会员组: <select name="group_id" id="c_group_id">
+					<option value="">=全部=</option>
+					<foreach name="group_list" item="group_item">
+					<option value="{$group_item.id}" <if condition="$map['group_id'] eq $group_item['id']">selected="selected"</if>>{$group_item.name_1}</option>
+					</foreach>
+				</select>
+<div style="height:6px;overflow:hidden"></div>
+注册时间：<input type="text" name="begintime" id="c_begintime" value="{$begintime}" style="width:90px;"  onfocus="return showCalendar('c_begintime', '%Y-%m-%d', false, false, 'c_begintime');" />
+到
+<input type="text" name="endtime" id="c_endtime" value="{$endtime}" style="width:100px;" onfocus="return showCalendar('c_endtime', '%Y-%m-%d', false, false, 'c_endtime');" />
+
+				
+				地区: <select name="city_id" id="c_city_id">
+					<option value="">=全部=</option>
+					<foreach name="city_list" item="city_item">
+					<option value="{$city_item.id}" <if condition="$map['city_id'] eq $city_item['id']">selected="selected"</if>>{$city_item.name}</option>
+					</foreach>
+				</select>
+</div>
+<div style="float:left;padding-top:15px;padding-left:15px">	
+<input type="hidden" name="m" value="User" />
+<input type="hidden" name="a" value="index" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+
+<input type="button" id="" name="expuser" value="导出csv" class="add imgButton" onclick="export_user()">
+</div>
+<div style="height:0px;overflow:hidden;clear:both; visibility:visible;"></div>
+</div>
+</form>
+
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="user" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|8%,user_name:{$Think.lang.USER_NAME}:edit,parent_id|getRUserName:推荐人,email:{$Think.lang.EMAIL}:edit,create_time|toDate:{$Think.lang.REG_TIME},money|formatPrice:会员余额,score|formatScore:会员积分,mobile_phone:会员手机号,group_id|get_user_group:会员组,last_ip:最后登录IP" 
+	actionlist="status|showStatus=$user['id'],edit:{$Think.lang._EDIT_DATA}:id,userforeverdel2:{$Think.lang._DELETE_DATA}:id,showdetail:显示明细:id,edit_money:{$Think.lang._EDIT_MONEY_DATA}:id" /> 
+</div>
+<div class="page">{$page}</div>
+</div>
+</div>
+

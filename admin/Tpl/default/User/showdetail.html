@@ -1,0 +1,354 @@
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/tabs.js" />
+<style type="text/css">
+	.conf_btns{ padding:0px; height:29px; overflow:hidden; margin:0px; clear:both; border:1px solid #9CB8CC; border-right:0; background:#fff}
+	.conf_btns li{ font-size:12px; display:inline-block; width:80px; height:23px; line-height:23px; float:left;
+		background:#f1f1f1; margin:1px; text-align:center; padding:2px 5px; cursor:pointer;
+	}
+	.conf_btns li.current{ background:#3D5B9A; color:#fff;}
+	.conf_tabs {}
+	.conf_tabs table.conf_table{ margin:0px auto;}
+	div.tabItem{border:none}
+</style>
+<div id="main" class="main" >
+
+<div class="title">会员明细帐</div>
+
+
+<ul class="conf_btns">
+	<li class="">会员资料</li>
+	<li class="">订单列表</li>
+	<li class="">收款单列表</li>
+	<li class="">发货单列表</li>
+	<li class="">团购券列表</li>
+	<li class="">资金变化历史</li>
+	<li class="">积分变化历史</li>
+	<li class="">代金券列表</li>
+	<li class="">会员充值历史</li>
+	<li class="">会员提现历史</li>
+</ul>
+
+<div class="conf_tabs">
+
+<div class="tabItem">
+	<table id="user" class="list" cellpadding=0 cellspacing=0>
+		<tr>
+			<td class="tRight" width="120">{$Think.lang.USER_NAME}：</td>
+			<td class="tLeft" >{$vo.user_name}</td>
+		</tr>	
+		<tr>
+			<td class="tRight" >{$Think.lang.USER_GROUP}：</td>
+			<td class="tLeft" >{$vo.group_name}</td>
+		</tr> 
+		<tr>
+			<td class="tRight" >{$Think.lang.EMAIL}：</td>
+			<td class="tLeft" >{$vo.email}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.QQ}：</td>
+			<td class="tLeft" >{$vo.qq}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.MSN}：</td>
+			<td class="tLeft" >{$vo.msn}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.ALIM}：</td>
+			<td class="tLeft" >{$vo.alim}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.MOBILE_PHONE}：</td>
+			<td class="tLeft" >{$vo.mobile_phone}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.ZIP}：</td>
+			<td class="tLeft" >{$vo.zip}
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.ADDRESS}：</td>
+			<td class="tLeft" >{$vo.address}</td>
+		</tr>
+		<tr>
+			<th colspan=2>{%ACCOUNT_INFO}	</th>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.USER_SCORE}：</td>
+			<td class="tLeft" >{$vo.score}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >{$Think.lang.USER_MONEY}：</td>
+			<td class="tLeft" >{:sprintf(fanweC("BASE_CURRENCY_UNIT"),"")} {$vo.money|priceVal}</td>
+		</tr>
+		<tr>
+			<td class="tRight" >推荐人数：</td>
+			<td class="tLeft" >{$vo.referrals_count}</td>
+		</tr>
+	</table>
+</div>
+
+<div class="tabItem">
+		<table id="order_list" class="list" cellpadding=0 cellspacing=0>
+			<tr class="row">
+				<th width="35">订单ID</th>
+				<th width="70">订单号</th>
+				<th width="90">团购商品</th>
+				<th width="30">数量</th>
+				<th width="30">城市</th>
+				<th width="90">下单时间</th>
+				<th width="40">订单金额</th>
+				<th width="40">已收金额</th>
+				<th width="60">收款状态</th>
+				<th width="60">发货状态</th>
+				<th width="30">操作</th>
+			</tr>
+			<volist name="order_list" id="order" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+				<td>{$order.id}</td>
+				<td>{$order.sn}</td>
+				<td style="text-align:left;">
+					<a class="deal-title" href="index.php?m=Goods&a=show&id={$order.rec_id}" target="_blank">{$order.data_name}</a>
+				</td>
+				<td>{$order.goods_num}</td>
+				<td>{$order.city_name}</td>
+				<td>{$order.create_time|toDate}</td>
+				<td>{$order.order_total_price|priceFormat}</td>
+				<td>{$order.order_incharge|priceFormat}</td>
+				<td>{$order.money_status|getOrderMoneyStatus}</td>
+				<td>{$order.goods_status|getOrderGoodsStatus}</td>
+				<td style="text-align:left;">
+					<a class="deal-title" href="__APP__?m=Order&a=show&id={$order.id}" target="_blank">查看</a>
+				</td>
+			</volist>
+		</table>
+</div>
+
+<div class="tabItem">
+		<table id="order_incharge_list" class="list" cellpadding=0 cellspacing=0>
+			<tr>
+				<th width="35">编号</th>
+				<th width="80">订单编号</th>
+				<th width="140">商品名称</th>
+				<th width="40">数量</th>
+				<th width="60">订单金额</th>
+				<th width="60">支付方式</th>
+				<th width="100">收款金额</th>
+				<th width="100">收款时间</th>
+			</tr>
+			<volist name="order_incharge_list" id="order_incharge_item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+					<td>{$order_incharge_item.id}</td>
+					<td>{$order_incharge_item.order_sn}</td>
+					<td>{$order_incharge_item.data_name}</td>
+					<td>{$order_incharge_item.number}</td>
+					<td>{$order_incharge_item.final_amount|priceFormat}</td>
+					<td>{$order_incharge_item.PName}</td>
+					<td>{$order_incharge_item.money|priceFormat}</td>
+					<td>{$order_incharge_item.create_time|toDate}</td>
+				</tr>
+			</volist>
+		</table>
+</div>
+
+<div class="tabItem">
+		<table id="order_consignment_list" class="list" cellpadding=0 cellspacing=0>
+			<tr>
+				<th width="80">订单编号</th>
+				<th width="140">物流单号</th>
+				<th width="140">商品名称</th>
+				<th width="40">数量</th>				
+				<th width="60">单据时间</th>
+				<th width="100">物流费用</th>
+				<th width="100">保价</th>
+				<th width="100">收货人</th>
+				<th width="100">配送方式</th>
+				<th width="100">收货地址</th>
+			</tr>
+			<volist name="order_consignment_list" id="order_consignment_item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+					<td>{$order_consignment_item.order_sn}</td>
+					<td>{$order_consignment_item.delivery_code}</td>
+					<td>{$order_consignment_item.data_name}</td>
+					<td>{$order_consignment_item.number}</td>					
+					<td>{$order_consignment_item.create_time|toDate}</td>
+					<td>{$order_consignment_item.delivery_fee|priceFormat}</td>
+					<td>{$order_consignment_item.protect_fee|priceFormat}</td>
+					<td>{$order_consignment_item.consignee}</td>
+					<td>{$order_consignment_item.fname}</td>
+					<td>{$order_consignment_item.address}</td>
+				</tr>
+			</volist>
+		</table>
+</div>
+
+<div class="tabItem">
+		<table id="order_incharge_list" class="list" cellpadding=0 cellspacing=0>
+			<tr class="row">
+				<th width="250">团购项目</th>
+				<th width="90">购买日期</th>
+				<th width="90">过期时间</th>
+				<th width="90">序列号</th>
+				<th width="90">密码</th>
+				<th width="90">使用日期</th>
+
+			</tr>
+			<volist name="groupbond_list" id="groupbond" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+				<td style="text-align:left;"><a class="deal-title" href="index.php?m=Goods&a=show&id={$groupbond.goods_id}" target="_blank">{$groupbond.goods_name}</a></td>
+				<td>{$groupbond.buy_time_format}</td>
+				<td>
+					<if condition="$groupbond['end_time_format']">
+						{$groupbond.end_time_format}
+					<else/>
+						不过期
+					</if>
+				</td>
+				<td>{$groupbond.sn}</td>
+				<td>{$groupbond.password}</td>
+				<td>
+					<if condition="$groupbond['use_time_format']">
+						{$groupbond.use_time_format}
+					<else/>
+						未使用
+					</if>
+				</td>
+	
+			</volist>
+		</table>
+</div>
+
+
+
+<div class="tabItem">
+		<table id="log_money_list" class="list" cellpadding=0 cellspacing=0>
+			<tr>
+				<th width="200">事件</th>
+				<th width="80">金额</th>
+				<th width="60">类型</th>
+				<th width="100">发生时间</th>
+			</tr>
+			<volist name="log_money_list" id="log_item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+					<td style="text-align:left;">{$log_item.memo_1}</td>
+					<td><if condition="$log_item['log_type'] eq 'money'">{$log_item.value}</if></td>
+					<td>{:L("OP_TYPE_".$log_item['op_type'])}</td>
+					<td>{$log_item.create_time|toDate}</td>
+				</tr>
+			</volist>
+		</table>
+</div>
+		
+<div class="tabItem">
+		<table id="log_score_list" class="list" cellpadding=0 cellspacing=0>
+			<tr>
+				<th width="200">事件</th>
+				<th width="140">会员积分</th>
+				<th width="60">类型</th>
+				<th width="100">发生时间</th>
+			</tr>
+			<volist name="log_score_list" id="log_item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+					<td style="text-align:left;">{$log_item.memo_1}</td>
+					<td><if condition="$log_item['log_type'] eq 'score'">{$log_item.score}</if></td>
+					<td>{:L("OP_TYPE_".$log_item['op_type'])}</td>
+					<td>{$log_item.create_time|toDate}</td>
+				</tr>
+			</volist>
+		</table>
+</div>		
+		
+<div class="tabItem">
+		<table id="evc_list" class="list" cellpadding=0 cellspacing=0>
+			<tr>
+				<th width="140">代金券信息</th>
+				<th width="90">起止日期</th>
+				<th width="160">使用项目</th>
+				<th width="90">使用会员</th>
+				<th width="90">使用时间</th>
+			</tr>
+			<volist name="evc_list" id="ecv_item" mod="2">
+				<tr <eq name="mod" value="1">class="alt"</eq>>
+					<td style="text-align:left;">
+						序列号：{$ecv_item.sn}<br/>
+						<if condition="$ecv_item['password']">
+							密　码：{$ecv_item.password}<br/>
+						</if>
+						名　称：{$ecv_item.name}<br/>
+						金　额：{$ecv_item.money_format}
+					</td>
+					<td style="text-align:center">
+						<if condition="$ecv_item['use_start_date_format']">
+							{$ecv_item.use_start_date_format}
+						<else/>
+							不限制
+						</if><br/>至<br/>
+						<if condition="$ecv_item['use_end_date_format']">
+							{$ecv_item.use_end_date_format}
+						<else/>
+							不限制
+						</if>
+					</td>
+					<td><a class="deal-title" href="index.php?m=Goods&a=show&id={$ecv_item.goods_id}" target="_blank">{$ecv_item.goods_name}</a></td>
+					<td>{$ecv_item.use_user_name}</td>
+					<td>
+						<if condition="$ecv_item['use_date_time_format']">
+							{$ecv_item.use_date_time_format}
+						<else/>
+							未使用
+						</if>
+					</td>
+				</tr>
+			</volist>
+		</table>
+</div>
+				
+				
+<div class="tabItem">
+		<table id="incharge_list" class="list" cellpadding=0 cellspacing=0>
+        	<tr>
+        		<th>单号</th>
+        		<th>金额</th>
+				<th>手续费</th>
+				<th>应付总额</th>
+        		<th>申请时间</th>
+        		<th>确认时间</th>
+				<th>状态</th>
+        	</tr>
+			<foreach name="incharge_list" item="incharge_item">
+				<tr <if condition="$key%2 eq 1">class="alt"</if>>
+	        		<td>{$incharge_item.sn}</td>
+	        		<td>{$incharge_item.money|formatPrice}</td>
+					<td>{$incharge_item.payment_fee|formatPrice}</td>
+					<td>{$incharge_item.payment_money|formatPrice}</td>
+	        		<td>{$incharge_item.create_time|toDate}</td>
+	        		<td>{$incharge_item.update_time|toDate}</td>
+					<td>{:L("USER_MONEY_".$incharge_item['status'])}</td>
+	        	</tr>
+			</foreach>
+		</table>
+</div>
+
+<div class="tabItem">
+		<table id="uncharge_list" class="list" cellpadding=0 cellspacing=0>
+        	<tr>
+        		<th>单号</th>
+        		<th>收款帐户</th>
+        		<th>金额</th>
+        		<th>申请时间</th>
+        		<th>确认时间</th>
+        	</tr>
+			<foreach name="uncharge_list" item="uncharge_item">
+			<tr <if condition="$key%2 eq 1">class="alt"</if>>
+        		<td>{$uncharge_item.sn}</td>
+        		<td>{$uncharge_item.memo|nl2br}</td>
+        		<td>{$uncharge_item.money|formatPrice}</td>
+        		<td>{$uncharge_item.create_time|toDate}</td>
+        		<td>{$uncharge_item.update_time|toDate}</td>
+        	</tr>
+			</foreach>			
+		</table>
+</div>
+					
+</div>

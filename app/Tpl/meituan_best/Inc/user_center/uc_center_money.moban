@@ -1,0 +1,12 @@
+<div class="head">
+	<div class="money_box">
+	{$XY_RECHARGE_TO_USER}<a href="{$__ROOT__}/index.php?m=UcIncharge&a=index">» {$lang.XY_TO_RECHARGE}</a>
+	{if a_fanweC("OPEN_ECV") eq 1}
+		<a href="{$__ROOT__}/index.php?m=UcIncharge&a=ecv">» {$lang.UCINCHARGE_ECV}</a>
+	{/if}
+	</div>
+	<div class="blank"></div>	
+	<h3 class="credit-title">{$lang.XY_YOU_PRICE} <strong style="color:#CC3333;">{$user_money_format}</strong>
+	{$lang.XY_YOU_INTEGRAL}<strong style="color:#CC3333;">{$user_score_format}</strong>
+	</h3>					
+</div>

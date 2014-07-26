@@ -1,0 +1,216 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<!-- 菜单区域  -->
+<script type="text/javascript">
+function showOrder(id){
+	window.open("__APP__?m=Order&a=show&id=" + id);
+}
+
+function showUser(id){
+	window.open("__APP__?m=User&a=showdetail&user_id=" + id);
+}
+
+function showGoods(id){
+	window.open("index.php?m=Goods&a=show&id=" + id);
+}
+function showUserOrder(ref_id)
+{
+	location.href = "__APP__?m=Order&a=index&ref_id="+ref_id;
+}
+function export_order()
+{
+	var goods_id = document.getElementById("c_goods_id").value;
+	var city_id = document.getElementById("c_city_id").value;
+	var sn = document.getElementById("c_sn").value;
+	var user_name = document.getElementById("c_user_name").value;
+	var money_status = document.getElementById("c_money_status").value;
+	var goods_status = document.getElementById("c_goods_status").value;
+	var repay_status = document.getElementById("c_repay_status").value;
+	var begintime = document.getElementById("c_begintime").value;
+	var endtime = document.getElementById("c_endtime").value;
+	var keywords = document.getElementById("c_keywords").value;
+	var ref_user = document.getElementById("c_ref_user").value;
+	var goods_send_date = document.getElementById("c_goods_send_date").value;
+	
+	var url = "__APP__?m=Order&a=exporder&goods_id="+goods_id+"&city_id="+city_id+"&sn="+sn+"&user_name="+user_name+"&ref_user="+ref_user+"&money_status="+money_status+"&goods_status="+goods_status+"&repay_status="+repay_status+"&begintime="+begintime+"&endtime="+endtime+"&keywords="+keywords+"&goods_send_date="+goods_send_date;
+	location.href = url;
+}
+
+function goods_stuts6()
+{
+	var sn = document.getElementById("c_sn").value;
+	var money_status = document.getElementById("c_money_status").value;
+	var goods_status = document.getElementById("c_goods_status").value;
+	var repay_status = document.getElementById("c_repay_status").value;
+	var begintime = document.getElementById("c_begintime").value;
+	var endtime = document.getElementById("c_endtime").value;
+	var goods_send_date = document.getElementById("c_goods_send_date").value;
+
+	if (goods_send_date == ''){
+		alert('发货日期不能为空');
+		return false;
+	}
+
+	if (begintime == '' || endtime ==''){
+		alert('下单时间不能为空');
+		return false;
+	}
+		
+	var url = "__APP__?m=Order&a=goods_stuts6&sn="+sn+"&money_status="+money_status+"&goods_status="+goods_status+"&repay_status="+repay_status+"&begintime="+begintime+"&endtime="+endtime+"&goods_send_date="+goods_send_date;
+	location.href = url;
+}
+</script>
+<php>
+function getRepayStatus($status)
+{
+		if($status==0)
+		return "无额外支付";
+		if($status==1)
+		return "重复支付";
+		if($status==2)
+		return "过期支付";
+}
+</php>
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+<form method='get' action="__APP__">
+<div class="operate" >
+<!-- 查询区域 -->
+<div style="height:0px; overflow:hidden; clear:both; visibility:visible; display:block; width:100%"></div>
+<div style="float:left">
+团购活动ID：<input type="text" id="c_goods_id" name="goods_id" size="5" value="{$goods_id}" />
+
+<select name="city_id" id="c_city_id" >
+	<option value="0">====城市列表====</option>
+	<foreach name="city_list" item="city_item" >
+		<option value="{$city_item.id}" <if condition="$city_id eq $city_item['id']">selected</if>>{$city_item.name}</option>
+	</foreach>
+</select>
+
+订单号：<input type="text" class="medium" name="sn"  style="width:100px;" value="{$order_sn}" id="c_sn" />
+
+会员帐号:&nbsp;&nbsp;<input type="text" name="user_name" class="medium" style="width:90px;" value = "{$user_name}" id="c_user_name">
+推荐人:&nbsp;&nbsp;<input type="text" name="ref_user" class="medium" style="width:90px;" value = "{$ref_user}" id="c_ref_user">
+<div style="height:6px;overflow:hidden"></div>
+下单时间：<input type="text" name="begintime" id="c_begintime" value="{$begintime}" style="width:90px;"  onfocus="return showCalendar('c_begintime', '%Y-%m-%d', false, false, 'c_begintime');" />
+到
+<input type="text" name="endtime" id="c_endtime" value="{$endtime}" style="width:100px;" onfocus="return showCalendar('c_endtime', '%Y-%m-%d', false, false, 'c_endtime');" />
+<select name="money_status" id="c_money_status">
+	<option value="-1" <if condition="$money_status eq -1">selected</if>>收款状态</option>
+    <option value="0" <if condition="$money_status eq 0">selected</if>>{%ORDER_MONEY_STATUS_0}</option>
+    <option value="1" <if condition="$money_status eq 1">selected</if>>{%ORDER_MONEY_STATUS_1}</option>
+    <option value="2" <if condition="$money_status eq 2">selected</if>>{%ORDER_MONEY_STATUS_2}</option>
+    <option value="3" <if condition="$money_status eq 3">selected</if>>{%ORDER_MONEY_STATUS_3}</option>
+    <option value="4" <if condition="$money_status eq 4">selected</if>>{%ORDER_MONEY_STATUS_4}</option>
+</select>
+<select name="goods_status" id="c_goods_status">
+    <option value="-1" <if condition="$goods_status eq -1">selected</if>>发货状态</option>
+    <option value="0" <if condition="$goods_status eq 0">selected</if>>{%ORDER_GOODS_STATUS_0}</option>
+    <option value="2" <if condition="$goods_status eq 2">selected</if>>{%ORDER_GOODS_STATUS_2}</option>
+    <option value="4" <if condition="$goods_status eq 4">selected</if>>{%ORDER_GOODS_STATUS_4}</option>
+    <option value="5" <if condition="$goods_status eq 5">selected</if>>{%ORDER_GOODS_STATUS_5}</option>
+    <option value="6" <if condition="$goods_status eq 6">selected</if>>{%ORDER_GOODS_STATUS_6}</option>
+</select>
+<select name="repay_status" id="c_repay_status">
+	<option value="-1" <if condition="$repay_status eq -1">selected</if>>额外支付状态</option>
+	<option value="0" <if condition="$repay_status eq 0">selected</if>>无额外支付</option>
+	<option value="1" <if condition="$repay_status eq 1">selected</if>>重复支付</option>
+	<option value="2" <if condition="$repay_status eq 2">selected</if>>过期支付</option>
+	<option value="3" <if condition="$status eq 2">selected</if>>会员作废</option>
+</select>
+
+关键字：<input type="text" value="{$keywords}" name="keywords" id="c_keywords">
+<!--
+商品编号：<input type="text" name="sn" class="medium" style="width:100px;" >
+
+<select name="status">
+    <option value="">订单状态</option>
+    <option value="0">{%ORDER_STATUS_0}</option>
+    <option value="1">{%ORDER_STATUS_1}</option>
+    <option value="2">{%ORDER_STATUS_2}</option>
+</select>
+-->
+
+<div style="height:6px;overflow:hidden"></div>
+发货时间：<input name="goods_send_date" id="c_goods_send_date" value="{$goods_send_date}"   onfocus="return showCalendar('c_goods_send_date', '%Y-%m-%d', false, false, 'c_goods_send_date');" readonly />
+<input type="button" id="" class="big-btn" name="exporder" value="将查询结果的发货状态更新为：配送中" onclick="goods_stuts6();">
+</div>
+
+
+<div style="float:left;padding-top:15px;padding-left:15px">
+<input type="hidden" name="SEARCH_TYPE" value="like" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+<input type="button" id="" name="exporder" value="导出csv" class="add imgButton" onclick="export_order();">
+<input type="hidden" value="Order" name="m" />
+<input type="hidden" value="index" name="a" />
+</div>
+<div style="height:0px; overflow:hidden; clear:both; visibility:visible; display:block; width:100%"></div>
+</div>
+</form>
+
+<!-- 功能操作区域结束 -->
+
+<!-- 列表显示区域  -->
+
+<div class="list" >
+<table id="list" class="list" cellpadding=0 cellspacing=0>
+  <tr class="row">
+    <th class="center" width = "4%">编号</th>
+    <th >订单号</th>
+    <th >下单时间</th>
+    <th >订单金额</th>
+    <th >已收金额</th>
+    <th >收款帐户</th>
+    <th >会员帐号</th>
+    <th >邀请人</th>
+    <th >收款/发货状态</th>
+    <th >额外付款</th>
+    <th >团购商品</th>
+    <th >数量</th>
+    <th >城市</th>
+    <th >操作</th>
+  </tr>
+	<foreach name="list" item="order">
+		<tr>
+			<if condition = "$order['rowspan_key'] eq 1">
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;">{$order.id}</td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder({$order.id})">{$order.sn}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder({$order.id})">{$order.create_time_format}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder({$order.id})">{$order.order_total_price_format}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder({$order.id})">{$order.order_incharge_format}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder('{$order.id}')">{$order.pname}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showUser('{$order.user_id}')">{$order.user_name}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showUserOrder('{$order.parent_id}')">{$order.ref_user}</a>&nbsp;</td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder('{$order.id}')">{$order.money_status_format}|{$order.goods_status_format} {$order.goods_send_date}</a></td>
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;"><a href="javascript:showOrder('{$order.id}')">{$order.repay_status_format}</a></td>
+			</if>
+
+
+			<td><a href="javascript:showGoods('{$order.goods_id}')">{$order.data_name}</a></td>
+			<td><a href="javascript:showGoods('{$order.goods_id}')">{$order.goods_num}</a></td>
+			<td><a href="javascript:showGoods('{$order.goods_id}')">{$order.city_name}</a></td>
+
+			<if condition = "$order['rowspan_key'] eq 1">
+				<td class="center" rowspan={$order.rowspan} style="text-align:center;">{$order.actionlist}</td>
+			</if>
+		</tr>
+	</foreach>
+</table>
+</div>
+
+<div class="page"><!--{$Think.lang.ORDER_COST}: {$total_cost}; {$Think.lang.ORDER_ORDER_PROFIT}: {$total_profit}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->{$page}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

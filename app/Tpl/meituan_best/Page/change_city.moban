@@ -1,0 +1,13 @@
+{include file="Inc/header.moban"}
+<link rel="stylesheet" type="text/css" href="{$CND_URL}/{$TMPL_PATH}Public/css/forum.css" />
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div class="forum-top"></div>
+		<div class="forum-content">
+			
+			</div>
+		</div>
+		<div class="forum-bottom"></div>
+	</div>
+</div>
+{include file="Inc/footer.moban"}

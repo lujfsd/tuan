@@ -1,0 +1,73 @@
+﻿{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="signup">
+			<div id="content" class="signup-box">
+				<div class="box">
+					<div class="box-top"></div>
+					<div class="box-content">
+						<div class="head">
+							<h2>{$lang.XY_USER_REG}</h2>
+							<span>&nbsp;{$lang.XY_OR} <a href="{function name='a_u' value='User/login'}">{$lang.XY_USER_LOGIN}</a></span>
+						</div>
+						{include file="Inc/user/reg_info.moban"}
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h2>{$lang.XY_HAVE_USER_NAME}</h2>
+							<p>{$lang.XY_PLEASE_DIRECT}<a href="{function name='a_u' value='User/login'}">{$lang.XY_USER_LOGIN}</a>。</p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+              <div class="blank"></div>
+                 {if (a_fanweC('SINA_KEY') neq '')||(a_fanweC('QQ_KEY') neq '')||(a_fanweC('360_KEY') neq '')||(a_fanweC('ALIAPY_PARTNER') neq '')||(a_fanweC('800_KEY') neq '')||(a_fanweC('TXQQ_KEY') neq '')||(a_fanweC('2345_KEY') neq '')||(a_fanweC('APP_KEY_baidu') neq '')}
+                <div class="sbox">
+					<div class="sbox-top"></div>
+					<div class="sbox-content">
+						<div class="side-tip">
+							<h2>使用合作网站账号登录</h2>
+							<p> 
+									   {if a_fanweC('SINA_KEY') neq ''}
+	                       					<a href="{$__ROOT__}/index.php?m=user&a=login_sina&oauth_sina=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/sina.png" /></a>
+									   {/if}	
+											{if a_fanweC('QQ_KEY') neq ''}
+			                                 	<a href="{$__ROOT__}/index.php?m=user&a=login_qq&oauth_qq=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/qq.png" /></a>
+											{/if}
+	                                   {if a_fanweC('360_KEY') neq ''}
+	                                       <a href="{$__ROOT__}/index.php?m=user&a=login_360&oauth_360=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/360.gif" /></a>
+									   {/if}
+		                                    {if a_fanweC('ALIAPY_PARTNER') neq ''}
+		                                       <a href="{$__ROOT__}/index.php?m=user&a=login_alipay&oauth_alipay=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/act_zfb.gif" /></a>
+											{/if}
+	                                   {if a_fanweC('800_KEY') neq ''}
+					        		   		<a href="{$__ROOT__}/index.php?m=user&a=login_800&oauth_800=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/800.png" /></a>									
+									   {/if}
+											
+									   {if a_fanweC('2345_KEY') neq ''}
+	                                 		<a href="{$__ROOT__}/index.php?m=user&a=login_2345&oauth_2345=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/login_2345.gif" /></a>
+									   {/if}
+											{if a_fanweC('APP_KEY_baidu') neq ''}
+			                                	 <a href="{$__ROOT__}/index.php?m=user&a=login_baidu&oauth_baidu=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/login-baidu.gif" /></a>
+											{/if}
+									   {if a_fanweC('TXQQ_KEY') neq ''}
+			                                 	<a href="{$__ROOT__}/index.php?m=user&a=login_txqq&oauth_txqq=1" target="_blank"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/txqq.png" /></a>
+									   {/if}
+                            </p>
+						</div>
+					</div>
+					<div class="sbox-bottom"></div>
+				</div>
+                {/if}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

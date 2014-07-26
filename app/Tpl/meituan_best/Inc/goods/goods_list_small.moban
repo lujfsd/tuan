@@ -1,0 +1,137 @@
+<style type="text/css">
+	.deal-share-im-b {
+	border-left: #89b4d6 1px solid;
+	padding-bottom: 10px;
+	background-color: #e5f8ff;
+	padding-left: 20px;
+	padding-right: 10px;
+	height: 50px;
+	border-right: #89b4d6 1px solid;
+	padding-top: 10px
+}
+
+</style>
+<div id="content">
+	{foreach from=$goods_list item=goods}
+		{if $goods.expand3 neq ''}
+		<div id="deal-intro" style="margin-bottom: 25px;">
+			<h3><a href="{$goods.url}">{$goods.name_1}</a></h3>
+			<div class="main">
+				<div class="deal-buy">
+					<div class="deal-price-tag"></div>
+					<p class="deal-price" id="deal-price">
+						{include file="Inc/common/goods_btn_info.moban"}
+					</p>
+				</div>
+				<table class="deal-discount">
+					<tbody>
+						<tr>
+							<th>{$lang.XY_MAKET_PRICE}</th>
+							<th>{$lang.XY_SHOP_DISCOUNT}</th>
+							<th>{$lang.XY_SHOP_SAVE}</th>
+						</tr>
+						<tr>
+							<td>{$goods.market_price_format}</td>
+							<td>
+								<?PHP echo sprintf(a_L("XY_SHOP_SAVE_POINT"),$this->_var['goods']['discountfb']);?>
+							</td>
+							<td>{$goods.save}</td>
+						</tr>
+						<tr>
+							<td colspan="3" class="bottom"><font class="r" style="color: #F00; font-size: 1.25em;">{$goods.buy_count}</font>{$lang.XY_GROUP_HAD_BUY}</strong></td>
+						</tr>
+						<tr><td colspan="3"><span class="counter" endTime="{if $goods.promote_begin_time >= $TIME}{function name="a_toDate" a="$goods.promote_begin_time" b="r"}{else}{function name="a_toDate" a="$goods.promote_end_time" b="r"}{/if}"></span></td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="side">
+				<a href="{$goods.url}" class="img"><img src="{$CND_URL}{$goods.big_img}" /></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+	
+		{/if}
+	{/foreach}
+
+	<?php $this->_var['idx'] = 0; ?>
+	{foreach from=$goods_list item=goods key=key}
+		{if $goods.expand3 eq ''}
+		<div class="goods-item{if $idx % 2 eq 0} gl{/if}">
+			<h3><a href="{$goods.url}">{$goods.name_1}</a></h3>
+			<a href="{$goods.url}" class="img"><img src="{$CND_URL}{$goods.big_img}" /></a>
+			<div class="deal-buy">
+				<div class="deal-price-tag"></div>
+				<p class="deal-price" id="deal-price">
+					<strong>{$goods.shop_price_format}</strong>
+					<span><a href="{$goods.url}"><img src="{$CND_URL}/{$TMPL_PATH}Public/images/button-deal-buy.gif}"></a></span>
+				</p>
+			</div>
+			<table>
+				<tbody>
+					<tr>
+						<td style="width:30px">现价</td><td class="r">{$goods.shop_price_format}</td>
+					</tr>
+					<tr>
+						<td>{$lang.XY_MAKET_PRICE}</td><td class="b d">{$goods.market_price_format}</td>
+					</tr>
+					<tr>
+						<td>{$lang.XY_SHOP_DISCOUNT}</td><td class="b"><?PHP echo sprintf(a_L("XY_SHOP_SAVE_POINT"),$this->_var['goods']['discountfb']);?></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="bottom">
+				<span class="counter" endTime="{if $goods.promote_begin_time >= $TIME}{function name="a_toDate" a="$goods.promote_begin_time" b="r"}{else}{function name="a_toDate" a="$goods.promote_end_time" b="r"}{/if}"></span>&nbsp;&nbsp;
+				<font class="r">{$goods.buy_count}</font>{$lang.XY_GROUP_HAD_BUY}</strong>
+			</div>
+		</div>
+		<?php ++$this->_var['idx']; ?>
+		{/if}
+	{/foreach}
+	<div class="clear"></div>
+	<div class="bottom_pape">{$pages}</div>
+	<div class="blank"></div>
+</div>
+<script type="text/javascript">
+	function share_url(id)
+	{
+
+		if ($("#deal-share-im-c-"+id).css("display") == "none") {
+			$("#share-copy-text-"+id).val($("#share_url_"+id).val());
+			$("#deal-share-im-c-"+id).show();
+		}
+		else
+			$("#deal-share-im-c-"+id).hide();
+	}
+	function copy_text(id)
+	{
+		$.copyText('#share-copy-text-'+id);
+	}
+
+var updEndNowTime = <?PHP echo (a_gmtTime()+ (intval(a_fanweC("TIME_ZONE"))*3600))."000";?>;
+function updateEndTime()
+{
+	var time = updEndNowTime;
+	$(".counter").each(function(i){
+		var endDate =new Date(this.getAttribute("endTime"));
+		var endTime = endDate.getTime();
+		var lag = (endTime - time) / 1000;
+		if(lag > 0)
+		{
+			var second = Math.floor(lag % 60);
+			var minite = Math.floor((lag / 60) % 60);
+			var hour = Math.floor((lag / 3600) % 24);
+			var day = Math.floor((lag / 3600) / 24);
+			var timeHtml = "<span>"+hour+"</span>"+LANG.JS_HOUR+"<span>"+minite+"</span>"+LANG.JS_MINUTE+"";
+			if(day > 0)
+				timeHtml ="<span>"+day+"</span>"+LANG.JS_DAY + timeHtml;
+			timeHtml+="<span>"+second+"</span>"+LANG.JS_SECOND;
+			$(this).html(timeHtml);
+		}
+		else
+			$(this).html("{$lang.XY_GROUP_IS_END}");
+	});
+	updEndNowTime+=1000;
+	setTimeout("updateEndTime()",1000);
+}
+updateEndTime();
+</script>

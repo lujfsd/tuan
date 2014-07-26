@@ -1,0 +1,33 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<!--  功能操作区域  -->
+<div class="operate" >
+
+<fanwe:imageBtn  value="{$Think.lang.START_SEND}" click="start_send()" style="impBtn hMargin fLeft shadow" />
+{%SEND_TIME_DEADLINE}：<input type="text" class="bLeftRequire" id="send_time" value="{$now}" />
+<!-- 查询区域 -->
+<div class="fRig">
+<form method='post' action="">
+<div class="fLeft"><span id="key"></span></div>
+</div>
+
+</div>
+<!-- 高级查询区域 -->
+<div  id="searchM" class=" none search cBoth" >
+</div>
+
+</div>
+<!-- 功能操作区域结束 -->
+
+
+<!-- 主页面结束 -->
+

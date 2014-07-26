@@ -1,0 +1,40 @@
+{include file="Inc/header.html"}
+{if $err}
+<div class="errmsg">{$err}</div>
+{/if}
+<div class="order">
+<form action="m.php?m=Cart&a=done&s={$s}" method="post">
+<input type="hidden" name="goods_id" value="{$goods.id}" />
+<h3>{$goods.name_1}</h3>
+<p>{$lang.UNIT_PRICE}：<strong>{if $goods.type_id neq 2}<?php echo a_formatPrice($this->_var['goods']['shop_price'] * $this->_var['number']);?>{else}{if $goods.earnest_money  eq 0}{$goods.earnest_money_format}{else}<?php echo a_formatPrice($GLOBALS['tpl']->_var['goods']['earnest_money'] * $this->_var['number']);?>{/if}{/if}</strong></p>
+<p>{$lang.NUMBER}：{$number}</p>
+{if $goods.type_id eq 1 and $goods.shop_price gt 0}
+<p>{$lang.CONSIGNEE}：{$consignee_info.consignee}</p>
+<p>{$lang.ADDRESS}：
+	{$consignee_info.region_lv1_info.name}<input type="hidden" name="region_lv1" value="{$consignee_info.region_lv1}" />
+	{$consignee_info.region_lv2_info.name}<input type="hidden" name="region_lv2" value="{$consignee_info.region_lv2}" />
+	{$consignee_info.region_lv3_info.name}<input type="hidden" name="region_lv3" value="{$consignee_info.region_lv3}" />
+	{$consignee_info.region_lv4_info.name}<input type="hidden" name="region_lv4" value="{$consignee_info.region_lv4}" />	
+	{$consignee_info.address}<input type="hidden" name="address" value="{$consignee_info.address}" />	
+</p>
+<p>{$lang.MOBILE_PHONE}：{$consignee_info.mobile_phone} <input type="hidden" name="mobile_phone" value="{$consignee_info.mobile_phone}" />	</p>
+<p>{$lang.SELECT_DELIVERY}</p>
+	{foreach from="$delivery_list" item="delivery_item"}
+		<p>
+		<input type="radio" name="delivery_id" value="{$delivery_item.id}" {if $key eq 0}checked="checked"{/if} />{$delivery_item.name_1} {if $delivery_item.desc_1}[{$delivery_item.desc_1}]{/if}
+		</p>
+	{/foreach}
+<input type="hidden" name="consignee" value="{$consignee_info.consignee}" />
+<input type="hidden" name="fix_phone" value="{$consignee_info.fix_phone}" />
+<input type="hidden" name="fax_phone" value="{$consignee_info.fax_phone}" />
+<input type="hidden" name="qq" value="{$consignee_info.qq}" />
+<input type="hidden" name="msn" value="{$consignee_info.msn}" />
+<input type="hidden" name="alim" value="{$consignee_info.alim}" />
+
+{/if}
+<p>{$lang.MEMO}：<textarea name="memo"></textarea></p>
+<p><input type="submit" class="ibtn" value="{$lang.SUBMIT_ORDER}" /></p>
+</form>
+</div>
+
+{include file="Inc/footer.html" }

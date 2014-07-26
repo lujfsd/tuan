@@ -1,0 +1,92 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<script type="text/javascript">
+var itemID = "{$item_id}";
+var voteGroupSort = parseInt("{$vote_group_sort}");
+var voteGroupDefault= "{$Think.lang.VOTE_GROUP_DEFAULT}";
+</script>
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/vote.js" />
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.ADD_DATA} [ <a href="{:u($module_name.'/index',array('item_id'=>$item_id))}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('VoteOption/insert')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.AFFILIATION_VOTE}：</td>
+	<td class="tLeft" >
+    	{$vote_title}
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="120">{$Think.lang.AFFILIATION_VOTE_ITEM}：</td>
+	<td class="tLeft" >
+    	{$item_title}
+		<input type="hidden" name="item_id" value="{$item_id}" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="120">{$Think.lang.VOTE_OPTION}{$Think.lang.VOTE_TITLE}：</td>
+	<td class="tLeft" >
+		<input type="text" name="title" class="bLeft" />
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="120">{$Think.lang.VOTE_GROUP}：</td>
+	<td class="tLeft" >
+		<select id="group_id" name="group_id">
+        	<option value="0">{$Think.lang.VOTE_GROUP_DEFAULT}</option>
+        	<foreach name="vote_group" item="vg_item" >
+            <option value="{$vg_item.id}" sort="{$vg_item.sort}">{$vg_item.title}</option>
+        	</foreach>
+        </select>&nbsp;
+        <span id="updateVoteGroupSpan" style="display:none;">
+        	<input type="button" id="updateVoteGroupBtn" value="修改"/>&nbsp;
+            <input type="button" id="removeVoteGroupBtn" value="移除"/>
+        </span>
+	</td>
+</tr>
+
+<tr>
+	<td class="tRight" width="120">&nbsp;</td>
+	<td class="tLeft" >
+        {$Think.lang.VOTE_TITLE}：<input type="text" id="voteGroupTitle" value="" />&nbsp;
+        {$Think.lang.SORT}：<input type="text" id="voteGroupSort" value="{$vote_group_sort}" style="width:30px;" />&nbsp;
+        <input type="button" id="addVoteGroupBtn" value="添加"/>&nbsp;
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.VOTE_IS_INPUT}：</td>
+	<td class="tLeft" >
+    	<label>是：<input type="radio" name="is_input" value="1"></label>
+		<label>否：<input type="radio" name="is_input" value="0" checked="checked"></label>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.VOTE_INPUT_SEPARATOR}：</td>
+	<td class="tLeft" >
+    	<input type="text" name="separator" value="" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight">{$Think.lang.VOTE_ITEM}{$Think.lang.SORT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="sort" value="{$new_sort}" class="bLeft" />
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

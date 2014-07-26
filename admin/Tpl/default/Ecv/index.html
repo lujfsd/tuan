@@ -1,0 +1,62 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<!-- 菜单区域  -->
+
+<!-- 主页面开始 -->
+<div id="main" class="main" >
+
+<!-- 主体内容  -->
+<div class="content" >
+<div class="title">{$Think.lang.DATA_LIST}</div>
+<!--  功能操作区域  -->
+<div class="operate" >
+<fanwe:imageBtn name="delete" value="{$Think.lang._DELETE_DATA}" click="foreverdel()" style="impBtn hMargin fLeft shadow" />
+<div class="fRig">
+<form method='get' action="__APP__">
+<div class="fLeft">
+<span id="key">{$Think.lang.SEND_USER}：<input type="text" name="user_name" class="medium" style="width:100px;" >
+&nbsp;&nbsp;{$Think.lang.USE_USER}：<input type="text" name="use_user_name" class="medium" style="width:100px;" >
+<select name="is_use">
+	<option value="-1">{$Think.lang.USE_STATUS}</option>
+    <option value="0">{$Think.lang.USE_STATUS_0}</option>
+    <option value="1">{$Think.lang.USE_STATUS_1}</option>
+</select>
+&nbsp;&nbsp;{$Think.lang.ECV_SN}：
+<input type="text" name="sn" class="medium"  >
+</span></div>
+<input type="hidden" name="SEARCH_TYPE" value="like" />
+<fanwe:imageBtn type="submit" name="search" value="{$Think.lang._SEARCH_DATA}" style="impBtn hMargin fLeft shadow" />
+</div>
+
+</div>
+<!-- 高级查询区域 -->
+<div  id="searchM" class=" none search cBoth" >
+</div>
+<input type="hidden" name="{:c('VAR_MODULE')}" value="Ecv" />
+<input type="hidden" name="{:c('VAR_ACTION')}" value="index" />
+</form>
+</div>
+<!-- 功能操作区域结束 --
+<!-- 列表显示区域  -->
+<div class="list" >
+<fanwe:list 
+	id="checkList" 
+	name="ecv" 
+	style="list" 
+	checkbox="true" 
+	action="true" 
+	datasource="list" 
+	child="true" 
+	show="id:{$Think.lang.ID}|6%,sn:{$Think.lang.ECV_SN},password:{$Think.lang.ECV_PASSWORD},name:{$Think.lang.ECV_TYPE},user_name:{$Think.lang.SEND_USER},use_user_name:{$Think.lang.USE_USER},order_sn:{$Think.lang.USE_ORDER_SN},use_date_time|toDate:{$Think.lang.USE_DATE_TIME},use_count:可用次数"
+	actionlist="foreverdel:{$Think.lang._DELETE_DATA}:id" /> 
+</div>
+<!--  分页显示区域 -->
+<div class="page">{$pages}</div>
+<!-- 列表显示区域结束 -->
+</div>
+<!-- 主体内容结束 -->
+</div>
+<!-- 主页面结束 -->
+

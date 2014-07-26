@@ -1,0 +1,14 @@
+{if $currentCity.notice}
+<div class="sbox side-text-tip">
+	<div class="sbox-top"></div>
+	<div class="sbox-content">
+		<div class="tip">
+			<h2>{function name="a_L" value="XY_GROUP_NOTE"}</h2>
+			{$currentCity.notice}
+			<h2>Test</h2>
+		</div>
+	</div>
+	<div class="sbox-bottom"></div>
+</div>
+<div class="blank"></div>
+{/if}

@@ -1,0 +1,471 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<include file="../Order/edit_js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+<load href='__TMPL__ThemeFiles/Js/common.js' />
+<FORM METHOD=POST id="form1" action="{:u('Order/save')}">
+
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+	<TR class="row">
+		<th class="tLeft">
+		商品语言：<SELECT class="bLeft"  NAME="lang_conf_id" id = "lang_conf_id">
+						<iterate name="langList" id="volist">
+							<option value={$volist.id} <if condition="$vo.lang_conf_id eq $volist['id']"> selected</if> >{$volist.name}</option>
+						</iterate>
+				</SELECT>
+							
+			商品信息：
+			<a href="#" id = "addChild" title="点击添加商品"><u>添加商品</u></a>
+			<a href="#" title="点击添加商品"><u>添加赠品</u></a>
+		</th>		
+	</TR>
+	<TR>
+		<TD class="tLeft">
+			<table id="checkList" class="list" cellpadding=0 cellspacing=0>
+				<tr class="row">
+					<th width="8"><input type="checkbox" id="check"	onclick="CheckAll('checkList')"></th>
+					<th >商品货号</th>
+					<th>商品名称</th>
+					<th>赠送用户积分</th>
+					<th>成本价</th>
+					<th>销售价格</th>
+					<th>购买数量</th>
+					<th>积分小计</th>
+					<th>金额小计</th>
+					<th width="100"><a href="javascript:delItems()" title="点击删除选中的商品">操作（删除)</a></th>
+				</tr>
+			</table>
+		</TD>	
+	</TR>
+	<TR>
+		<TD class="tLeft">
+			<div id = "div_largessList" >
+				<table id="largessList" class="list" cellpadding=0 cellspacing=0>
+				   <div id = "div_largessList" >
+						<tr class="row">
+							<th width="8"><input type="checkbox" id="largessCheck"	onclick="CheckAll2('largessList')"></th>
+							<th>赠品编号</th>
+							<th>赠品名称</th>
+							<th>扣除用户积分</th>
+							<th>成本价</th>
+							<th>购买数量</th>
+							<th>积分小计</th>
+							<th width="100"><a href="javascript:delItems()" title="点击删除选中的商品">操作（删除)</a></th>
+						</tr>
+				   </div>	
+				</table>
+			</div>
+		</TD>	
+	</TR>	
+	<TR class="row">
+		<th class="tLeft">购买人信息：<if condition="$vo.id gt 0"> ass</if>
+			<INPUT TYPE="text"  NAME="userName" id = "userName" value="{$user.user_name}" <if condition="$vo.id gt 0"> readonly</if> onkeydown="javascript:keydown(event)">
+			<INPUT TYPE="hidden" class="medium bLeft" NAME="user_id" id = "user_id" value="{$vo.user_id}" >
+			本店会员用户名; 输完会员名后，回车
+		</th>		
+	</TR>	
+	
+	<TR >
+		<TD class="tLeft">
+			<TABLE cellpadding=3 cellspacing=3>	
+				<div id = "div_userConsignee" >
+					<TR >
+						<th class="tTop">确认收货地址：</th>
+						<TD id = "maList" class="tLeft" >
+							<label><INPUT TYPE="radio" name="userConsignee" id = "userConsignee_-1" value="-1" onchange="javascript:editCsne(this.value, true)" >其他收货地址<br>
+						</TD>
+					</TR>
+				</div>						
+			</TABLE>
+		</TD>		
+	</TR>	
+	
+	<TR>
+		<TD class="tLeft">
+			<div id = "div_address_edit_2">
+			<TABLE cellpadding=3 cellspacing=3>
+				<TR>			
+					<th class="tLeft">地址编辑：</th>	
+				</TR>			
+				<TR>
+					<TD class="tRight" >收货地区：</TD>
+					<TD class="tLeft" >
+						<SELECT class="bLeft"  NAME="region_lv1" id="region_lv1" onchange = "javascript:region_lv1Change(this.value, null, true)">
+							<option value="" >请选择国家...</option>
+							<iterate name="region_lv1List" id="cyList">
+								<option value={$cyList.id} <if condition="$vo.region_lv1 eq $cyList['id']"> selected</if> >{$cyList.name}</option>
+							</iterate>
+						</SELECT>
+						
+						<SELECT class="bLeft"  NAME="region_lv2"  id="region_lv2" onchange = "javascript:region_lv2Change(this.value, null, true)">
+							<option value="" >请选择省份...</option>
+
+						</SELECT>	
+						
+						<SELECT class="bLeft"  NAME="region_lv3"  id="region_lv3" onchange = "javascript:region_lv3Change(this.value, null, true)">
+							<option value="" >请选择地/市...</option>
+
+						</SELECT>		
+						
+						<SELECT class="bLeft"  NAME="region_lv4"  id="region_lv4"  onchange = "javascript:region_lv4Change(null, true)">
+							<option value="" >请选择区/县...</option>
+						</SELECT>															
+					</TD>
+				</TR>			
+
+
+				<TR>
+					<TD class="tRight" >收货地址：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" size = "60" NAME="address" id = "address" value="{$vo.address}">
+					</TD>
+				</TR>
+				
+				<TR>
+					<TD class="tRight" >邮编：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="zip" id = "zip" value="{$vo.zip}">
+					</TD>
+				</TR>
+					
+				<TR>
+					<TD class="tRight" >收货人姓名：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="consignee" id = "consignee" value="{$vo.consignee}">
+					</TD>
+				</TR>
+						
+				<TR>
+					<TD class="tRight" >联系电话：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="fix_phone" id = "fix_phone" value="{$vo.fix_phone}">
+					</TD>
+				</TR>
+																
+				<TR>
+					<TD class="tRight" >联系手机：</TD>
+					<TD class="tLeft" >
+						<INPUT TYPE="text" class="medium bLeft" NAME="mobile_phone" id ="mobile_phone" value="{$vo.mobile_phone}">
+					</TD>
+				</TR>
+				
+				<TR>
+					<TD class="tRight" >是否保存地址：</TD>
+					<TD class="tLeft" >
+						<label> <INPUT TYPE="checkbox"  NAME ="saveAddress" id = "saveAddress" checked = "true">保存本次收货地址到会员地址列表 </label>
+					</TD>
+				</TR>	
+			</TABLE>
+			</div>	
+			<TABLE cellpadding=3 cellspacing=3>	
+				<TR>			
+					<th class="tLeft">客户留言：</th>	
+				</TR>				
+				<TR>
+					<TD class="tRight tTop" >客户留言：</TD>
+					<TD class="tLeft" colspan="3">
+						<textarea name="memo" cols="70" rows="3">{$vo.memo}</textarea>
+					</TD>
+				</TR>
+			</TABLE>
+				
+		</TD>	
+	</TR>	
+	<TR class="row">
+		<th class="tLeft">订单信息：</th>		
+	</TR>	
+	<TR>
+		<TD class="tLeft">	
+			<TABLE cellpadding=3 cellspacing=3>
+			<TR>
+				<TD class="tRight" >订单号：</TD>
+				<TD class="tLeft" >
+				<INPUT TYPE="text" class="medium bLeftRequire"  check='Require' NAME="sn"  readonly value ="{$vo.sn}" ></TD>
+				
+				<TD class="tRight" >下单日期：</TD>
+				<TD class="tLeft" ><INPUT TYPE="text" class="medium bLeft" NAME="create_time" readonly value="{$vo.create_time}"></TD>	
+			</TR>
+			<TR>
+				<TD class="tRight" >商品总金额：</TD>
+				<TD class="tLeft" ><INPUT TYPE="text" class="medium bLeft" NAME="total_price" id = "total_price" readonly value="{$vo.total_price}"></TD>
+				
+				<TD class="tRight" >商品重量：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="order_weight" id="order_weight"   value="{$vo.order_weight}"  onfocus = "save_old_value('order_weight')" onblur = "change_order_weight('order_weight')">
+					<INPUT TYPE="hidden" NAME="order_weight_old"  id ="order_weight_old" value="{$vo.order_weight}" size = 3>	
+				</TD>	
+			</TR>
+			
+			<TR>
+				<TD class="tRight" >配送方式：</TD>
+				<TD class="tLeft" >
+					<SELECT class="bLeft"  NAME="delivery"  id ="delivery" onchange = "selectFreightMode(this.value)">
+						<iterate name="freightModeList" id="fmlist">
+							<option value={$fmlist.id} <if condition="$vo.delivery eq $fmlist['id']"> selected</if> >{$fmlist.name}</option>
+						</iterate>
+					</SELECT>
+				</TD>
+						
+				<TD class="tRight" >配送费用：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="delivery_fee" id = "delivery_fee" value="{$vo.delivery_fee}"  onfocus = "save_old_value('delivery_fee')" onblur = "sum_money(true, 'delivery_fee')" >
+					<INPUT TYPE="hidden" NAME="delivery_fee_old"  id ="delivery_fee_old" value="{$vo.delivery_fee}" size = 3>
+				</TD>
+	
+			</TR>
+
+			<TR>
+				<TD class="tRight" >保价：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="protect_fee" id="protect_fee" value="{$vo.protect_fee}" onfocus = "save_old_value('protect_fee')" onblur = "sum_money(true, 'protect_fee')">
+					<INPUT TYPE="hidden" NAME="protect_fee_old"  id ="protect_fee_old" value="{$vo.protect_fee}" size = 3>
+					
+					<INPUT TYPE="hidden" NAME="protect_fee_original"  id ="protect_fee_original" value="{$vo.protect_fee}" size = 3>
+					
+					<label>是否要保价<INPUT TYPE="checkBox"  NAME="protect" id = "protect" onclick = "protectChange(this.checked)"  <if condition="$vo.protect eq 1"> checked</if> </label>
+					
+				</TD>
+				
+				<TD class="tRight" >支付币别：</TD>
+				<TD class="tLeft" >
+					<SELECT class="bLeft"  NAME="currency_id" id = "currency_id"  onchange = "selectCurrency(this.value)">
+						<iterate name="currencyList" id="clist">
+							<option value={$clist.id} <if condition="$vo.currency_id eq $clist['id']"> selected</if> >{$clist.name}</option>
+						</iterate>
+					</SELECT>
+					<INPUT TYPE="text"  NAME="currency_radio" id = "currency_radio" value="{$vo.currency_radio}" readonly size = "3" >				
+				</TD>				
+
+			</TR>
+			
+			<TR>
+				<TD class="tRight" >促销优惠金额：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="promote_money" id="promote_money" value="{$vo.promote_money}" onfocus = "save_old_value('promote_money')" onblur = "sum_money(true, 'promote_money')">
+					<INPUT TYPE="hidden" class="medium bLeft" NAME="promote_money_old"  id ="promote_money_old" value="{$vo.promote_money}" size = 3>
+				</TD>
+					
+				<TD class="tRight" >税金：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="tax_money"  id ="tax_money" value="{$vo.tax_money}" onfocus = "save_old_value('tax_money')"  onblur = "sum_money(true, 'tax_money')" >
+					<INPUT TYPE="hidden" class="medium bLeft" NAME="tax_money_old"  id ="tax_money_old" value="{$vo.tax_money}" size = 3>
+					 
+					<label>是否开发票<INPUT TYPE="checkBox"  NAME="tax"  <if condition="$vo.tax eq 1"> checked</if> ></label>
+				</TD>					
+			</TR>
+			
+			<TR>
+				
+				<TD class="tRight" >发票抬头：</TD>
+				<TD class="tLeft" colspan = 4><INPUT TYPE="text" size = 70 NAME="tax_content" value="{$vo.tax_content}"></TD>			
+				
+
+			</TR>
+					
+			<TR>
+				<TD class="tRight" >支付方式：</TD>
+				<TD class="tLeft" >
+					<SELECT class="bLeft"  NAME="payment" id = "payment" onchange = "selectPaymentMode(this.value)">
+						<iterate name="paymentModeList" id="pmlist">
+							<option value={$pmlist.id} <if condition="$vo.payment eq $pmlist['id']"> selected</if> >{$pmlist.name}</option>
+						</iterate>
+					</SELECT>
+					<INPUT TYPE="text" name="payment_mode_fee" id="payment_mode_fee" value="{$vo.payment_mode_fee}" readonly size = 3 >
+					<INPUT TYPE="hidden" name="payment_mode_fix_fee" id="payment_mode_fix_fee" value="0" readonly size = 3 >
+				</TD>	
+							
+				<TD class="tRight" >支付手续费：</TD>
+				<TD class="tLeft" >
+					<INPUT TYPE="text" class="medium bLeft" NAME="payment_fee" id = "payment_fee" value="{$vo.payment_fee}" onblur = "sum_money(false,'payment_fee')">
+				</TD>
+				
+			</TR>					
+						
+			<TR>
+				<TD class="tRight" >订单总金额：</TD>
+				<TD class="tLeft" rowspan = 3><INPUT TYPE="text" class="medium bLeft" NAME="order_total_price" id ="order_total_price" readonly value="{$vo.order_total_price}"></TD>
+
+				<TD class="tRight" >订单积分：</TD>
+				<TD class="tLeft" rowspan = 3><INPUT TYPE="text" class="medium bLeft" NAME="order_score" id ="order_score" value="{$vo.order_score}"></TD>
+
+			</TR>
+			</TABLE>		
+		</TD>	
+	</TR>	
+
+	<TR>
+		<TD class="center">
+			<INPUT TYPE="hidden" name="id" value="{$vo.id}" >
+			<INPUT TYPE="button" value="保 存" class="button" onclick="javascript:postForm()">
+			<input type="hidden" name="m" value="{$act_name}" />
+			<input type="hidden" name="a" value="{$action}" />			
+			<INPUT TYPE="button" class="submit  small" value="清 空" >		
+		</TD>	
+	</TR>							
+</TABLE>
+
+</FORM>
+
+	<div id="selectbox" class="jqmDialog jqmWindow">
+	<div class="jqmdTC">{$Think.lang.PROMOTE_PLEASE_CHOOSE}</div>
+	<div class="jqmdBL"><div class="jqmdBR"><div class="jqmdBC">
+	
+	<div class="jqmdMSG">
+	<iframe src="{:u("GoodsSpec/search",array('ajax'=>2))}" width="600" height="300" frameborder="0" scrolling="no" id="if_goods_list" style="overflow-y:auto;"></iframe>
+	</div>
+	
+	</div></div></div>
+	<input type="hidden" value="1" id="is_close" />
+	<input type="button" value="{%CLOSE}" class="jqmdX jqmClose" onclick="$('#is_close').val(0);"/>
+	<input type="button" value="{%SELECT}" class="jqmdX jqmClose" />
+	</div>
+		
+<script type="text/javascript">
+
+function getElementByIdInIFrame(objIFrame, idInIFrame)
+{
+    var obj;
+    if (objIFrame.contentDocument) // For NS6
+        obj = objIFrame.contentDocument.getElementById(idInIFrame);
+    else if (objIFrame.contentWindow)   // For IE5.5 and IE6
+        obj = objIFrame.contentWindow.document.getElementById(idInIFrame);
+    else if (objIFrame.document)    // For IE5
+        obj = objIFrame.document.getElementById(idInIFrame);
+    return obj;
+}
+
+$().ready(function() {
+
+	if ('{$isNew}' == false){
+		FCUR_RATE = 1;
+	}else{
+		FCUR_RATE = {$vo.currency_radio};
+	}
+	if (FCUR_RATE == 0)
+		FCUR_RATE = 1;
+
+	//默认不默认赠品列表
+	showLargessList(false);
+		
+
+	function showUserConsigneeList(addressList){
+		if (addressList != null){
+			userConsigneeList(addressList, false);
+		}	
+	}
+
+	showUserConsigneeList({$userConsigneeList});
+
+	<iterate name="orderGoodsList" id="child" key="k" >
+		//（rec_module: Goods：商品规格； Gift:赠品），ID，货号，商品名称，成本价，商品价格，商品数量，重量，积分)
+		newTr('{$child.rec_module}', 
+				'{$child.rec_id}', 
+				'{$child.data_sn}',
+				'{$child.data_name}',
+				'{$child.data_cost_price}',
+				'{$child.data_price}',
+				'{$child.number}',
+				'{$child.data_weight}',
+				'{$child.data_score}',
+				'{$child.is_inquiry}');
+	</iterate>
+		
+		
+		
+		editCsne(-1, true);
+		region_lv1Change({$vo.region_lv1}, {$vo.region_lv2}, false);
+		region_lv2Change({$vo.region_lv2}, {$vo.region_lv3}, false);
+		region_lv3Change({$vo.region_lv3}, {$vo.region_lv4}, false);
+		
+		if ({$isNew} == false){
+			selectPaymentMode(null);
+		}else{
+			selectFreightMode(null);
+			selectCurrency(null);
+			selectPaymentMode(null);	
+		}
+			
+	//===================================================================================
+	if ('{$module_name}' != ""){
+		//alert('{$module_name}');
+		var t = $('#selectbox div.jqmdMSG');	
+
+		$('#selectbox').jqm({
+		    trigger: '#addChild',
+		    target: t,
+		    modal: true, /* FORCE FOCUS */
+		    onHide: function(h) { 
+			  if($("#is_close").val()==1)
+			  {
+				  var iframe_obj = document.getElementById("if_goods_list");
+				  var iframe_doc = getElementByIdInIFrame(iframe_obj,"main");
+				  var cbos = $(iframe_doc).find(".key");
+				  var goods_ids = new Array();
+				  for(var i=0;i<cbos.length;i++)
+				  {
+					if(cbos[i].checked)
+					{
+						goods_ids.push(parseInt(cbos[i].value));
+					}
+				  }
+				  if(goods_ids.length>0)
+				  {
+				  	var ids = $.toJSON(goods_ids);
+				  	var url = "__APP__?m=Order&a=getChildData&lang_conf_id=" + $("#lang_conf_id").val() + "&ids="+escape(ids);
+					$.ajax({
+						  //type: "get",
+						  //"{:u('Promote/getChildData', array('module_name'=>$module_name, 'ids'=>123))}"
+						  url: url,
+						  success:function(data)
+						  {
+							data = $.evalJSON(data); 
+							if ((data != "") && (data != null)){
+								var obj = document.getElementsByName('goods_sn_list[]');
+								for (var i=0;i<data.length;i++)
+								{
+									//检查是否已经在列表中，如果已经在列表中，则不需要再添加了
+									for (var j=0;j<obj.length;j++)
+									{
+										if (obj[j].value == data[i].goods_sn)
+									    {
+											break;
+										}
+									}		
+									//alert(result[i]);
+									if (j >= obj.length)
+									{
+										//（rec_module: ScoreGoods 积分商品, GoodsSpecItem 普通商品, PromoteGoods 赠品），ID，货号，商品名称，成本价，商品价格，商品数量，重量，积分)
+										newTr('GoodsSpecItem', data[i].id, data[i].goods_sn, data[i].specname, data[i].cost_price, data[i].shop_price, 1, data[i].goods_weight, data[i].score, 0);
+
+										newTr('PromoteGoods', data[i].id, data[i].goods_sn, data[i].specname, data[i].cost_price, 0, 1, data[i].goods_weight, data[i].score, 0)
+										//newTr(data[i].module_name, data[i].id, data[i].name, data[i].score);
+									}
+								 	sum_goods_money();
+								 	sum_goods_weight();
+								 	sum_goods_order_score();									
+								}			
+							}
+						  }
+						});
+				}	
+			  }
+			  else
+			  {
+				  $("#is_close").val(1);
+			  }
+		      h.o.remove(); // remove overlay
+		      h.w.hide(100); // hide window	      
+		    },
+		    overlay: 10});
+	}
+	//===================================================================================    
+});
+var CLOSE = '{%CLOSE}';
+</script>

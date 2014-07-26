@@ -1,0 +1,56 @@
+{include file="Inc/header.moban"}
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="consult">
+			<div class="consult-bd consult-no-deal">
+				<div id="content">
+					<div class="box clear">
+						<div class="box-top"></div>
+						<div class="box-content" style="height:400px;">
+							<div class="head">
+								<h2>{$lang.FEEDBACK}</h2>
+							</div>
+							
+							<div class="sect consult-form">
+								
+								<form name="message" action="{$POST_URL}" id="consult-add-form" method="post" />
+								
+									<div class="field_msg email">
+									<label>{$lang.JJ_YOUR_NAME}</label>
+									<input tabindex="1" type="text" size="30" name="user_name" id="user_name" class="f-input" value=""/>
+									</div>
+									<div class="field_msg password">
+										<label>{$lang.JJ_CONTACT}</label>
+										<input tabindex="2" type="text" size="30" name="title" id="title" class="f-input" value="{$password}" />
+									</div>
+									<div class="field_msg password">
+										<label>{$lang.JJ_CONTENT}</label>
+										<textarea class="f-textarea" cols="60" rows="5" name="content"></textarea>
+									</div>
+									
+									
+									<div class="field_msg password">
+									<p class="commit">
+										<input type="hidden" name="rec_module" value="Feedback" />										
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="addFeedback" />
+										<input type="submit" value="{$lang.JJ_SUBMIT}" name="commit" style="margin-left:110px;" class="formbutton"/>
+									</p>
+									</div>
+								</form>
+								
+							</div>
+						</div>
+						<div class="box-bottom"></div>
+					</div>
+				</div>
+				<div id=sidebar>
+					{include file="Inc/right.moban" }
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+
+{include file="Inc/footer.moban"}

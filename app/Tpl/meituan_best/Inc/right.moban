@@ -1,0 +1,10 @@
+{insert name="advLayout" id="右侧广告"}
+{include file="Inc/side/side_notice.moban"}
+{include file="Inc/side/side_today_list.moban"}
+{include file="Inc/side/side_referrals.moban"}
+{include file="Inc/side/side_message.moban"}
+{*include file="Inc/side/side_subscribe.moban"*}
+{include file="Inc/side/side_vote.moban"}
+{include file="Inc/side/side_aboutus.moban"}
+{include file="Inc/side/side_sellermsg.moban"}
+{insert name="advLayout" id="右侧底部广告"}

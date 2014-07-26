@@ -1,0 +1,60 @@
+{include file="Inc/header.moban"}
+<style type="text/css">
+#recent-deals .pic .soldout {_background: transparent; _filter: progid:dximagetransform.microsoft.alphaimageloader(src="<?php echo $this->tVar['TMPL_PATH']; ?>Public/images/bg-deals-default-soldout.png")}
+</style>
+<div id="bdw" class="bdw">
+	<div id="bd" class="cf">
+		<div id="recent-deals">
+			<div id="content">
+				<div class="box"  id="consult">
+					<div class="box-top"></div>
+					<div class="box-content" style="position:relative;">
+						<div class="head" id="coupons">
+							<h2>{$lang.JJ_LAUNCH_GB}</h2>
+							{include file="Inc/common/message_menu.moban" }
+						</div>
+						<div class="sect consult-form" style="height:280px;">
+								{if $smarty.session.user_id gt 0}
+								<form name="message" action="{$POST_URL}" id="add-tg-form" method="post" />
+									{$lang.JJ_TITLE}：<input type="text" name="tg_title" class="f-input" id="tg_title" />
+									{$lang.JJ_CITY}：
+									<select name="city_id">
+									{foreach from="$city_list" item="city_item"}
+									<option value="{$city_item.id}" {if $currentCity.id eq $city_item.id}selected="selected"{/if} >{$city_item.name}</option>
+									{/foreach}
+									</select>
+									<div class="blank"></div>
+									<script type='text/javascript'  src='{$__ROOT__}/global/kindeditor/kindeditor.js'></script>
+									<script type="text/javascript" src="{$__ROOT__}/global/kindeditor/lang/zh_CN.js"></script>
+										  <script type='text/javascript'>
+											    var editor;
+											    KindEditor.ready(function(K){
+											    editor= K.create("#tg_content",{uploadJson : ROOT_PATH + '/index.php?m=FileUpload&a=doUpload',allowFileManager : false,resizeMode : 0,items : ['fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','removeformat', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist','insertunorderedlist', 'emoticons', 'image', 'link']});
+											    });
+										  </script>
+									<div  style='margin-bottom:5px;'>
+										<textarea id='tg_content' name='tg_content' style='width:650px;height:230px;visibility:hidden;' ></textarea>
+									<p class="commit">
+										<input type="hidden" name="m" value="Message" />
+										<input type="hidden" name="a" value="insertGroupMessage" />
+										<input type="submit" value="{$lang.JJ_SUBMIT}" name="commit" class="formbutton"/>
+									</p>
+								</form>
+								{else}
+								<?php echo sprintf($GLOBALS['lang']['JJ_regist'],a_u("User/login"),a_u("User/register"))?>							
+								{/if}
+						</div>
+					</div>
+					<div class="box-bottom"></div>
+				</div>
+			</div>
+			</div>
+			<div id=sidebar>
+				{include file="Inc/side/side_referrals.moban"}
+					{include file="Inc/side/side_subscribe.moban"}
+			</div>
+		</div>
+	</div>
+	<!-- bd end -->
+</div>
+{include file="Inc/footer.moban"}

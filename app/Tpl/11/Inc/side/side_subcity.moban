@@ -1,0 +1,12 @@
+{if $sub_citys}
+<div class="side-sub-citys">
+	<ul>
+		{foreach from="$sub_citys" item="scity" key=k}
+		<li {if $scity.id eq $currentCity.id}class="current"{/if} {if $k ge 5}style="display: none;"{/if}><a href="{$scity.url}" rel="{$scity.pid}">{$scity.name}</a></li>
+		{/foreach}
+		<?php if( count( $this->_var['sub_citys'] ) > 5 ) {?>
+		<li ><a href="javascript:void(0);" onclick="$('.side-sub-citys li').show(); this.parentNode.parentNode.removeChild( this.parentNode ); return false;">更多城市</a></li>
+		<?php }?>
+	</ul>
+</div>
+{/if}

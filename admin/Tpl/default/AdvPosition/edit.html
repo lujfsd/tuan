@@ -1,0 +1,61 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<include file="Public:header" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href="__TMPL__ThemeFiles/Js/adv.js" />
+<style type="text/css">
+textarea{line-height:18px; background:#fff; color:#000;}
+</style>
+<div id="main" class="main" >
+<div class="content">
+<div class="title">{$Think.lang.EDIT_DATA} [ <a href="{:u($module_name.'/index')}">{$Think.lang.BACK_LIST}</a> ]</div>
+<div id="result" class="result none"></div>
+<form method='post' id="form" name="form" action="{:u('AdvPosition/update')}"  enctype="multipart/form-data">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<tr>
+	<td class="tRight" width="120">{$Think.lang.ADV_POSITION_NAME}：</td>
+	<td class="tLeft" >
+		<fanwe:textbox name="name" class="bLeftRequire" value="{$vo.name}" />
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADV_POSITION_WIDTH}：</td>
+	<td class="tLeft" >
+		<input type="text" name="width" class="bLeft" value="{$vo.width}" /> {$Think.lang.PIXEL}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADV_POSITION_HEIGHT}：</td>
+	<td class="tLeft" >
+		<input type="text" name="height" class="bLeft" value="{$vo.height}" /> {$Think.lang.PIXEL}
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADV_POSITION_FLASH}：</td>
+	<td class="tLeft" >
+		<label onclick="UpdatePositionStyle(this);"><input type="checkbox" name="is_flash" class="bLeft" value="1" <if condition="$vo['is_flash'] eq 1">checked="checked"</if>/>&nbsp;&nbsp;</label>
+        <select name="flash_style">
+       		<foreach name="adflashs" item="adflash">
+            <option value="{$adflash}" <if condition="$vo['flash_style'] eq $adflash">selected="selected"</if> >{$adflash}</option>
+			</foreach>
+        </select>
+	</td>
+</tr>
+<tr>
+	<td class="tRight" >{$Think.lang.ADV_POSITION_STYLE}：</td>
+	<td class="tLeft" >
+		<textarea name="style" id="style" cols="100" rows="10" id="style">{$vo.style}</textarea>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td class="center"><div style="width:85%;margin:5px">
+	<input type="hidden" value="{$vo.id}" name="id" id="advpositionid" />
+	<input type="submit" value="{$Think.lang.SAVE_DATA}"  class="button small"> <input type="reset" class="button small" onclick="resetEditor()" value="{$Think.lang.RESET_DATA}" > 
+	</div></td>
+</tr>
+</form>
+</table>
+</div>
+</div>

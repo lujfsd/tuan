@@ -1,0 +1,13 @@
+{if $show_cate eq 1}
+<div class="dashboard" id="dashboard">
+	<ul>
+		<li {if $cate_id eq 0} class="current"{/if}><a href="{$allurl}">{$lang.ALL}</a><span></span></li>
+		{foreach from=$cate_list item=cate_item}
+		  {if $cate_item.pid eq 0}
+			<li {if $cate_item.id eq $cate_id} class="current" {/if}><a href="{$cate_item.url}">{$cate_item.name}</a><span></span></li>
+		  {/if}
+		{/foreach}
+	</ul>
+</div>
+{/if}		
+			

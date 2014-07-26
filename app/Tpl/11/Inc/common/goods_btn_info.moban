@@ -1,0 +1,56 @@
+{if $goods.type_id neq 2}
+	{if $goods.score_goods eq 1}
+		<strong>{function name="abs" value=$goods.score}</strong>
+		{if $goods.promote_begin_time <= $TIME}
+		{if $goods.is_group_fail eq 1}
+		<span class="deal-price-expire"></span>
+		{elseif $goods.is_none}
+		<span class="deal-price-soldout"></span>
+		{elseif $goods.is_end}
+		<span class="deal-price-expire"></span>
+		{else}
+		<span><a href="{$goods.buy_url}"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/button-deal-score.gif"></a></span>
+		{/if}
+		{else}
+		<span><a href="javascript:void(0);"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/bg-deal-wait-text.gif"></a></span>
+		{/if}
+	{else}
+		<strong>{$goods.shop_price_format}</strong>
+		{if $goods.promote_begin_time <= $TIME}
+		{if $goods.is_group_fail eq 1}
+		<span class="deal-price-expire"></span>
+		{elseif $goods.is_none}
+		<span class="deal-price-soldout"></span>
+		{elseif $goods.is_end}
+		<span class="deal-price-expire"></span>
+		{else}
+		<span><a href="{$goods.buy_url}"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/button-deal-buy.gif"></a></span>
+		{/if}
+		{else}
+		<span><a href="javascript:void(0);"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/bg-deal-wait-text.gif"></a></span>
+		{/if}
+	{/if}
+{else}
+	<strong>{$goods.earnest_money_format}</strong>
+	{if $goods.promote_begin_time <= $TIME}
+	{if $goods.is_group_fail eq 1}
+	<span class="deal-price-expire"></span>
+	{elseif $goods.is_none}
+	<span class="deal-price-soldout"></span>
+	{elseif $goods.is_end}
+	<span class="deal-price-expire"></span>
+	{else}
+	<span>
+	<a href="{$goods.buy_url}">
+	{if $goods.earnest_money gt 0}
+	<img src="{$CND_URL}/{$TMPL_PATH}/Public/images/button-deal-buy-b.gif">
+	{else}
+	<img src="{$CND_URL}/{$TMPL_PATH}/Public/images/button-deal-buy-b1.gif">
+	{/if}
+	</a>
+	</span>
+	{/if}
+	{else}
+	<span><a href="javascript:void(0);"><img src="{$CND_URL}/{$TMPL_PATH}/Public/images/bg-deal-wait-text.gif"></a></span>
+	{/if}
+{/if}

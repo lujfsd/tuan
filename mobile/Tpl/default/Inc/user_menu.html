@@ -1,0 +1,9 @@
+<div class="tab bdb">
+<a href="m.php?m=UserCenter&a=index&s={$s}" {if $action_name eq 'index'}style="color:#000;font-weight:bold;"{/if}>
+	{$CFG.GROUPBOTH}
+</a> <span class="gray">|</span> 
+<a href="m.php?m=UserCenter&a=order&s={$s}" {if $action_name eq 'order'}style="color:#000;font-weight:bold;"{/if}>
+	{$lang.ORDER}
+	</a> <span class="gray">|</span> 
+<a href="m.php?m=UserCenter&a=account&s={$s}" {if $action_name eq 'account'}style="color:#000;font-weight:bold;"{/if}>{$lang.CREDIT}</a>
+</div>

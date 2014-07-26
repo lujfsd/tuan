@@ -1,0 +1,228 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+{// 加载头部公共文件 }
+<include file="Public:header" />
+<include file="../Order/edit_js" />
+<script type="text/javascript" src="__TMPL__ThemeFiles/Js/calendar.php?lang=zh-cn" ></script>
+<load href='__TMPL__ThemeFiles/Js/calendar/calendar.css' />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+<load href='__TMPL__ThemeFiles/Js/common.js' />
+
+<script language="javascript" type="text/javascript"> 
+
+	var FCUR_RATE = 1; //货币换算比例
+	function change_cur_rate(cur_rate){
+		//订单总金额
+		$("#order_total_price").attr("value", round($("#order_total_price").val() * cur_rate, 3));
+				
+		//已收金额
+		$("#order_incharge").attr("value", round($("#order_incharge").val() * cur_rate, 3));
+	
+		//收款金额
+		$("#money").attr("value", round($("#money").val() * cur_rate, 3));
+				
+		//会员帐户余款
+		$("#user_money").attr("value", round($("#user_money").val() * cur_rate, 3));		
+	
+	}
+	
+	//选择货币
+	function selectCurrency(id){
+		if (id == "" || id == null)
+			  id = $("#currency_id").val();
+		$.ajax({
+			  //type: "get",
+			  url: "__APP__?m=Currency&a=getCurrency&id="+id,
+			  success:function(data)
+			  {
+				data = $.evalJSON(data); 
+				if (data != null && data != "" && data != false){
+					$("#currency_radio").attr("value",data.radio);
+				}else{
+					$("#currency_radio").attr("value",1);
+				}
+	
+				if (FCUR_RATE == 0) FCUR_RATE = 1;
+				
+				change_cur_rate(1/FCUR_RATE);
+				
+				FCUR_RATE = $("#currency_radio").val();
+	
+				change_cur_rate(FCUR_RATE);
+
+				initPaymentList(data.id);
+			  }
+			});	
+	}
+
+
+	function FillOptions(select, url){
+		$.ajax({
+			  //type: "get",
+			  url: url,
+			  success:function(data)
+			  {
+				dataList = $.evalJSON(data);
+				if (dataList != null && dataList != "" && dataList != "-1" && isdigit(dataList) == false){
+					$('#' + select).empty();
+					for (var i=0; i< dataList.length; i++){
+						$("<option value=" +dataList[i].id + ">" + dataList[i].name + "</option>").appendTo('#' + select);
+					}
+
+					selectPayment();
+				}		
+			  }
+			});
+		
+	}
+	
+	function AddOption(select, text, value, selected, index) {
+		var obj = document.getElementById(select);
+		option = new Option(text, value);
+		obj.options.add(option, index);
+		obj.options[index].selected = selected;
+	}
+	
+	function initPaymentList(currency_id){
+		//$('#payment_id').empty();	
+		//FillOptions('payment_id', "__APP__?m=Payment&a=getPaymentList&currency_id="+currency_id);
+	}
+
+	//选择支付方式
+	function selectPayment(id){
+
+		if (id == "" || id == null)
+			  id = $("#payment_id").val();
+		  	
+		$.ajax({
+			  //type: "get",
+			  url: "__APP__?m=Payment&a=getPayment&id="+id,
+			  success:function(data)
+			  {
+				data = $.evalJSON(data);
+				if (data != null && data != "" && data != false){
+					$("#payment_cost_fee").attr("value", data.cost_fee);
+					$("#payment_cost_fee_type").attr("value", data.cost_fee_type);//0：按百分比计算；1：固定费用
+				}else{
+					$("#payment_cost_fee").attr("value", 0);
+					$("#payment_cost_fee_type").attr("value", 0);//0：按百分比计算；1：固定费用
+				}
+				calc_cost();
+			}
+			});	
+	}
+
+	function calc_cost(){
+		var money = strToFloat($("#money").val());
+		var cost_fee = strToFloat($("#payment_cost_fee").val());
+		var cost_fee_type = strToFloat($("#payment_cost_fee_type").val());
+
+		if (cost_fee_type == 1){
+			cost_fee = round(cost_fee * FCUR_RATE, 3);
+		}else{
+			cost_fee = round(cost_fee * money /100 * FCUR_RATE, 3);
+		}
+
+		$("#cost_payment_fee").attr("value", cost_fee);
+	}
+
+	$().ready(function() {
+		if ('{$isNew}' == false){
+			FCUR_RATE = 1;
+		}else{
+			FCUR_RATE = {$vo.currency_radio};
+		}
+		if (FCUR_RATE == 0)
+			FCUR_RATE = 1;
+
+		selectCurrency(null);
+	});	
+</script>
+<div class="main">
+<div class="title">收款单
+	&nbsp;&nbsp;&nbsp;会员：{$user.user_name}&nbsp;&nbsp;&nbsp;当前帐户余额：<INPUT TYPE="text" size = 8 NAME="user_money" id="user_money" value="{$user_money}" >
+</div>
+
+<FORM METHOD=POST id="form_incharge" action="{:u('Order/save_incharge')}">
+<table cellpadding=0 cellspacing=0 class="dataEdit" >
+<TR>
+	<TD class="tRight" >订单号：</TD>
+	<TD class="tLeft" >
+		{$order_vo.sn}【{$order_vo.money_status_name}】
+	</TD>
+	
+	<TD class="tRight" >下单日期：</TD>
+	<TD class="tLeft" >{$order_vo.create_time}</TD>	
+</TR>
+
+<TR>
+	<TD class="tRight" >订单总金额：</TD>
+	<TD class="tLeft" >
+		<INPUT TYPE="text" NAME="order_total_price" id="order_total_price" readonly value="{$order_vo.order_total_price}">
+	</TD>
+	
+	<TD class="tRight" >已收金额：</TD>
+	<TD class="tLeft" >
+		<INPUT TYPE="text" NAME="order_incharge" id="order_incharge" readonly value="{$order_vo.order_incharge}">
+	</TD>	
+</TR>
+
+<TR>
+	<TD class="tRight" >支付币别：</TD>
+	<TD class="tLeft" >人民币
+			<SELECT class="bLeft"  NAME="currency_id" id = "currency_id"  onchange = "selectCurrency(this.value)" style="display:none;">
+				<iterate name="currencyList" id="clist">
+					<option value={$clist.id} <if condition="$vo.currency_id eq $clist['id']"> selected</if> >{$clist.name}</option>
+				</iterate>
+			</SELECT>
+		<INPUT TYPE="hidden"  NAME="currency_radio" id = "currency_radio" value="{$vo.currency_radio}" readonly size = "3" >				
+	</TD>
+				
+	<TD class="tRight" >收款金额：</TD>
+	<TD class="tLeft" >
+		<INPUT TYPE="text" class="medium bLeft" NAME="money" id="money" value="{$vo.money}" onblur = "calc_cost()">
+	</TD>	
+</TR>
+
+<TR>
+	<TD class="tRight" >收款帐户：</TD>
+	<TD class="tLeft" >
+		<SELECT class="bLeft"  NAME="payment_id" id = "payment_id"  onchange = "selectPayment(this.value)">
+			<iterate name="paymentList" id="ltlist">
+				<option value={$ltlist.id} <if condition="$vo.payment_id eq $ltlist['id']"> selected</if> >{$ltlist.name}</option>
+			</iterate>
+		</SELECT>
+		<INPUT TYPE="hidden" name="payment_cost_fee" id="payment_cost_fee" value="{$vo.payment_cost_fee}" readonly size = 3 >
+		<INPUT TYPE="hidden" name="payment_cost_fix_fee" id="payment_cost_fix_fee" value="0" readonly size = 3 >		
+	</TD>
+		
+		<TD class="tRight" ><div id="div" style="display: none" >取款手续费：</div></TD>
+		<TD class="tLeft" >
+			<div id="div" style="display: none" >
+				<INPUT TYPE="text" class="medium bLeft" NAME="cost_payment_fee" id="cost_payment_fee" value="{$vo.cost_payment_fee}" >
+			</div>	
+		</TD>	
+	
+</TR>
+
+<TR>
+	<TD class="tRight tTop" >收款单备注：</TD>
+	<TD class="tLeft" colspan = 3 >
+		<TEXTAREA class="large bLeft"  NAME="memo" ROWS="3" COLS="80">{$vo.memo}</TEXTAREA>
+	</TD>	
+</TR>
+<TR>
+	<TD class="center" colspan = 4>
+	<INPUT TYPE="hidden" name="id" value="{$vo.id}" >
+	<INPUT TYPE="hidden" name="order_id" value="{$vo.order_id}" >
+	<INPUT TYPE="hidden" name="user_id" value="{$user.id}" >
+	<INPUT TYPE="submit" value="保 存" class="button">
+	<INPUT TYPE="button" class="button" onclick="javascript:history.back(1)" value="关闭" >
+	</TD>
+</TR>
+</TABLE>
+</FORM>
+</div>

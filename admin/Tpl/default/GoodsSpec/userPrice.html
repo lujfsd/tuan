@@ -1,0 +1,21 @@
+{// 引入标签库 }
+<tagLib name="fanwe" />
+<load href="__TMPL__ThemeFiles/Js/jquery.js" />
+<load href="__TMPL__ThemeFiles/Js/jquery.json.js" />
+<load href='__TMPL__ThemeFiles/Css/jqModal.css' />
+<load href='__TMPL__ThemeFiles/Js/jqModal.js' />
+<load href='__TMPL__ThemeFiles/Js/goods.js' />
+<div id="content_box">
+<div id="result" class="result none"></div>
+<input type="hidden" id="spec_item_id" value="{$spec_item_id}" />
+<table cellpadding=3 cellspacing=3 >
+   <foreach name="user_group" item="group_item">
+   <tr>
+   		<td>{$group_item.name}：</td>
+   		<td>{:sprintf(fanweC("BASE_CURRENCY_UNIT"),"")} <input type="text" id="price_{$group_item['id']}" class="bLeft user_price_box" value="{$price_list[$group_item['id']]|priceVal}" /></td>
+   </tr>
+   </foreach>
+</table>
+</div>
+
+
