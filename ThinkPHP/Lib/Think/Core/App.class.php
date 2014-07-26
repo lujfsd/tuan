@@ -170,7 +170,7 @@ class App
                 file_put_contents(RUNTIME_PATH.'~allinone.php',strip_whitespace('<?php '.$content));
             }else{
                 $content  = "<?php ".$common."\nreturn ".var_export(C(),true).";\n?>";
-                file_put_contents(RUNTIME_PATH.'~app.php',strip_whitespace($content));
+                file_put_contents(RUNTIME_PATH.'~app.php',$content);
             }
         }
         return ;

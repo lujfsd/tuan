@@ -1,1 +1,0 @@
-<?php exit;?>1406364505a:11:{s:2:"id";s:1:"1";s:9:"lang_name";s:5:"zh-cn";s:9:"show_name";s:12:"简体中文";s:9:"time_zone";s:1:"8";s:4:"tmpl";s:2:"11";s:10:"seokeyword";s:114:"每天提供一单精品消费，为您精选餐厅、酒吧、KTV、SPA、美发店、瑜伽馆等特色商家。";s:10:"seocontent";s:54:"只要凑够最低团购人数就能享受无敌折扣";s:10:"shop_title";s:56:"弋阳团购网--每天团购一次，精品消费指南";s:9:"shop_name";s:15:"弋阳团购网";s:7:"default";s:1:"1";s:8:"currency";s:1:"1";}

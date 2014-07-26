@@ -115,8 +115,8 @@
 		}
 		
 		$pwd = md5($pwd);
-		
-		$suppliersinfo =$GLOBALS['db']->getRow("select * from ".DB_PREFIX."suppliers_depart where pwd='".$pwd."' and depart_name='".$depart_name."'");
+		echo $pwd.$depart_name;
+		$suppliersinfo =$GLOBALS['db']->getRow("select * from ".DB_PREFIX."suppliers_depart where pwd='".$pwd."' and login_name='".$depart_name."'");
 		if($suppliersinfo)
 		{
 				$suppliers_baseinfo = $GLOBALS['db']->getRow("select * from ".DB_PREFIX."suppliers where id={$suppliersinfo['supplier_id']}");

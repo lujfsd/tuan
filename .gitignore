@@ -37,5 +37,6 @@ Icon
 .Trashes
 
 #cache dir
-app/Runtime/*
-admin/Runtime/*
+#app/Runtime/caches/0/*.php
+app/Runtime/**
+admin/Runtime/**
