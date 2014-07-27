@@ -548,7 +548,7 @@
 			$payment_id = intval($_REQUEST['payment_id']);
 		}		
 		
-	
+
 		//=======================add by chenfq 2011-06-29 begin========================
 		$payment_info = $GLOBALS['db']->getRowCached("select id, currency, fee_type, fee, online_pay, class_name,name_1 from ".DB_PREFIX."payment where id=".$payment_id);
 		$pay_file = VENDOR_PATH.'payment3/'.$payment_info['class_name'].'Payment.class.php';
@@ -574,6 +574,8 @@
 				}
 			}	
 		}	
+		
+
 		//=======================add by chenfq 2011-06-29 end========================
 						    			
 		//开始获取提交的数据
@@ -594,7 +596,7 @@
 		
 		$ecvSn = trim($_REQUEST['ecv_sn']);
 		$ecvPassword = trim($_REQUEST['ecv_password']);
-		
+
 		//add by chenfq 2011-06-16 添加代金券判断
 		if (!empty($ecvSn) && trim($_REQUEST['ecv_sn'])!='' && trim($_REQUEST['ecv_password'])!=''){
 			$chk = check_ecvverify_2($ecvSn,$ecvPassword);
@@ -1049,9 +1051,11 @@
 				
 				$GLOBALS['db']->autoExecute(DB_PREFIX."ecv", addslashes_deep($ecvData), 'UPDATE', "id = ".intval($order['ecv_id']));
 			}
-						
+
 			if($order['order_total_price'] <= 0)
 				s_order_incharge_handle($order, 0.0, false);
+
+	
 
 			//add by chenfq 2010-05-12 begin	
 			if($order['order_total_price'] < 0 && intval($_SESSION['user_id']) > 0)
@@ -1063,8 +1067,7 @@
 			} 	
 			//add by chenfq 2010-05-12 end
 		}
-		
-		
+			
 		$sql = "delete from ".DB_PREFIX."cart where session_id ='".$session_id."'";
 		$GLOBALS['db']->query($sql);		
 		
@@ -1076,6 +1079,7 @@
 			//$this->assign("accountpay_str",a_L("HC_BALANCE").$accountpay_str);
 			$result['accountpay_str'] = $accountpay_str;
 		}
+
 		
 		if($cart_total['ecvFee'] > 0)
 		{
@@ -1083,14 +1087,14 @@
 			//$this->assign("ecvpay_str",a_L("HC_ECV_PAYMENT").$cart_total['ecvFee_format']);
 			$result['ecvpay_str'] = a_L("HC_ECV_PAYMENT").$cart_total['ecvFee_format'];
 		}
-		
-		//==============add by chenfq 2011-06-29 begin=======================
+
+	//==============add by chenfq 2011-06-29 begin=======================
 		if (method_exists($payment_model,'pre_confirmation_check')){
 			$accountpay_str = getPayment($order_id,0,0,'');
 			$result['accountpay_str'] = $accountpay_str;			
 		}
 		//==============add by chenfq 2011-06-29 begin=======================		
-		
+
   		$result['status']  =  true;
   		$result['money_status'] = $GLOBALS['db']->getOne("select money_status from ".DB_PREFIX."order where id = ".$order_id);
   		$result['ecvpay_str'] = urlencode($result['ecvpay_str']);

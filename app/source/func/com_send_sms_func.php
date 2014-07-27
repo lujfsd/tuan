@@ -689,8 +689,9 @@
                                             }
 					$groupBond_new['order_goods_id'] = $order_goods_id;//add by chenfq 2011-03-1  记录商品属性
 					$groupBond_new['arr'] = $order['attr']; //add by chenfq 2011-02-23 记录商品属性
-					$password = unpack('H8',str_shuffle(md5(uniqid())));
-					$groupBond_new['password'] = $order['bond_pw_prefix'].$password[1];//add by chenfq 2011-03-30  团购券密码前缀
+					//去掉密码生成
+					//$password = unpack('H8',str_shuffle(md5(uniqid())));
+					//$groupBond_new['password'] = $order['bond_pw_prefix'].$password[1];//add by chenfq 2011-03-30  团购券密码前缀
                                         
                                         $groupBond_new['create_time'] = a_gmtTime();
 					$groupBond_new['end_time'] = $order['group_bond_end_time'];

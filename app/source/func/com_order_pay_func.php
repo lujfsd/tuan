@@ -1153,6 +1153,7 @@ function s_countOrderTotal($id,$payment_id=0,$delivery_id=0,$is_protect=0,$deliv
 	 * 发放团购券
 	 * @param $goodsID  商品ID
 	 * @param $prefix 团购券自定义前缀
+	 *2014-7-27 增加到12位
 	 */
 	
 	function s_gen_groupbond_sn($goodsID,$prefix="")
@@ -1160,7 +1161,8 @@ function s_countOrderTotal($id,$payment_id=0,$delivery_id=0,$is_protect=0,$deliv
 		do
 		{
 			$r_sn = rand(1000000,9999999);
-			$sn = str_pad($r_sn, 8,'1',STR_PAD_LEFT);
+			$tmp_sn = rand(1000,9999);
+			$sn = str_pad($r_sn, 12,$tmp_sn,STR_PAD_BOTH);
 		}
 		while($GLOBALS['db']->getOne("select count(*) as num from ".DB_PREFIX."group_bond where sn='".$prefix.$sn."' and goods_id=".$goodsID)>0);
 		return $prefix.$sn;

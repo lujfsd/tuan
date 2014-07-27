@@ -1024,7 +1024,8 @@ function cart_done(){
 	var tax = $("#tax").attr("checked")?1:0;
 	var ecvSn = $.trim($("#cardcode-sn").val());
 	var ecvPassword = $.trim($("#cardcode-pwd").val());
-		
+
+
 	//pamrm = pamrm + "&is_protect=" + is_protect + "&tax=" + tax + "&ecv_sn=" + ecvSn + "&ecv_password=" + ecvPassword;	
 	query.is_protect = is_protect;
 	query.tax = tax;
