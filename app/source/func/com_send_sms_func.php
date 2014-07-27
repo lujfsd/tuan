@@ -525,7 +525,8 @@
 		if(!empty($user['mobile_phone']))
 		{
 			
-			$bond = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,password,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
+			//$bond = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,password,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
+			$bond = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
 			$goods = $GLOBALS['db']->getRowCached("select goods_short_name, suppliers_id,is_order_sms,promote_end_time from ".DB_PREFIX."goods where id = ".intval($bond['goods_id']));
 			$seller_info = $GLOBALS['db']->getRowCached("select tel, address, supplier_id from ".DB_PREFIX."suppliers_depart where supplier_id = ".intval($goods['suppliers_id'])." and is_main=1");
 			
@@ -537,7 +538,7 @@
 											"goods_short_name"	=>	$goods['goods_short_name'],
 											"name"=>a_fanweC('GROUPBOTH'),
 											"sn"=>$bond['sn'],
-											"password"=>$bond['password'],
+											//"password"=>$bond['password'],
 											"order_sn" =>	$bond['order_id'],
 											"id"	=> $bond['id'],
 											"tel"	=>	$seller_info['tel'],

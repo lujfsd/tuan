@@ -318,9 +318,9 @@
 				imagettftext($tmpl_im, 10, 0, 397,58, $textcolor, ROOT_PATH.'/global/msyh.ttf', a_L("XY_GROUPBOTH_SN").$bond['sn']);
 				
 				//开始绘制密码		
-				@imagefilledrectangle($tmpl_im,387,70,592,96,$backColor);
-				if($bond['password']!='')
-				imagettftext($tmpl_im, 10, 0, 397,86, $textcolor, ROOT_PATH.'/global/msyh.ttf', a_L('XY_GROUPBOTH_PWD').$bond['password']);
+				//@imagefilledrectangle($tmpl_im,387,70,592,96,$backColor);
+				//if($bond['password']!='')
+				//imagettftext($tmpl_im, 10, 0, 397,86, $textcolor, ROOT_PATH.'/global/msyh.ttf', a_L('XY_GROUPBOTH_PWD').$bond['password']);
 				
 				
 				//开始绘制标题

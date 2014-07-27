@@ -100,7 +100,9 @@ elseif($action=='consume')
 
 	
 		//$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
-		$coupon_data = $GLOBALS['db']->getRow("select a.id, a.end_time,a.use_time as confirm_time, a.goods_name as sub_name, og.data_price as price from ".DB_PREFIX."group_bond a left outer join ".DB_PREFIX."goods b  on b.id =  a.goods_id left outer join ".DB_PREFIX."order_goods og  on og.id=a.order_goods_id where a.is_valid = 1 and a.status = 1 and a.use_time = 0 and a.end_time >".$time ." and  a.sn = '".addslashes($sn)."' and a.password = '".addslashes($pwd)."'");
+		//$coupon_data = $GLOBALS['db']->getRow("select a.id, a.end_time,a.use_time as confirm_time, a.goods_name as sub_name, og.data_price as price from ".DB_PREFIX."group_bond a left outer join ".DB_PREFIX."goods b  on b.id =  a.goods_id left outer join ".DB_PREFIX."order_goods og  on og.id=a.order_goods_id where a.is_valid = 1 and a.status = 1 and a.use_time = 0 and a.end_time >".$time ." and  a.sn = '".addslashes($sn)."' and a.password = '".addslashes($pwd)."'");
+		$coupon_data = $GLOBALS['db']->getRow("select a.id, a.end_time,a.use_time as confirm_time, a.goods_name as sub_name, og.data_price as price from ".DB_PREFIX."group_bond a left outer join ".DB_PREFIX."goods b  on b.id =  a.goods_id left outer join ".DB_PREFIX."order_goods og  on og.id=a.order_goods_id where a.is_valid = 1 and a.status = 1 and a.use_time = 0 and a.end_time >".$time ." and  a.sn = '".addslashes($sn)."' ");
+
 		$is_updated = 0;
 		if($coupon_data){
 			$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where id =".intval($coupon_data['id']);

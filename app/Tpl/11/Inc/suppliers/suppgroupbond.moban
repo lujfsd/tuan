@@ -108,22 +108,17 @@
 	function su_query_coupon_bus()
 	{	
 		var group_bond_sn = $.trim($("#su_group_bond_sn").val());
-		var group_bond_pwd = $.trim($("#su_group_bond_pwd").val());
 		var msg = '';
 		if (group_bond_sn == ''){
 			msg = LANG.JS_GROUP_BOND_001;
 		}
-		else if(group_bond_pwd == '')
-		{
-			msg = LANG.JS_GROUP_BOND_008;
-		}
-		
+
 		if (msg != ''){
 			alert(msg);
 		}else{
 			$.ajax({
 				  type: "POST",	
-				  url: ROOT_PATH+"/index.php?m=Suppliers&a=couponbus&sn="+group_bond_sn+"&pwd="+group_bond_pwd,
+				  url: ROOT_PATH+"/index.php?m=Suppliers&a=couponbus&sn="+group_bond_sn,
 				  cache: false,
 				  dataType:'json',
 				  success:function (data)

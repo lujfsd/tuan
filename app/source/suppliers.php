@@ -1497,7 +1497,9 @@
 		$sn = trim($_REQUEST['sn']);
 		$pwd = trim($_REQUEST['pwd']);
 		
-		$sql2="select goods_id from ".DB_PREFIX."group_bond where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		//$sql2="select goods_id from ".DB_PREFIX."group_bond where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		$sql2="select goods_id from ".DB_PREFIX."group_bond where  sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." ";
+
 		$bond_id2=$GLOBALS['db']->getOne($sql2);
 		if($bond_id2>0)
 		{
@@ -1510,22 +1512,28 @@
 				exit();
 			}
 		}
-		$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time .",depart_id = ".$_SESSION["depart_id"]." ,is_balance = 1 where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		//$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time .",depart_id = ".$_SESSION["depart_id"]." ,is_balance = 1 where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time .",depart_id = ".$_SESSION["depart_id"]." ,is_balance = 1 where sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." ";
 		
 		$GLOBALS['db']->query($sql);
 		$is_updated = $GLOBALS['db']->affected_rows();
 		
 		if($is_updated >0)
 		{
-			$bond_id= $GLOBALS['db']->getOne("select id from ".DB_PREFIX."group_bond where password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'");
+			//$bond_id= $GLOBALS['db']->getOne("select id from ".DB_PREFIX."group_bond where password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'");
+			$bond_id= $GLOBALS['db']->getOne("select id from ".DB_PREFIX."group_bond where sn = '".addslashes($sn)."'");
 			require ROOT_PATH.'app/source/func/com_send_sms_func.php';
 			s_send_groupbond_use_sms($bond_id,true);
-			$sql = "select goods_name from ".DB_PREFIX."group_bond where is_valid = 1 and status = 1 and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+			//$sql = "select goods_name from ".DB_PREFIX."group_bond where is_valid = 1 and status = 1 and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+			$sql = "select goods_name from ".DB_PREFIX."group_bond where sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 ";
+
 			$result['msg'] = $GLOBALS['db']->getOne($sql);
 			$result['type'] = 1;
 		}
 		else{
-			$result['msg']= $GLOBALS['db']->getOne("select use_time,goods_name,end_time from ".DB_PREFIX."group_bond where password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'");
+			//$result['msg']= $GLOBALS['db']->getOne("select use_time,goods_name,end_time from ".DB_PREFIX."group_bond where password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'");
+			$result['msg']= $GLOBALS['db']->getOne("select use_time,goods_name,end_time from ".DB_PREFIX."group_bond where  sn = '".addslashes($sn)."'");
+
 			$result['type'] = 0;
 		}
 			

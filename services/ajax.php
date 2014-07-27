@@ -185,10 +185,11 @@ if($_REQUEST['run']=='coupon_bus')
 	
 	$time = a_gmtTime();
 	$sn = trim($_REQUEST['sn']);
-	$pwd = trim($_REQUEST['pwd']);
+	//$pwd = trim($_REQUEST['pwd']);
 	
-	$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
-	
+	//$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+	$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." ";
+
 	$GLOBALS['db']->query($sql);
 	$is_updated = $GLOBALS['db']->affected_rows();
 	

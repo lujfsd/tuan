@@ -28,8 +28,9 @@
 		$sn = trim($_REQUEST['sn']);
 		$pwd = trim($_REQUEST['pwd']);
 		
-		$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
-		
+		//$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." where sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." ";
+
 		$GLOBALS['db']->query($sql);
 		$is_updated = $GLOBALS['db']->affected_rows();
 		
@@ -89,14 +90,17 @@
 		$sn = trim($_REQUEST['sn']);
 		$pwd = trim($_REQUEST['pwd']);
 		
-		$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." ,is_balance=1 where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		//$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." ,is_balance=1 where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
 		//$sql = "select goods_name from ".DB_PREFIX."group_bond where is_valid = 1 and status = 1 and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
+		$sql = "update ".DB_PREFIX."group_bond set use_time = ".$time ." ,is_balance=1 where sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." ";
 		$GLOBALS['db']->query($sql);
 		$is_updated = $GLOBALS['db']->affected_rows();
 		
 		if($is_updated >0)
 		{
-			$bond_id= $GLOBALS['db']->getOne("select id from ".DB_PREFIX."group_bond where password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'");
+			//$bond_id= $GLOBALS['db']->getOne("select id from ".DB_PREFIX."group_bond where password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'");
+			$bond_id= $GLOBALS['db']->getOne("select id from ".DB_PREFIX."group_bond where sn = '".addslashes($sn)."'");
+
 			require ROOT_PATH.'app/source/func/com_send_sms_func.php';
 			s_send_groupbond_use_sms($bond_id,true);
 			$result['msg'] = $GLOBALS['db']->getOne($sql);

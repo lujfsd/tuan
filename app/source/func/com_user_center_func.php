@@ -130,7 +130,7 @@
 
 		$limit = ($page-1)*a_fanweC("PAGE_LISTROWS").",".a_fanweC("PAGE_LISTROWS");
 		
-		$list = $GLOBALS['db']->getAll("select `id`,`goods_id`,`goods_name`,`order_id`,`sn`,`password`,`create_time`,`status`,`end_time`,`use_time`,`buy_time`,`depart_id` from ".DB_PREFIX."group_bond where ".$where." order by buy_time desc limit ".$limit);
+		$list = $GLOBALS['db']->getAll("select `id`,`goods_id`,`goods_name`,`order_id`,`sn`,`create_time`,`status`,`end_time`,`use_time`,`buy_time`,`depart_id` from ".DB_PREFIX."group_bond where ".$where." order by buy_time desc limit ".$limit);
 		$result['total'] = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."group_bond where ".$where);
 		
 		foreach($list as $k=>$v)

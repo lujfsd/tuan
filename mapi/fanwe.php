@@ -1742,10 +1742,19 @@ if ($act == 'init'){
 		
 	$page_size = PAGE_SIZE;
 	$limit = (($page-1)*$page_size).",".$page_size;
-		
+/*		
 	$sql = "select " .
 			"id,sn as couponSn," .
 			"password as couponPw," .
+			"create_time as createTime," .
+			"end_time as endTime," .
+			"use_time as useTime," .
+			"goods_name as dealName," .
+			"goods_id as dealId,use_time,end_time " .
+			"from ".DB_PREFIX."group_bond ";
+*/
+	$sql = "select " .
+			"id,sn as couponSn," .
 			"create_time as createTime," .
 			"end_time as endTime," .
 			"use_time as useTime," .
