@@ -58,10 +58,13 @@
 								</tr>
 							</tbody>
 						</table>
-						{include file="Inc/common/goods_date_info.moban" }				
+						{include file="Inc/common/goods_date_info.moban" }		
+						<!--
 						<div id=deal-status class="deal-box deal-status deal-status-open">
 						{include file="Inc/common/goods_status_info.moban"}
+						
 						</div>
+						-->
 					</div>
 					<div class=side>
 						<div class="deal-buy-cover-img" id="goods_imgs">
@@ -79,10 +82,12 @@
 									<?php } ?>
 								</div>
 							</div>
-						</div>						
+						</div>
+						<!--
 						<div class=digest>
 							<br/>{$goods.brief}
 						</div>
+						-->
 					</div>
 				</div>
 				<div class="deal-intro-bottom"></div>
@@ -101,6 +106,7 @@
 									{$goods.suppliers.desc}
 								</div>
 								{/if}
+								<!--商品评价
 								{if $goods.goods_reviews or $goods.reviews_list}
 								<H2>{$lang.XY_THEY_SAY}</H2>
 								<div class="blk review">
@@ -111,29 +117,30 @@
 										{foreach from="$goods.reviews_list" item="reviews"}
 										<li>{$reviews.content}
 										<span>
-											——<a href="{$reviews.url}" target="_blank">{$reviews.user_name}</a>
-											{if $reviews.webname}
-											（{$reviews.webname}）
-											{/if}
+											<a href="{$reviews.url}" target="_blank">{$reviews.user_name}</a>
+											{if $reviews.webname}{$reviews.webname}{/if}
 										</span>
 										</li>
 										{/foreach}
 									</ul>
 								</div>
 								{/if}
+								-->
+								<!--商品信息
 								{if $goods.web_reviews}
 								<H2>{$lang.XY_OWN_SAY}</H2>
 								<div class="blk voice">
 									{$goods.web_reviews}
 								</div>
 								{/if}
-                                                                <H2>{$goods.suppliers.name}</H2>
+								-->
+                                    <H2>{$goods.suppliers.name}</H2>
 									<ul>									
 										{if $goods.suppliers.web}
-										<li><a href="{$goods.suppliers.web}" target="_blank">{$goods.suppliers.web}</a>‎</li>
+										<li><a href="{$goods.suppliers.web}" target="_blank">{$goods.suppliers.web}</a></li>
 										{/if}									
 										{if $goods.suppliers.brief}
-										<li>{$lang.XY_SURPLUS_BRIEF}{$goods.suppliers.brief}‎</li>
+										<li>{$lang.XY_SURPLUS_BRIEF}{$goods.suppliers.brief}</li>
 										{/if}
 										{if $goods.map_img}
 										<li>
@@ -143,39 +150,40 @@
 										</span>
 										</li>
 										{/if}
-										{foreach from="$goods.suppliers_list" item="depart" key=key}
-										{if $key eq 0}
-											{if $depart.address}
-											<li>{$depart.address}
-											{if $depart.map}
-											（<a href="{$depart.map}" target="_blank">{$lang.XY_VIEW_MAP}</a>）
-											{/if}
-											</li>
-											{/if}									
-											{if $depart.tel}
-											<li>{$depart.tel}‎</li>
-											{/if}
-											{if $depart.operating}
-											<li>{$lang.XY_SURPLUS_OPERTATIONG}{$depart.operating}‎</li>
-											{/if}
-											{if $depart.bus}
-											<li>{$lang.XY_SURPLUS_BUS}{$depart.bus}‎</li>
-											{/if}
-											<li>‎</li>
-										{/if}
-										{/foreach}
-										
-										{if $goods.suppliers.img}
-										<li style="text-align:center">
-											<br/><img src="{$CND_URL}{$goods.suppliers.img}" width="200">
-										</li>
-										{/if}
-										<li style="text-align:center">
-											<a href="<?php echo a_u("Supplier/show","id-".$GLOBALS['tpl']->_var['goods']['suppliers']['id']); ?>">{$lang.VIEW_SUPPLIER_INFO}</a>
-										</li>
 									</ul>
 							</div>
-						
+							<div class=side>
+								{foreach from="$goods.suppliers_list" item="depart" key=key}
+									{if $key eq 0}
+										{if $depart.address}
+										<li>{$lang.XY_SURPLUS_ADDRESS}{$depart.address}
+										{if $depart.map}
+										（<a href="{$depart.map}" target="_blank">{$lang.XY_VIEW_MAP}</a>）
+										{/if}
+										</li>
+										{/if}									
+										{if $depart.tel}
+										<li>{$lang.XY_SURPLUS_TEL}{$depart.tel}</li>
+										{/if}
+										{if $depart.operating}
+										<li>{$lang.XY_SURPLUS_OPERTATIONG}{$depart.operating}</li>
+										{/if}
+										{if $depart.bus}
+										<li>{$lang.XY_SURPLUS_BUS}{$depart.bus}</li>
+										{/if}
+									{/if}
+								{/foreach}
+							</div>
+							<div class=main>
+							{if $goods.suppliers.img}
+							<li style="text-align:center;left:50px;">
+								<br/><img src="{$CND_URL}{$goods.suppliers.img}" width="200">
+							</li>
+							{/if}
+							<li style="text-align:center;left:50px;">
+								<a href="<?php echo a_u("Supplier/show","id-".$GLOBALS['tpl']->_var['goods']['suppliers']['id']); ?>">{$lang.VIEW_SUPPLIER_INFO}</a>
+							</li>
+							</div>
 							<div class=clear></div>
 						</div>
 						<div class=box-bottom></div>

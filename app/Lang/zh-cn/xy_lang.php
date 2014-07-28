@@ -63,7 +63,7 @@ return array(
 	'XY_SHOP_PRICE'=>'现价',
 	'XY_SHOP_PRICE_S'=>'现价：',
 	'XY_SHOP_PRICES'=>'价格',
-	'XY_PRICE'=>'¥%d',
+	'XY_PRICE'=>'￥%d',
 	'XY_SHOP_DISCOUNT'=>'折扣',
 	'XY_SHOP_DISCOUNTS'=>'折扣：',
 	'XY_SHOP_SAVE'=>'节省',
@@ -99,6 +99,8 @@ return array(
 	'XY_SURPLUS_OPERTATIONG'=>'营业时间：',
 	'XY_SURPLUS_BUS'=>'公交线路：',
 	'XY_SURPLUS_BRIEF'=>'简　　介：',
+	'XY_SURPLUS_ADDRESS'=>'地	址:',
+	'XY_SURPLUS_TEL'=>'电	话:',
 	//inc/message.moban
 	'XY_JUMP_NOTICE_1'=>'秒后自动跳转到首页，或者',
 	'XY_JUMP_NOTICE_2'=>'立即体验',

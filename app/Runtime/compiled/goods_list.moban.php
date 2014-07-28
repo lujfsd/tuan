@@ -109,17 +109,13 @@ echo $k['name']($k['a']);
 			</div>
 			
 			<h3>
-                            【<b><a href="<?php echo a_u('Index/index','cityname-'.$this->_var['goods']['city']['py']);?>"><?php echo $this->_var['goods']['city']['name']; ?></a></b>】
-                        <a href="<?php echo $this->_var['goods']['url']; ?>" title="<?php echo $this->_var['goods']['name_1']; ?>" target="_blank"><?php if ($this->_var['goods']['expand3']): ?><?php echo $this->_var['goods']['expand3']; ?><?php else: ?><?php 
-$k = array (
-  'name' => 'a_msubstr',
-  'a' => $this->_var['goods']['name_1'],
-  'b' => '0',
-  'c' => '30',
-);
-echo $k['name']($k['a'],$k['b'],$k['c']);
-?><?php endif; ?></a>
-                    </h3>
+           		<a href="<?php echo $this->_var['goods']['url']; ?>" title="<?php echo $this->_var['goods']['name_1']; ?>" target="_blank">
+           		   	<b>
+         	   		【<?php if ($this->_var['goods']['expand3']): ?><?php echo $this->_var['goods']['expand3']; ?><?php else: ?><?php echo $this->_var['goods']['city']['name']; ?><?php endif; ?>】
+         			</b>
+           			<?php echo $this->_var['goods']['name_1']; ?>
+           		</a>        
+            </h3>
 		</dd>
 		<?php if ($this->_foreach['goods_l']['iteration'] % 3 == 0): ?>
                         <dd class="blank" style="background:#fff;clear:both;width:100%;height:6px;border:none;margin:0;padding:0;"></dd>

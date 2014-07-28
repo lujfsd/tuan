@@ -99,9 +99,13 @@
 			</div>
 			
 			<h3>
-                            【<b><a href="<?php echo a_u('Index/index','cityname-'.$this->_var['goods']['city']['py']);?>">{$goods.city.name}</a></b>】
-                        <a href="{$goods.url}" title="{$goods.name_1}" target="_blank">{if $goods.expand3}{$goods.expand3}{else}{function name="a_msubstr" a=$goods.name_1 b=0 c=30}{/if}</a>
-                    </h3>
+           		<a href="{$goods.url}" title="{$goods.name_1}" target="_blank">
+           		   	<b>
+         	   		【{if $goods.expand3}{$goods.expand3}{else}{$goods.city.name}{/if}】
+         			</b>
+           			{$goods.name_1}
+           		</a>        
+            </h3>
 		</dd>
 		{if $smarty.foreach.goods_l.iteration mod 3 eq 0}
                         <dd class="blank" style="background:#fff;clear:both;width:100%;height:6px;border:none;margin:0;padding:0;"></dd>

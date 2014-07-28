@@ -69,11 +69,11 @@ echo $k['name']($k['value']);
             <div class=copyright>
 				<div>
 
-				<?php $_from = $this->_var['foot_navs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('key', 'nav_0_49894800_1406528660');if (count($_from)):
-    foreach ($_from AS $this->_var['key'] => $this->_var['nav_0_49894800_1406528660']):
+				<?php $_from = $this->_var['foot_navs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('key', 'nav_0_12335900_1406541410');if (count($_from)):
+    foreach ($_from AS $this->_var['key'] => $this->_var['nav_0_12335900_1406541410']):
 ?>
 					<?php if ($this->_var['key'] != 0): ?>&nbsp;&nbsp;|&nbsp;&nbsp;<?php endif; ?>
-					<a href="<?php echo $this->_var['nav_0_49894800_1406528660']['url']; ?>" <?php if ($this->_var['nav_0_49894800_1406528660']['act'] == 1): ?>class="act"<?php endif; ?>  target="<?php echo $this->_var['nav_0_49894800_1406528660']['target']; ?>" ><?php echo $this->_var['nav_0_49894800_1406528660']['name_1']; ?></a>
+					<a href="<?php echo $this->_var['nav_0_12335900_1406541410']['url']; ?>" <?php if ($this->_var['nav_0_12335900_1406541410']['act'] == 1): ?>class="act"<?php endif; ?>  target="<?php echo $this->_var['nav_0_12335900_1406541410']['target']; ?>" ><?php echo $this->_var['nav_0_12335900_1406541410']['name_1']; ?></a>
 				<?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
 				</div>
                 <p><?php echo $this->_var['CFG']['PAGE_BOTTOM']; ?><?php echo $this->_var['CFG']['STATS_CODE']; ?></p>
