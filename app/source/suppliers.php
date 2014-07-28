@@ -1495,7 +1495,7 @@
 		$result = array("type"=>0,"msg"=>"");
 		$time = a_gmtTime();
 		$sn = trim($_REQUEST['sn']);
-		$pwd = trim($_REQUEST['pwd']);
+		//$pwd = trim($_REQUEST['pwd']);
 		
 		//$sql2="select goods_id from ".DB_PREFIX."group_bond where is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." and password = '".addslashes($pwd)."' and sn = '".addslashes($sn)."'";
 		$sql2="select goods_id from ".DB_PREFIX."group_bond where  sn = '".addslashes($sn)."' and is_valid = 1 and status = 1 and use_time = 0 and end_time >".$time ." ";

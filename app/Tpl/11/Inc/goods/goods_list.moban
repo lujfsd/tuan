@@ -48,6 +48,7 @@
                     <li><a  href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],$_REQUEST['gp'],"sell"); ?>"  {if $smarty.request.sc eq 'sell'}style="color:#fff;background:#CD1A01"{/if}>最具人气</a></li>
                 </ul>
                {$pages}
+               <!--
            <div style="float:left;padding-left: 10px;">
             <ul>
                 <li> 查看:</li>
@@ -58,16 +59,8 @@
                     <a class="chalook" href="?m=Index&a=index&index_type=old">使用经典版</a>
                     {/if}
                 </li>
-                <!--<li>|</li>
-                <li>
-                    {if $smarty.request.index_type eq "all"}
-                       <a class="chalook"  href="?m=Index&a=index&index_type=new"> 显示分页</a>
-                      {else}
-                      <a class="chalook"  href="?m=Index&a=index&index_type=all"> 显示所有团购</a>
-                      {/if}
-                </li>-->
              </ul>         
-        </div>
+        </div>-->
 		<div class="clear"></div>
        </dd>
 		<div class="clear"></div>

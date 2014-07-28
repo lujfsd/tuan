@@ -48,6 +48,7 @@
                     <li><a  href="<?php echo getNewURL($_REQUEST['m']."/".$_REQUEST['a'],$_REQUEST['id'],$_REQUEST['qid'],$_REQUEST['gp'],"sell"); ?>"  <?php if ($_REQUEST['sc'] == 'sell'): ?>style="color:#fff;background:#CD1A01"<?php endif; ?>>最具人气</a></li>
                 </ul>
                <?php echo $this->_var['pages']; ?>
+               <!--
            <div style="float:left;padding-left: 10px;">
             <ul>
                 <li> 查看:</li>
@@ -58,16 +59,8 @@
                     <a class="chalook" href="?m=Index&a=index&index_type=old">使用经典版</a>
                     <?php endif; ?>
                 </li>
-                <!--<li>|</li>
-                <li>
-                    <?php if ($_REQUEST['index_type'] == "all"): ?>
-                       <a class="chalook"  href="?m=Index&a=index&index_type=new"> 显示分页</a>
-                      <?php else: ?>
-                      <a class="chalook"  href="?m=Index&a=index&index_type=all"> 显示所有团购</a>
-                      <?php endif; ?>
-                </li>-->
              </ul>         
-        </div>
+        </div>-->
 		<div class="clear"></div>
        </dd>
 		<div class="clear"></div>
