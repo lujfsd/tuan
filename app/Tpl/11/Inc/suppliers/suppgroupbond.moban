@@ -39,7 +39,6 @@
 								<div>
 									<form method="post">
 										<span style="font-size:15px;font-weight:bolder;">{$lang.GROUP_BOND_INFO_007}：</span>{$lang.GROUP_BOND_INFO_009}&nbsp;<input id="su_group_bond_sn" name="su_group_bond_sn" class="f-input" value="" style="width:130px;"> 
-										&nbsp;{$lang.GROUP_BOND_INFO_010}&nbsp;<input id="su_group_bond_pwd" name="su_group_bond_pwd" class="f-input" value="" style="width:130px;">
 									     <input class="formbutton" style="padding:0px 1em 0px; height:25px;margin-left:10px;" onclick = "return su_query_coupon_bus()" value="{$lang.GROUP_BOND_INFO_008}" type="button">
 									</form>
 								</div>
@@ -50,7 +49,7 @@
 							<table id="coupons-table" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
 								<tr>
 									<th width="200">{$lang.XY_GROUP_PROJECT}</th>
-									<th width="140">{$CFG.GROUPBOTH}{$lang.XY_INFO}</th>
+									<th width="150">{$CFG.GROUPBOTH}{$lang.XY_INFO}</th>
 									<th width="80">{$lang.XY_BUY_DATE}</th>
 									<th width="80">{$lang.XY_EXPIRED_TIMES}</th>
 									<th width="80">{$lang.XY_USE_TIMES}</th>
@@ -59,9 +58,8 @@
 								{foreach from="$groupbond_list" item="groupbond" name="groupbond"}
 								<tr {if $smarty.foreach.groupbond.index mod 2 eq 1}class="alt"{/if}>
 									<td style="text-align:left;"><a class="deal-title" href="<?php echo a_u('Goods/show','id-'.$this->_var['groupbond']['goods_id']) ?>" target="_blank">{$groupbond.goods_name}{if $groupbond.order_goods_number}&nbsp;[{$groupbond.order_goods_number}]{/if}</a></td>
-									<td>
-										
-										{$lang.XY_GROUPBOTH_ID}{$groupbond.id} ;<br>{$lang.XY_GROUPBOTH_SN}{$groupbond.sn}
+									<td>	
+										{$lang.XY_GROUPBOTH_SN}{$groupbond.sn}
 									</td>
 									<td>{$groupbond.buy_time_format}</td>
 									<td>
