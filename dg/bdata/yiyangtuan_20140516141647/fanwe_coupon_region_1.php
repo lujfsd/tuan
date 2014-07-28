@@ -27,7 +27,7 @@ E_C("CREATE TABLE `fanwe_coupon_region` (
   KEY `status` (`status`),
   KEY `index_1` (`city_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8");
-//E_D("replace into `fanwe_coupon_region` values('1','兰山','16','1','1','兰山','118.354302','35.070257','16','0');");
+E_D("replace into `fanwe_coupon_region` values('1','兰山','16','1','1','兰山','118.354302','35.070257','16','0');");
 
 require("../../inc/footer.php");
 ?>
