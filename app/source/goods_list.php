@@ -102,12 +102,12 @@ $gp = $_REQUEST['gp'];////价格区间筛选
 			$sub_quan_list = getGoodsQuan(0,$cate_id,true,"pid=".$GLOBALS['db']->getOne("select pid from " . DB_PREFIX . "coupon_region where id=".$quan_id)." and");
 			//print_r($sub_quan_list);
 			foreach($sub_quan_list as $kk => $vv)
-				 {
-				 	if($vv['id']==$quan_id)
-					{
-						$top_pid = $vv['pid'];
-					}
-				 }
+			{
+			 	if($vv['id']==$quan_id)
+				{
+					$top_pid = $vv['pid'];
+				}
+			}
 		}
 	}
 	$GLOBALS['tpl']->assign("quan_list",$quan_list);
@@ -251,13 +251,17 @@ if ($_REQUEST ['a'] != 'show' && $_REQUEST ['a'] != 'showByUname') {
 			$goods_list[$k]['urlname'] = urlencode($v['name_1']);
 			$goods_list[$k]['urlbrief'] = urlencode($v['brief_1']);
 
-
-
 			if($goods_list[$k]['is_group_fail']==1)
 			{
 				$goods_list[$k]['buy_count'] = $goods_list[$k]['fail_buy_count'];
 			}
 
+			if(!empty($goods_list[$k]['quan_id']))
+			{	
+				$sql="select name from ".DB_PREFIX."coupon_region where id=".$goods_list[$k]['quan_id'];
+				$quan_name = $GLOBALS['db']->getOneCached($sql);
+				$goods_list[$k]['quan_name'] = $quan_name;
+			}
 		}
 //数据处理
 	//if(($cate_id>0 || $qid>0 || $sc !='') && $goods_id==0)2010/7/5(chh)注消

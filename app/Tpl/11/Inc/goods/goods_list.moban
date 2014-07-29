@@ -101,7 +101,7 @@
 			<h3>
            		<a href="{$goods.url}" title="{$goods.name_1}" target="_blank">
            		   	<b>
-         	   		【{if $goods.expand3}{$goods.expand3}{else}{$goods.city.name}{/if}】
+         	   		【{if $goods.expand3}{$goods.expand3}{else}{$goods.quan_name}{/if}】
          			</b>
            			{$goods.name_1}
            		</a>        

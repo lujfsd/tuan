@@ -111,7 +111,7 @@ echo $k['name']($k['a']);
 			<h3>
            		<a href="<?php echo $this->_var['goods']['url']; ?>" title="<?php echo $this->_var['goods']['name_1']; ?>" target="_blank">
            		   	<b>
-         	   		【<?php if ($this->_var['goods']['expand3']): ?><?php echo $this->_var['goods']['expand3']; ?><?php else: ?><?php echo $this->_var['goods']['city']['name']; ?><?php endif; ?>】
+         	   		【<?php if ($this->_var['goods']['expand3']): ?><?php echo $this->_var['goods']['expand3']; ?><?php else: ?><?php echo $this->_var['goods']['quan_name']; ?><?php endif; ?>】
          			</b>
            			<?php echo $this->_var['goods']['name_1']; ?>
            		</a>        
