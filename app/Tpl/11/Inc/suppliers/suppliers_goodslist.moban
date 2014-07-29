@@ -14,7 +14,7 @@
 						<div class="sect">
 						<table cellspacing="0" cellpadding="0" border="0" class="coupons-table" id="coupons-table" width="97%">
 								<tr>
-                                                                        <th width="30">{$lang.SUPPLIERS_LANG_14}</th>
+                                    <!--<th width="30">{$lang.SUPPLIERS_LANG_14}</th>-->
 									<th>{$lang.SUPPLIERS_LANG_1}</th>
 									<th width="50">{$lang.SUPPLIERS_LANG_4}</th>
 									<th width="80">{$lang.SUPPLIERS_LANG_5}</th>						
@@ -24,7 +24,7 @@
 								</tr>
 								{foreach from=$goods_list item=goods key=key}
 								<tr {if $key%2 eq 1}class="alt"{/if}>
-                                                                        <td style="text-align:center;">{$goods.id}</td>
+                                    <!--<td style="text-align:center;">{$goods.id}</td>-->
 									<td style="text-align:left;"><a class="deal-title" href="<?php echo a_u('Goods/show','id-'.$this->_var['goods']['id']) ?>" target="_blank">{$goods.name_1}</a></td>
 									<td>{$goods.city_name}</td>
 									<td>{function name="a_toDate" value=$goods.promote_begin_time format = 'Y-m-d'}<br>{function name="a_toDate" value=$goods.promote_end_time format = 'Y-m-d'}</td>
@@ -35,9 +35,9 @@
 									</td>
 									<td class="op">
 									{$goods.goods_state}<br>
-										{if $goods.type_id eq 0 or $goods.type_id eq 2}
-											<a href="<?php echo a_u("Suppliers/exportcsv","goods_id-".$this->_var['goods']['id']);?>">{$lang.SUPPLIERS_LANG_12}</a>
-										{/if}	
+										{*if $goods.type_id eq 0 or $goods.type_id eq 2*}
+											<!--<a href="<?php echo a_u("Suppliers/exportcsv","goods_id-".$this->_var['goods']['id']);?>">{$lang.SUPPLIERS_LANG_12}</a>-->
+										{*/if*}	
 									</td>
 								</tr>
 								{/foreach}								

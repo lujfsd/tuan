@@ -40,3 +40,4 @@ Icon
 #app/Runtime/caches/0/*.php
 app/Runtime/**
 admin/Runtime/**
+app/source/TFXFEE8.tmp

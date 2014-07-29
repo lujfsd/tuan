@@ -4,8 +4,9 @@
 		<div id="coupons">
 			<div id="content" class="coupons-box">
 				<div class="box clear">
-					<div class="box-top"></div>
+					<!--<div class="box-top"></div>-->
 					<div class="box-content">
+					<!--
 						<div class="head">
 							<h2>{$CFG.GROUPBOTH}{$lang.XY_SEARCH}</h2>
 							<ul class="filter">
@@ -16,7 +17,9 @@
 								<li {if $status eq 0}class="current"{/if}><a href="{function name="a_u" a="Suppliers/groupbond" b="status-0"}">{$lang.XY_ALL}</a></li>
 							</ul>							
 						</div>
-						<div class="sect" style="height:130px;padding-bottom:0px;font-size:14px;">
+						-->
+						<div class="sect" style="height:100px;padding-bottom:0px;font-size:14px;">
+							<!--
 							<form name="reg_form" action="{$POST_URL}" method="get" >
 								<input type="hidden" name="m" value="Suppliers" />
 								<input type="hidden" name="a" value="groupbond" />		
@@ -34,16 +37,19 @@
 								<div style="height:5px;overflow: hidden;"></div>		
 								<h3>{if $goods_id neq 0}{$lang.THIS_DEAL_HAVE}{/if}{if $status eq 1}{$lang.XY_NO_USE}{elseif $status eq 2}{$lang.XY_HAD_USE}{elseif $status eq 3}{$lang.XY_BAD_USE}{elseif $status eq 0}{$lang.XY_ALL}{/if}{$CFG.GROUPBOTH} <span class="red">{$total}</span></h2>
 							</form>	
+							-->
 							<div class="blank"></div>
 							<div class="item" style="margin:0px auto;">
 								<div>
 									<form method="post">
-										<span style="font-size:15px;font-weight:bolder;">{$lang.GROUP_BOND_INFO_007}：</span>{$lang.GROUP_BOND_INFO_009}&nbsp;<input id="su_group_bond_sn" name="su_group_bond_sn" class="f-input" value="" style="width:130px;"> 
+										<!--<span style="font-size:15px;font-weight:bolder;">{$lang.GROUP_BOND_INFO_007}：</span><br/>-->
+										{$lang.GROUP_BOND_INFO_009}&nbsp;<input id="su_group_bond_sn" name="su_group_bond_sn" class="f-input" value="" style="width:130px;"> 
 									     <input class="formbutton" style="padding:0px 1em 0px; height:25px;margin-left:10px;" onclick = "return su_query_coupon_bus()" value="{$lang.GROUP_BOND_INFO_008}" type="button">
 									</form>
 								</div>
 							</div>
-						</div>			
+						</div>	
+						<!--
 						<div class="sect">
 							{if $groupbond_list}
 							<table id="coupons-table" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
@@ -95,6 +101,7 @@
 							{/if}
 						</div>
 					</div>
+					-->
 					<div class="box-bottom"></div>
 				</div>
 			</div>

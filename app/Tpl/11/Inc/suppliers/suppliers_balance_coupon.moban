@@ -1,41 +1,56 @@
 <tagLib name="fanwe" />
 <table cellspacing="0" cellpadding="0" border="0" class="coupons-table">
 			<tr>
-				<th  width=160>项目名称</th>
-                                <th  width=30>数量</th>
-				<th  width=80>序号</th>
-				<th  width=50>验证时间</th>						
-				<th  width=50>结算状态</th>
+				<th  width=150>项目名称</th>
+                <th  width=25>数量</th>
+				{if $is_balance neq 0}
+					<th  width=90>序号</th>
+					<th  width=75>验证时间</th>
+				{else}
+					<th  width=55>下单时间</th>
+				{/if}						
+				<th  width=55>结算状态</th>
 				<th  width=40>结算价</th>
-				<th  width=50>结算时间</th>
-				<th>结算备注</th>
+				{if $is_balance neq 0}
+					<th  width=75>结算时间</th>
+					<th  width=30>结算备注</th>
+				{/if}
 			</tr>
 			{foreach from=$dataList item=row key=key}
 			<tr {if $key mod 2 eq  1}class="alt"{/if}>
 				<td style="text-align:left;">
-					<span title="{$row.goods_name}">{function name="a_msubstr" v=$row['goods_name'] a1=0 a2=15}</span>								
+					<span title="{$row.goods_name}">{$row.goods_name}</span>								
 				</td>
-                                <td style="text-align:center;">
+                <td style="text-align:center;">
 					{$row.order_goods_number}
 				</td>
-				<td>
-					{$row.sn}
-				</td>
-				<td>
-					{$row.use_time}
-				</td>
+				{if $is_balance neq 0}
+					<td>
+						{$row.sn}
+					</td>
+					<td>
+						{$row.use_time}
+					</td>
+				{else}
+					<td>
+						{$row.create_time}
+					</td>
+				{/if}
 				<td>										
 					<?php echo $GLOBALS['lang']['BALANCE_'.$this->_var['row']['is_balance']];?>
 				</td>
 				<td>
 					{$row.profit}
 				</td>
-				<td>
-					{$row.balance_time}
-				</td>
-				<td>
-					<span title="{$row.balance_memo}">{$row.balance_memo}</span>	
-				</td>
+				{if $is_balance neq 0}
+					<td>
+						{$row.balance_time}
+					</td>
+
+					<td>
+						<span title="{$row.balance_memo}">{$row.balance_memo}</span>	
+					</td>
+				{/if}
 			</tr>
 			{/foreach}
 	</table>

@@ -1540,22 +1540,27 @@
 		echo json_encode($result);
 		exit();
 	}
-        function Suppliers_balance()
+    function Suppliers_balance()
 	{		
-                 if (empty($_SESSION['suppliers_id']) || intval($_SESSION['suppliers_id']) == 0)
-			{
-				Suppliers_login();
-				exit;	
-			}
+		if (empty($_SESSION['suppliers_id']) || intval($_SESSION['suppliers_id']) == 0)
+		{
+			Suppliers_login();
+			exit;	
+		}
 		$account_id = intval($s_account_info['id']);		
 		$GLOBALS['tpl']->assign("page_title",'结算报表');
 		$goods_id = intval($_REQUEST['goods_id']);		
 		$is_balance = intval($_REQUEST['is_balance']);
-                $param = null; //page $parameter = array();
-                if($goods_id){
-                    $param = '&'.'goods_id='.$goods_id;
-                    }
-		
+		$param = null; //page $parameter = array();
+		if($goods_id)
+		{
+			$param = '&'.'goods_id='.$goods_id;
+			$GLOBALS['tpl']->assign('goods_id',$goods_id);
+		}
+		//商品列表
+		$sql = "select a.id,a.name_1,a.goods_short_name from ".DB_PREFIX."goods as a left join ".DB_PREFIX."group_city as b on b.id = a.city_id left join ".DB_PREFIX."group_bond gb on gb.goods_id=a.id   where a.suppliers_id = ".intval($_SESSION['suppliers_id'])."  group by a.id order by a.id desc";
+    	$goods_list = $GLOBALS['db']->getAll($sql);
+		$GLOBALS['tpl']->assign("goods_list",$goods_list);		
                 
 //		if($_REQUEST['is_redirect']==1)
 //		{
@@ -1572,51 +1577,56 @@
 		if($deal_info)
 		{			
 			$page = intval($_REQUEST["p"]);
-                        //var_dump($page);exit;
-                        if($page==0)
-                        $page = 1;
-                        $limit = ($page-1)*a_fanweC("PAGE_LISTROWS").",".($page*a_fanweC("PAGE_LISTROWS"));
+            //var_dump($page);exit;
+            if($page==0)
+            $page = 1;
+            $limit = ($page-1)*a_fanweC("PAGE_LISTROWS").",".($page*a_fanweC("PAGE_LISTROWS"));
 
 			$GLOBALS['tpl']->assign("deal_info",$deal_info);
-                        //var_dump($deal_info);exit;
+            //var_dump($deal_info);exit;
 			if($deal_info['type_id']==0)
 			{		
 				if($is_balance==2)
 				{
 					$sort = " order by balance_time desc ";
 				}	
-                                elseif($is_balance==1)
-                                {
-                                    $sort = " order by use_time desc ";
-                                }
+                elseif($is_balance==1)
+                {
+                    $sort = " order by use_time desc ";
+                }
 				else
 				{
 					$sort = " order by id desc ";
 				}	
-                                //var_dump($deal_info['id']);exit;
+                //var_dump($deal_info['id']);exit;
 				$condition = " goods_id = ".$deal_info['id']." and status = 1 and user_id > 0 and is_valid = 1 ";
 				$dataList = $GLOBALS['db']->getAll("select * from ".DB_PREFIX."group_bond where ".$condition." and is_balance = ".$is_balance.$sort." limit ".$limit);
 				$dataTotal = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."group_bond where ".$condition." and is_balance = ".$is_balance);
-                                //$result = getSuppliersGroupBondList(intval($_SESSION['suppliers_id']), $sn, $status,$page,$id,$goods_id);
+                //$result = getSuppliersGroupBondList(intval($_SESSION['suppliers_id']), $sn, $status,$page,$id,$goods_id);
 				foreach($dataList as $k=>$v)
 				{       
-                                        $dataList[$k]['use_time'] = a_toDate($v['use_time'],'Y-m-d  H:i:s');
-                                        $dataList[$k]['balance_time'] = a_toDate($v['balance_time'],'Y-m-d  H:i:s');
-                                        $dataList[$k]['profit'] = a_formatPrice($v['profit']);
+
+                    if($is_balance == 0)
+	   					$dataList[$k]['create_time']  = a_toDate($v['create_time'],'Y-m-d  H:i:s');
+	   				else
+	   				{
+	   					$dataList[$k]['use_time'] = a_toDate($v['use_time'],'Y-m-d  H:i:s');
+                    	$dataList[$k]['balance_time'] = a_toDate($v['balance_time'],'Y-m-d  H:i:s');
+                    }
+                    $dataList[$k]['profit'] = a_formatPrice($v['profit']);
 					$dataList[$k]['name'] = $GLOBALS['db']->getOne("select data_name from ".DB_PREFIX."order_goods where id = ".$v['order_goods_id']);
 					if(!$dataList[$k]['name'])
-					$dataList[$k]['name'] = $deal_info['goods_name'];
-                                       	$is_order_sms = $GLOBALS['db']->getOne("select is_order_sms from ".DB_PREFIX."goods where id=".$v['goods_id']."");
-                                        if($is_order_sms)
-                                        {
-                                                $order_goods_number=$GLOBALS['db']->getOne("select number from ".DB_PREFIX."order_goods where order_id=(select id from ".DB_PREFIX."order where sn=".$v["order_id"].") and rec_id=".$v['goods_id']."");
-                                                $dataList[$k]['order_goods_number']=$order_goods_number;
-                                        }
-                                         else {
-                                                $dataList[$k]['order_goods_number'] = 1;
-                                          }
-
-
+						$dataList[$k]['name'] = $deal_info['goods_name'];
+                   	$is_order_sms = $GLOBALS['db']->getOne("select is_order_sms from ".DB_PREFIX."goods where id=".$v['goods_id']."");
+                    if($is_order_sms)
+                    {
+                        $order_goods_number=$GLOBALS['db']->getOne("select number from ".DB_PREFIX."order_goods where order_id=(select id from ".DB_PREFIX."order where sn=".$v["order_id"].") and rec_id=".$v['goods_id']."");
+                    	$dataList[$k]['order_goods_number']=$order_goods_number;
+                    }
+                    else 
+                    {
+                     $dataList[$k]['order_goods_number'] = 1;
+                    }
 				}				
 				
 				$totalBalance0 = $GLOBALS['db']->getOne("select sum(profit) from ".DB_PREFIX."group_bond where ".$condition." and is_balance = 0");
@@ -1624,9 +1634,9 @@
 				$totalBalance2 = $GLOBALS['db']->getOne("select sum(profit) from ".DB_PREFIX."group_bond where ".$condition." and is_balance = 2");
 				
 				$totalBalancesum = $totalBalance0 + $totalBalance1 ;//未结算
-                                $totalBalance0 = a_formatPrice($totalBalancesum);
-                                $totalBalance1 = a_formatPrice($totalBalance1); //待结算
-                                $totalBalance2 = a_formatPrice($totalBalance2); //已结算
+                $totalBalance0 = a_formatPrice($totalBalancesum);
+                $totalBalance1 = a_formatPrice($totalBalance1); //待结算
+                $totalBalance2 = a_formatPrice($totalBalance2); //已结算
 				$GLOBALS['tpl']->assign("totalBalance0",$totalBalance0);
 				$GLOBALS['tpl']->assign("totalBalance1",$totalBalance1);
 				$GLOBALS['tpl']->assign("totalBalance2",$totalBalance2);
@@ -1635,11 +1645,9 @@
 				$page = new Pager($dataTotal,a_fanweC("PAGE_LISTROWS"),$param);   //初始化分页对象 		
 				$p  =  $page->show();
 				$GLOBALS['tpl']->assign('pages',$p);
-				//团购券结算
-				
+				//团购券结算	
 				$html = $GLOBALS['tpl']->fetch("Inc/suppliers/suppliers_balance_coupon.moban");
-				$GLOBALS['tpl']->assign("html",$html);
-				
+				$GLOBALS['tpl']->assign("html",$html);	
 			}
 			else
 			{
@@ -1654,42 +1662,40 @@
 				$condition = " rec_id = ".$deal_info['id']." ";
 				$dataList = $GLOBALS['db']->getAll("select * from ".DB_PREFIX."order_goods where ".$condition." and is_balance = ".$is_balance.$sort."  limit ".$limit);
                                 
-                                foreach($dataList as $k=>$v)
+				foreach($dataList as $k=>$v)
 				{       
-                                        $dataList[$k]['balance_time'] = a_toDate($v['balance_time'],'Y-m-d  H:i:s');
-                                        $dataList[$k]['balance_total_price'] = a_formatPrice($v['balance_total_price']);
+					$dataList[$k]['balance_time'] = a_toDate($v['balance_time'],'Y-m-d  H:i:s');
+					$dataList[$k]['balance_total_price'] = a_formatPrice($v['balance_total_price']);
 				}
-                                
+
                                 
 				$dataTotal = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."order_goods where ".$condition." and is_balance = ".$is_balance);
                                 
-                                $totalBalance0 = $GLOBALS['db']->getOne("select sum(balance_total_price) from ".DB_PREFIX."order_goods where ".$condition." and is_balance = 0");
+                $totalBalance0 = $GLOBALS['db']->getOne("select sum(balance_total_price) from ".DB_PREFIX."order_goods where ".$condition." and is_balance = 0");
 				$totalBalance1 = $GLOBALS['db']->getOne("select sum(balance_total_price) from ".DB_PREFIX."order_goods where ".$condition." and is_balance = 1");
 				$totalBalance2 = $GLOBALS['db']->getOne("select sum(balance_total_price) from ".DB_PREFIX."order_goods where ".$condition." and is_balance = 2");
-                                //未结算	：未结算的加上待结算
-                                $totalBalancesum = $totalBalance + $totalBalance1 ;//未结算
-                                $totalBalance0 = a_formatPrice($totalBalancesum);
-                                $totalBalance1 = a_formatPrice($totalBalance1); //待结算
-                                $totalBalance2 = a_formatPrice($totalBalance2); //已结算
+	            //未结算	：未结算的加上待结算
+	            $totalBalancesum = $totalBalance + $totalBalance1 ;//未结算
+	            $totalBalance0 = a_formatPrice($totalBalancesum);
+	            $totalBalance1 = a_formatPrice($totalBalance1); //待结算
+	            $totalBalance2 = a_formatPrice($totalBalance2); //已结算
 				$GLOBALS['tpl']->assign("totalBalance0",$totalBalance0);
 				$GLOBALS['tpl']->assign("totalBalance1",$totalBalance1);
 				$GLOBALS['tpl']->assign("totalBalance2",$totalBalance2);
 				
 				$GLOBALS['tpl']->assign ( 'dataList', $dataList );
-                                $page = new Pager($dataTotal,a_fanweC("PAGE_LISTROWS"),$param);   //初始化分页对象 		
+                $page = new Pager($dataTotal,a_fanweC("PAGE_LISTROWS"),$param);   //初始化分页对象 		
 				$p  =  $page->show();
 				$GLOBALS['tpl']->assign('pages',$p);
 				
 				$html = $GLOBALS['tpl']->fetch("Inc/suppliers/suppliers_balance_order.moban");
-				$GLOBALS['tpl']->assign("html",$html);
-				
-				
+				$GLOBALS['tpl']->assign("html",$html);			
 			}
 		}
 		
 		//=============	
                 //帮助
-                $GLOBALS['tpl']->assign("help_center",assignHelp());
+        $GLOBALS['tpl']->assign("help_center",assignHelp());
 		$GLOBALS['tpl']->display("Inc/suppliers/suppliers_balance.moban");
 	}
 ?>

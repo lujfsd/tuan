@@ -41,12 +41,12 @@ var ATTR_PRICE	=LANG.JS_ATTR_PRICE;
 			{if $smarty.session.suppliers_name}
             <ul class="nav cf">
 				<li><a href="{function name="a_u" a="Suppliers/goodslist"}">{$lang.SUPPLIERS_LANG_1}</a></li>
-                                <li><a href="{function name="a_u" a="Suppliers/groupbond"}">{$lang.XY_MY}{$CFG.GROUPBOTH}</a></li>
-                                <li><a href="{function name="a_u" a="Suppliers/reset"}">{$lang.XY_MODIFY_PASS}</a></li>
+				<!--<li><a href="{function name="a_u" a="Suppliers/groupbond"}">{$lang.XY_MY}{$CFG.GROUPBOTH}</a></li>-->
+				<li><a href="{function name="a_u" a="Suppliers/reset"}">{$lang.XY_MODIFY_PASS}</a></li>
 				<li><a href="{function name="a_u" a="Suppliers/coupon"}">{$lang.YOUHUI_SUPPLIER}</a></li>
-                                <li><a href="{function name="a_u" a="Suppliers/grouplist"}">{$lang.SUPPLIERS_LANG_2}</a></li>
+				<li><a href="{function name="a_u" a="Suppliers/grouplist"}">{$lang.SUPPLIERS_LANG_2}</a></li>
 				<li><a href="{function name="a_u" a="Suppliers/orderlist"}">{$lang.SUPPLIERS_LANG_3}</a></li> 
-                                <li><a href="{function name="a_u" a="Suppliers/balance"}">{$lang.SUPPLIERS_LANG_13}</a></li>   
+				<li><a href="{function name="a_u" a="Suppliers/balance"}">{$lang.SUPPLIERS_LANG_13}</a></li>   
             </ul>
 			{/if}
             <div class="logins" style="background:none">

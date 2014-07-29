@@ -15,9 +15,9 @@
 						<table cellspacing="0" cellpadding="0" border="0" class="coupons-table" id="coupons-table" width="97%">
 								<tr>
 									<th>{$lang.GROUP_NAME}</th>
-									<th width="80">{$lang.ORDER_SN}</th>
-									<th width="80">{$lang.ORDER_CREATE_TIME}</th>						
-									<th width="45">{$lang.YOUHUI_OP}</th>
+									<th width="100">{$lang.ORDER_SN}</th>
+									<th width="70">{$lang.ORDER_CREATE_TIME}</th>						
+									<!--<th width="45">{$lang.YOUHUI_OP}</th>-->
 								</tr>
 								{foreach from=$order_list item=order key=key}
 								<tr {if $key%2 eq 1}class="alt"{/if}>
@@ -31,13 +31,15 @@
 										{/if}
 									</td>									
 									<td>{$order.sn}</td>
-									<td>{function name="a_toDate" value=$order.create_time}</td>						
+									<td>{function name="a_toDate" value=$order.create_time}</td>
+									<!--
 									<td class="op">
 										
 										<a href="<?php echo a_u("Suppliers/dealorder","id-".$this->_var['order']['id']);?>">{if $order.goods_status eq 0}处理订单{else}查看订单{/if}</a>
 										
 										
 									</td>
+									-->
 								</tr>
 								{/foreach}								
 																

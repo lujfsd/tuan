@@ -13,8 +13,32 @@
 			<div class="blank"></div>
 			<div  style="padding:0 10px;">
 			<form name="searchform" action="{function name="a_u" a="Suppliers/balance"}" method="post">
+<!--
+			<input type="hidden" name="m" value="Suppliers" />
+			<input type="hidden" name="a" value="balance" />		
+			<input type="hidden" name="status" value="{$status}" />			
+			-->
+			<h3>{$lang.XY_GROUP_PROJECT}
+				<select name="goods_id" id="goods_id" style="width:70%;overflow:hidden;" class="f-input">
+					<option value="">{$lang.PLEASE_SELECT}</option>
+					{foreach from="$goods_list" item="goods"}
+						<option value="{$goods.id}" {if $goods_id eq $goods.id}selected="selected"{/if} title="{$goods.name_1}">{if $goods.goods_short_name}{$goods.goods_short_name}{else}{$goods.name_1}{/if}</option>
+					{/foreach}
+				</select>
+			</h3>
+			<!--
+			<div style="height:3px;overflow: hidden;"></div>				
+			<h3>{$lang.XY_GROUPBOTH_SN}<input type = "text" name = "sn" value = "{$sn}" style="width:200px;" class="f-input"/> 
+			{$lang.XY_GROUPBOTH_ID}<input type = "text" name = "id" value = "{$id}" style="width:100px;" class="f-input"/> 
+			<input type="submit" class="formbutton" id="reset-submit" value="{$lang.XY_SEARCH}" style="margin-left:45px;height:25px;font-size:14px;padding-bottom: 0px;padding-top: 0px;"/></h2>
+			<div style="height:5px;overflow: hidden;"></div>		
+			<h3>{if $goods_id neq 0}{$lang.THIS_DEAL_HAVE}{/if}{if $status eq 1}{$lang.XY_NO_USE}{elseif $status eq 2}{$lang.XY_HAD_USE}{elseif $status eq 3}{$lang.XY_BAD_USE}{elseif $status eq 0}{$lang.XY_ALL}{/if}{$CFG.GROUPBOTH} <span class="red">{$total}</span></h2>
+			-->
+			<!--
 			项目编号：<input type="text" class="f-input" name="goods_id" value="{$deal_info.id}" style="width:50px;" />
-			&nbsp;&nbsp;&nbsp;&nbsp;结算状态：
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			-->
+			结算状态：
 			<select name="is_balance">
 				<option value="0" {if $is_balance eq 0}selected="selected"{/if}>未结算</option>	
 				<option value="1" {if $is_balance eq 1}selected="selected"{/if}>待结算</option>	
