@@ -153,12 +153,14 @@
 	</dl>
 </div>
 {/if}
+<!--
 <div class="saler_map_window">
 <div class="op_bar">
 {$lang.VIEW_BIG_MAP} <a href="javascript:void(0);" class="close">{$lang.CLOSE} </a>
 </div>
 <iframe scrolling="no" frameborder="0" src="" style="height:480px; width:730px;"></iframe>
 </div>
+-->
 </body>
 <script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/jquery.bgiframe.js"></script>
 <script type="text/javascript" src="{$CND_URL}/{$TMPL_PATH}Public/js/ajaxSend.js"></script>

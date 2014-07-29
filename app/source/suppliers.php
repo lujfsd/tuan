@@ -12,12 +12,8 @@
 		}
 		$sn = trim($_REQUEST['sn']);
 		$id = intval($_REQUEST['id']);
-		$goods_id = intval($_REQUEST['goods_id']);
-		
-		$status =  $_REQUEST['status'];
-		
-		if($status == "")
-			$status = 1;
+
+		$status = 2;
 					
 		//初始化分页
     	$page = intval($_REQUEST["p"]);
@@ -27,12 +23,7 @@
     	$GLOBALS['tpl']->assign('sn',$sn);	
     	if($id>0)
     		$GLOBALS['tpl']->assign('id',$id);
-    	
-		$GLOBALS['tpl']->assign('status',$status);
-		
-		if($goods_id > 0)
-			$GLOBALS['tpl']->assign('goods_id',$goods_id);
-		
+    			
 		$result = getSuppliersGroupBondList(intval($_SESSION['suppliers_id']), $sn, $status,$page,$id,$goods_id);
 		
 		
@@ -313,14 +304,14 @@
 			
 		$limit = ($page-1)*a_fanweC("PAGE_LISTROWS").",".a_fanweC("PAGE_LISTROWS");
 		
-		$list = $GLOBALS['db']->getAll("select * from ".DB_PREFIX."group_bond where 1=1 {$where} order by create_time desc limit {$limit}");
+		$list = $GLOBALS['db']->getAll("select * from ".DB_PREFIX."group_bond where 1=1 {$where} order by use_time desc limit {$limit}");
 		
 		foreach($list as $k=>$v)
 		{
-			$list[$k]['create_time_format'] = a_toDate($v['create_time'],'Y-m-d');
-			$list[$k]['buy_time_format'] = a_toDate($v['buy_time'],'Y-m-d');
-			$list[$k]['use_time_format'] = a_toDate($v['use_time'],'Y-m-d');
-			$list[$k]['end_time_format'] = a_toDate($v['end_time'],'Y-m-d');
+			$list[$k]['create_time_format'] = a_toDate($v['create_time'],'Y-m-d  H:i:s');
+			$list[$k]['buy_time_format'] = a_toDate($v['buy_time'],'Y-m-d  H:i:s');
+			$list[$k]['use_time_format'] = a_toDate($v['use_time'],'Y-m-d  H:i:s');
+			$list[$k]['end_time_format'] = a_toDate($v['end_time'],'Y-m-d  H:i:s');
 			if(($v['end_time'] > $time || $v['end_time'] == 0) && $v['use_time'] == 0)
 				$list[$k]['is_edit'] = 1;
 			if(($v['end_time'] >= $v['use_time'] && $v['use_time'] >= $v['buy_time']) && $v['depart_id']>0)

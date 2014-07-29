@@ -225,12 +225,14 @@ echo $k['name']($k['a'],$k['b']);
 	</dl>
 </div>
 <?php endif; ?>
+<!--
 <div class="saler_map_window">
 <div class="op_bar">
 <?php echo $this->_var['lang']['VIEW_BIG_MAP']; ?> <a href="javascript:void(0);" class="close"><?php echo $this->_var['lang']['CLOSE']; ?> </a>
 </div>
 <iframe scrolling="no" frameborder="0" src="" style="height:480px; width:730px;"></iframe>
 </div>
+-->
 </body>
 <script type="text/javascript" src="<?php echo $this->_var['CND_URL']; ?>/<?php echo $this->_var['TMPL_PATH']; ?>Public/js/jquery.bgiframe.js"></script>
 <script type="text/javascript" src="<?php echo $this->_var['CND_URL']; ?>/<?php echo $this->_var['TMPL_PATH']; ?>Public/js/ajaxSend.js"></script>

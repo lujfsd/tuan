@@ -1066,7 +1066,7 @@ return array(
 	'GROUP_BOND_INFO_006'=>'说明：如果需要查询%s编号信息，比如有效期，消费状态,请输入"%s编号" 后 按"查询(查询编号是否有效)",如果需要登记消费,请输入"%s编号"与"%s密码"后 按"消费登记(需密码,专供商家使用)"',
 	'GROUP_BOND_INFO_007'=>'团购券验证',
 	'GROUP_BOND_INFO_008'=>'消费',
-	'GROUP_BOND_INFO_009'=>'团购券编号:',
+	'GROUP_BOND_INFO_009'=>'团购券号',
 	'GROUP_BOND_INFO_010'=>'团购券密码',
 	'WHO_MSG_BUY'=>'评价了TA在%s买到的',
 	'MUST_BE_ONE_AND_MSG'=>'必须购买过该商品才能评论!',
