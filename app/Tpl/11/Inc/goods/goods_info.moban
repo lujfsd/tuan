@@ -23,6 +23,7 @@
 				<div class="deal-intro-top"></div>
 				<div id="deal-intro" class="cf">
 					<h1>
+					<!--
 						{if $goods.promote_begin_time gt $TIME}
 						<span>{$cate_info.name_1}{$lang.XY_GROUP_FORECASE}</span>
 						{elseif !$goods.is_end}
@@ -35,7 +36,9 @@
 						{elseif $goods.score_goods eq 1}
 						<span>{$cate_info.name_1}{$lang.SCORE_GOODS}：</span>
 						{/if}
-						{/if}{$goods.name_1}
+						{/if}
+						-->
+						{$goods.name_1}
 					</h1>
 					<div class="main">
 						<div class="deal-buy">
