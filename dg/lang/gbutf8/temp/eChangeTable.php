@@ -266,7 +266,7 @@ function check()
                 <?=Ebak_ChangeSize($r[Data_free])?>
               </div></td>
           </tr>
-          <?
+          <?php
 		  }
 		  ?>
           <tr bgcolor="#DBEAF5"> 

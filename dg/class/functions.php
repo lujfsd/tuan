@@ -938,8 +938,16 @@ function Ebak_ReturnInStrTbfield($dbname,$tbname){
 }
 
 //×Ö·û¹ıÂÇ
-function escape_str($str){
-	$str=mysql_escape_string($str);
+function escape_str($str)
+{
+	if (PHP_VERSION >= '4.3')
+	{
+		$str=mysql_real_escape_string($str);
+	}
+	else
+	{
+		$str=mysql_escape_string($str);
+	}
 	$str=str_replace("\\\'","\'\'",$str);
 	$str=str_replace("\\\\","\\\\\\\\",$str);
 	$str=str_replace('$','\$',$str);
