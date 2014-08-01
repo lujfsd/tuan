@@ -1082,10 +1082,16 @@ function s_countOrderTotal($id,$payment_id=0,$delivery_id=0,$is_protect=0,$deliv
 						//type_id 0:团购券，序列号+密码;1:实体商品，需要配送;2:线下订购商品;3:实体,有配置,有团购券
 						if ($order_vo['user_id'] > 0 && $goods['score'] <> 0 && (($goods["type_id"] == 0)||($goods["type_id"] == 1)||($goods["type_id"] == 3)))
 						{
+						/*
 							if ($goods['score'] > 0)
 								$Remark = a_L("ORDER_SCORE_MEMO_1").'(SN:'.$order_vo['sn'].';goods_id:'.$goods['id'].';score:'.$goods['score'].')';//订单获得积分
 							else
 								$Remark = a_L("ORDER_SCORE_MEMO_2").'(SN:'.$order_vo['sn'].';goods_id:'.$goods['id'].';score:'.$goods['score'].')';
+						*/		
+							if ($goods['score'] > 0)
+								$Remark = a_L("ORDER_SCORE_MEMO_1");//订单获得积分
+							else
+								$Remark = a_L("ORDER_SCORE_MEMO_2");
 								
 							$sql = 'insert into '.DB_PREFIX.'user_score_log(user_id, create_time, score, rec_module,rec_id,memo_1) values('.$order_vo['user_id'].','.a_gmtTime().','.$goods['score'].',\'Order\','.$order_vo['id'].',\''.$Remark.'\')';
 							$GLOBALS['db']->query($sql);
@@ -1099,7 +1105,7 @@ function s_countOrderTotal($id,$payment_id=0,$delivery_id=0,$is_protect=0,$deliv
 						$goods['referral_money'] = intval($goods['referral_money']);
 						if ($order_vo['user_id'] > 0 && $goods['referral_money'] > 0 && (($goods["type_id"] == 0)||($goods["type_id"] == 1)||($goods["type_id"] == 3)))
 						{
-							$Remark = a_L("ORDER_MONEY_MEMO_1").'(SN:'.$order_vo['sn'].';goods_id:'.$goods['id'].';score:'.$goods['referral_money'].')';//订单获得积分
+							$Remark = a_L("ORDER_MONEY_MEMO_1");//订单获得积分
 								
 							$sql = 'insert into '.DB_PREFIX.'user_money_log(user_id, create_time, money, rec_module,rec_id,memo_1) values('.$order_vo['user_id'].','.a_gmtTime().','.$goods['referral_money'].',\'Order\','.$order_vo['id'].',\''.$Remark.'\')';
 							$GLOBALS['db']->query($sql);

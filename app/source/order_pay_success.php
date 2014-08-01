@@ -39,9 +39,15 @@
 			$ugb_urlweb = __ROOT__."/index.php?m=UcGroupBond&a=index";
 			
 			//2010/6/7 awfigq 查询订单成功时，是否有未发送的团购券
-			$group_bond_count = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."group_bond where order_id = '$order[sn]' and is_valid = 1 ");
-			$group_bond_count_no_send = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."group_bond where order_id = '$order[sn]' and is_valid = 1 and is_send_msg = 0");
-			
+			//$group_bond_count = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."group_bond where order_id = '$order[sn]' and is_valid = 1 ");
+			//$group_bond_count_no_send = $GLOBALS['db']->getOne("select count(*) from ".DB_PREFIX."group_bond where order_id = '$order[sn]' and is_valid = 1 and is_send_msg = 0");
+
+			//增加团购成功显示团购券
+			$group_bond_sn = $GLOBALS['db']->getAll("select goods_name,sn,end_time from ".DB_PREFIX."group_bond where order_id = '$order[sn]' and is_valid = 1 ");
+			foreach($group_bond_sn as $k=>$v)
+			{	
+				$group_bond_sn[$k]['endtime_format'] = a_toDate($v['end_time'],'Y-m-d');
+			}
 			
 			$mobile_phone = $GLOBALS['db']->getOne("select mobile_phone from ".DB_PREFIX."user where id = ".$user_id);
 
@@ -164,8 +170,9 @@
 			$GLOBALS['tpl']->assign("order_sn",$order['sn']);
 			$GLOBALS['tpl']->assign("goods_list",$goods_list);
 			$GLOBALS['tpl']->assign("allow_sms",$allow_sms);
-			$GLOBALS['tpl']->assign("group_bond_count",$group_bond_count);
-			$GLOBALS['tpl']->assign("group_bond_count_no_send",$group_bond_count_no_send);
+			$GLOBALS['tpl']->assign("group_bond_sn",$group_bond_sn);
+			//$GLOBALS['tpl']->assign("group_bond_count",$group_bond_count);
+			//$GLOBALS['tpl']->assign("group_bond_count_no_send",$group_bond_count_no_send);
 			$GLOBALS['tpl']->assign("mobile_phone",$mobile_phone);
 			$GLOBALS['tpl']->assign("urlweb", $urlweb);
 			$GLOBALS['tpl']->assign("referralsMoney",$referralsMoney);

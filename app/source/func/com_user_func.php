@@ -65,7 +65,6 @@
 				a_error ( $err, "", "back" );
 			}
 
-			//支持用户名登陆 add by chenfq 2010-06-26
 			$email = $data ['email'];
 			if (strpos ( $email, '@' ) > 0 && strpos ( $email, '@' ) != strlen ( $email )) {
 				if(!a_checkEmail($email))

@@ -6,7 +6,7 @@
 							{/foreach}
 						</div>
 						
-						{if $group_bond_count gt 0}
+						{*if $group_bond_count gt 0*}
 							<div class="group-bond">
 								<div class="tltle">
 									<h3>
@@ -18,6 +18,30 @@
 								</div>
 								
 								<div class="group-bond-box">
+								<table id="coupons-table" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+									<tr>
+										<th width="auto">团购项目</th>
+										<th width="100">团购券序号</th>
+										<th width="65">有效期</th>
+									</tr>
+								
+									{foreach from=$group_bond_sn item=group_bond key=key}
+										<tr>
+											<td class="pic">
+												{$group_bond.goods_name}
+											</td>
+											<td class="snstyle">{$group_bond.sn}</td>
+											<td >
+												{if $group_bond.endtime_format eq 0}
+													{$lang.XY_NO_EXPIRED_TIMES}
+												{else}
+													{$group_bond.endtime_format}
+												{/if}
+											</td>
+										</tr>
+									{/foreach}
+								</table>
+								<!--
 									{if a_fanweC('IS_SMS') eq 1 and $group_bond_count_no_send gt 0 and $allow_sms eq 1}
 										<p>
 											<?php echo sprintf($GLOBALS['Ln']['JJ_RETRIEVAL_METHOD'], $this->_var['GROUPBOTH']); ?>
@@ -53,9 +77,10 @@
 											</div>
 										</div>
 									{/if}
+									-->
 								</div>
 							</div>
-						{/if}
+						{*/if*}
 						<div class="referrals-box">
 							<strong>{$lang.JJ_INVITE}</strong>
 							<p>

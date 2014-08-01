@@ -2,9 +2,8 @@
 <table cellspacing="0" cellpadding="0" border="0" class="coupons-table">
 			<tr>
 				<th  width=150>项目名称</th>
-                <th  width=25>数量</th>
 				{if $is_balance neq 0}
-					<th  width=90>团购券号</th>
+					<th  width=120>团购券号</th>
 					<th  width=75>验证时间</th>
 				{else}
 					<th  width=55>下单时间</th>
@@ -21,11 +20,8 @@
 				<td style="text-align:left;">
 					<span title="{$row.goods_name}">{$row.goods_name}</span>								
 				</td>
-                <td style="text-align:center;">
-					{$row.order_goods_number}
-				</td>
 				{if $is_balance neq 0}
-					<td>
+					<td class="snstyle">
 						{$row.sn}
 					</td>
 					<td>

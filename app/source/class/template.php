@@ -181,7 +181,7 @@ class template
             foreach ($k AS $key => $val)
             {
                 if (($key % 2) == 1)
-                {
+                {	
                     $k[$key] = $this->insert_mod($val);
                 }
             }
@@ -483,7 +483,7 @@ function callback_stripslashes($matches)
 
                 case 'insert' :
                     $t = $this->get_para(substr($tag, 7), false);
-
+                    
                     //$out = "<?php \n" . '$k = ' . preg_replace("/(\'\\$[^,]+)/e" , "stripslashes(trim('\\1','\''));", var_export($t, true)) . ";\n";
                     $out = "<?php \n" . '$k = ' . preg_replace_callback("/(\'\\$[^,]+)/" ,array(&$this,'callback_stripslashes'), var_export($t, true)) . ";\n";
                     $out .= 'echo $this->_hash . $k[\'name\'] . \'|\' . serialize($k) . $this->_hash;' . "\n?>";

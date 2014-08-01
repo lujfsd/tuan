@@ -104,10 +104,12 @@ function change_mobile_phone()
 								</tr>
 								{/if}
 								<tr>
-									<td>{$lang.ORDER_CREATE_TIME}：</td>
-									<td class="rtd">{$order_info.create_time_format}</td>
+									<td class="ltd">{$lang.ORDER_CREATE_TIME}：</td>
+									<td colspan="3" class="rtd">{$order_info.create_time_format}</td>
+									<!--
 									<td class="ltd">{$lang.ORDER_UPDATE_TIME}：</td>
 									<td class="rtd">{$order_info.update_time_format}</td>
+									-->
 								</tr>
 								{if $order_info.is_delivery }
 								<tr>

@@ -100,8 +100,8 @@ $(document).ready(function(){
 							<TR>
 								<TD>
 								{if $CFG.SMS_SUBSCRIBE eq 1}
-								<a href="javascript:;" id="smsSubscribe">» {$lang.XY_SMS_SUBSCRIBE}</a>&nbsp;&nbsp;
-								<a href="javascript:;" id="unSmsSubscribe">» {$lang.XY_SMS_UNSUBSCRIBE}</a>&nbsp;&nbsp;
+								<a href="javascript:;" id="smsSubscribe">? {$lang.XY_SMS_SUBSCRIBE}</a>&nbsp;&nbsp;
+								<a href="javascript:;" id="unSmsSubscribe">? {$lang.XY_SMS_UNSUBSCRIBE}</a>&nbsp;&nbsp;
 								{/if}</TD>
 							</TR>
 						</TBODY>

@@ -122,7 +122,7 @@
 			{
 				$sql = "select o.id,o.create_time,o.sn,o.user_id,og.number,og.attr from ".DB_PREFIX."order as o left join ".DB_PREFIX."order_goods  as og on og.order_id = o.id where og.rec_id = '$goodsID' and o.money_status = 2";
 				$orderList = $GLOBALS['db']->getAll($sql);
-				
+
 				foreach($orderList as $order)
 				{
 					$sql_update = "update ".DB_PREFIX."group_bond set status = 1, buy_time =".$order['create_time'].",create_time =".a_gmtTime().",is_valid=1  where goods_id=".$goodsID." and order_id='".$order['sn']."'";	
@@ -135,7 +135,8 @@
 					foreach($groupBonds as $gbdata)
 					{
 						//发放团购卷时，自动短信通知
-						if (a_fanweC('AUTO_SEND_SMS')==1 && $goods['allow_sms']==1){
+						if (a_fanweC('AUTO_SEND_SMS')==1 && $goods['allow_sms']==1)
+						{
 							s_send_sms($order['user_id'], $gbdata['id']);
 						}
 						
@@ -251,7 +252,7 @@
 			}
 		}
 		
-		$bond_data = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,password,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
+		$bond_data = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
 		
 		$goods = $GLOBALS['db']->getRowCached("select goods_short_name, promote_end_time ,suppliers_id from ".DB_PREFIX."goods where id = ".intval($bond_data['goods_id']));
 		$seller_info = $GLOBALS['db']->getRowCached("select tel, address, supplier_id from ".DB_PREFIX."suppliers_depart where supplier_id = ".intval($goods['suppliers_id'])." and is_main=1");
@@ -262,7 +263,6 @@
 						"goods_short_name"	=>	$goods['goods_short_name'],
 						"name"=>a_fanweC('GROUPBOTH'),
 						"sn"=>$bond_data['sn'],
-						"password"=>$bond_data['password'],
 						"order_sn" =>	$bond_data['order_id'],
 						"id"	=> $bond_data['id'],
 						"tel"	=>	$seller_info['tel'],
@@ -309,10 +309,10 @@
 		//$send 为 true时默认为直接发送, 为false时为存储到数据库的发送队列  修改 by hc
 	function s_send_sms($user_id, $groupbond_id,$send = false)
 	{
-		$is_valid = $GLOBALS['db']->getOne("select is_valid from ".DB_PREFIX."group_bond where id = '$groupbond_id'");//修改by hc 当无效时不发送
+		$is_valid = $GLOBALS['db']->getOne("select is_valid from ".DB_PREFIX."group_bond where id = '$groupbond_id' ");//修改by hc 当无效时不发送
 		if(a_fanweC("IS_SMS") != 1||$is_valid==0)
 			return;
-			
+
 		$userid = intval($user_id);
 		$id = intval($groupbond_id);
 		
@@ -329,8 +329,8 @@
 		}
 		
 		if(! empty($user['mobile_phone']))
-		{
-			$bond = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,password,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
+		{	
+			$bond = $GLOBALS['db']->getRow("select id,sn,goods_id,goods_name,order_id,end_time from ".DB_PREFIX."group_bond where id = '$id'");
 			$goods = $GLOBALS['db']->getRowCached("select goods_short_name, suppliers_id,is_order_sms,promote_end_time,promote_begin_time from ".DB_PREFIX."goods where id = ".intval($bond['goods_id']));
 			$seller_info = $GLOBALS['db']->getRowCached("select tel, address, supplier_id from ".DB_PREFIX."suppliers_depart where supplier_id = ".intval($goods['suppliers_id'])." and is_main=1");
 			
@@ -339,20 +339,21 @@
 				$sql = "select sum(og.number) from ".DB_PREFIX."order as o left join ".DB_PREFIX."order_goods  as og on og.order_id = o.id where o.sn = '".$bond['order_id']."' and og.rec_id = ".intval($bond['goods_id'])." and o.money_status = 2";
 				$count = $GLOBALS['db']->getOne($sql);
 			}
+			
 			$smsObjs = array(
 							 	"user_name"=>$user['user_name'],
+							 	"shop_name" => SHOP_NAME,
 								"bond"=>array(
 											"goods_name"=>$bond['goods_name'],
 											"goods_short_name"	=>	$goods['goods_short_name'],
 											"name"=>a_fanweC('GROUPBOTH'),
-											"sn"=>$bond['sn'],
-											"password"=>$bond['password'],
+											"sn" => $bond['sn'],											
 											"order_sn" =>	$bond['order_id'],
 											"id"	=> $bond['id'],
 											"tel"	=>	$seller_info['tel'],
 											"address"	=>	$seller_info['address'],
-											"starttime"	=>	a_toDate($goods['promote_begin_time'],'Ymd'),
-											"endtime"	=>	a_toDate($bond['end_time'],'Ymd'),
+											"starttime"	=>	a_toDate($goods['promote_begin_time'],'Y-m-d'),
+											"endtime"	=>	a_toDate($bond['end_time'],'Y-m-d'),
 											"count"	=>	$count,
 										)
 							);
@@ -360,7 +361,6 @@
 			$mail_content = $GLOBALS['db']->getOneCached("select mail_content from ".DB_PREFIX."mail_template where name='group_bond_sms'");
 			
 			$str = a_templateFetch($mail_content,$smsObjs);
-			
 			$bond_orderId=$GLOBALS['db']->getOne("select id from ".DB_PREFIX."order where sn='".$bond['order_id']."'");//2012-6-1(chh)
 			//2010/6/7 awfigq 自动发送团购券成功后，标记团购券为已发送
 			if($send)
@@ -388,7 +388,7 @@
 				$sendData['send_type'] = 1;  //短信
 				$sendData['bond_id'] = $groupbond_id;
 				$sendData['order_id'] = $bond_orderId;//订单id 2012-6-1(chh)
-				
+
 				$sql = "select count(*) as num from ".DB_PREFIX."send_list where bond_id=".$groupbond_id." and dest='".$user['mobile_phone']."' and status = 0";
 				if($GLOBALS['db']->getOne($sql)==0)
 					$GLOBALS['db']->autoExecute(DB_PREFIX."send_list", addslashes_deep($sendData), 'INSERT');
@@ -537,8 +537,7 @@
 											"goods_name"=>$bond['goods_name'],
 											"goods_short_name"	=>	$goods['goods_short_name'],
 											"name"=>a_fanweC('GROUPBOTH'),
-											"sn"=>$bond['sn'],
-											//"password"=>$bond['password'],
+											"sn"=>$bond['sn'],											
 											"order_sn" =>	$bond['order_id'],
 											"id"	=> $bond['id'],
 											"tel"	=>	$seller_info['tel'],
@@ -694,13 +693,15 @@
 					//$password = unpack('H8',str_shuffle(md5(uniqid())));
 					//$groupBond_new['password'] = $order['bond_pw_prefix'].$password[1];//add by chenfq 2011-03-30  团购券密码前缀
                                         
-                                        $groupBond_new['create_time'] = a_gmtTime();
+                    $groupBond_new['create_time'] = a_gmtTime();
 					$groupBond_new['end_time'] = $order['group_bond_end_time'];
+					/*
 					if (!empty($order['group_bond_end_time'])){
 						$groupBond_new['end_time'] = $order['group_bond_end_time'];
 					}else{
 						$groupBond_new['end_time'] = a_gmtTime() + 3600 * 24 * 30; //设置一个月后过期
 					}
+					*/
 					
 					$groupBond_new['status'] = 1;
 					$groupBond_new['buy_time'] = $order['create_time'];

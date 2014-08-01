@@ -69,11 +69,11 @@ echo $k['name']($k['value']);
             <div class=copyright>
 				<div>
 
-				<?php $_from = $this->_var['foot_navs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('key', 'nav');if (count($_from)):
-    foreach ($_from AS $this->_var['key'] => $this->_var['nav']):
+				<?php $_from = $this->_var['foot_navs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('key', 'nav_0_77843900_1406862737');if (count($_from)):
+    foreach ($_from AS $this->_var['key'] => $this->_var['nav_0_77843900_1406862737']):
 ?>
 					<?php if ($this->_var['key'] != 0): ?>&nbsp;&nbsp;|&nbsp;&nbsp;<?php endif; ?>
-					<a href="<?php echo $this->_var['nav']['url']; ?>" <?php if ($this->_var['nav']['act'] == 1): ?>class="act"<?php endif; ?>  target="<?php echo $this->_var['nav']['target']; ?>" ><?php echo $this->_var['nav']['name_1']; ?></a>
+					<a href="<?php echo $this->_var['nav_0_77843900_1406862737']['url']; ?>" <?php if ($this->_var['nav_0_77843900_1406862737']['act'] == 1): ?>class="act"<?php endif; ?>  target="<?php echo $this->_var['nav_0_77843900_1406862737']['target']; ?>" ><?php echo $this->_var['nav_0_77843900_1406862737']['name_1']; ?></a>
 				<?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
 				</div>
                 <p><?php echo $this->_var['CFG']['PAGE_BOTTOM']; ?><?php echo $this->_var['CFG']['STATS_CODE']; ?></p>
@@ -225,14 +225,7 @@ echo $k['name']($k['a'],$k['b']);
 	</dl>
 </div>
 <?php endif; ?>
-<!--
-<div class="saler_map_window">
-<div class="op_bar">
-<?php echo $this->_var['lang']['VIEW_BIG_MAP']; ?> <a href="javascript:void(0);" class="close"><?php echo $this->_var['lang']['CLOSE']; ?> </a>
-</div>
-<iframe scrolling="no" frameborder="0" src="" style="height:480px; width:730px;"></iframe>
-</div>
--->
+
 </body>
 <script type="text/javascript" src="<?php echo $this->_var['CND_URL']; ?>/<?php echo $this->_var['TMPL_PATH']; ?>Public/js/jquery.bgiframe.js"></script>
 <script type="text/javascript" src="<?php echo $this->_var['CND_URL']; ?>/<?php echo $this->_var['TMPL_PATH']; ?>Public/js/ajaxSend.js"></script>

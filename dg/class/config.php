@@ -8,8 +8,8 @@ if(!defined('InEmpireBak'))
 $phome_db_ver="5.0";
 $phome_db_server="localhost";
 $phome_db_port="";
-$phome_db_username="test";
-$phome_db_password="test";
+$phome_db_username="root";
+$phome_db_password="khtksoqtdh1989@Wc";
 $phome_db_dbname="";
 $baktbpre="";
 $phome_db_char="";

@@ -23,7 +23,11 @@ if(strtolower($_REQUEST['m'])=='api')
 
 if(file_exists(ROOT_PATH."Public/install.lock"))
 {
-	include ROOT_PATH."app/source/index.php";
+	include ROOT_PATH.'app/source/func/ismobile.php';
+	if (isMobile())
+		include ROOT_PATH."mobile/source/index.php";
+	else
+		include ROOT_PATH."app/source/index.php";
 	exit;
 }
 else

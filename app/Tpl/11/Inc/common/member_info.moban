@@ -1,13 +1,13 @@
 <ul id="account">
 {if $smarty.session.user_id neq 0}
-<li class="username" title="{$smarty.session.user_name}">
-{$lang.XY_WELCOME}
-{function name="a_msubstr" value="$smarty.session.user_name" a1=0 a2= 4}！</li>
-<li class="account"><a href="{function name="a_u" a1='UcModify/index'}" id="myaccount" class="account">{$lang.XY_USER_CENTER}</a></li>
-<li class="logout"><a href="{function name="a_u" a1='User/logout'}">{$lang.XY_USER_LOGOUT}</a></li>
+	<li class="username" title="{$smarty.session.user_name}">
+	{$lang.XY_WELCOME}
+	{function name="a_msubstr" value="$smarty.session.user_name" a1=0 a2= 4}！</li>
+	<li class="account"><a href="{function name="a_u" a1='UcModify/index'}" id="myaccount" class="account">{$lang.XY_USER_CENTER}</a></li>
+	<li class="logout"><a href="{function name="a_u" a1='User/logout'}">{$lang.XY_USER_LOGOUT}</a></li>
 {else}
-<li class=login><a href="{function name="a_u" a1='User/login'}">{$lang.XY_USER_LOGIN}</a></li>
-<li class=signup><a href="{function name="a_u" a1='User/register'}">{$lang.XY_USER_REG}</a></li>
+	<li class=login><a href="{function name="a_u" a1='User/login'}">{$lang.XY_USER_LOGIN}</a></li>
+	<li class=signup><a href="{function name="a_u" a1='User/register'}">{$lang.XY_USER_REG}</a></li>
 {/if}
 </ul>
 <div class="line"></div>

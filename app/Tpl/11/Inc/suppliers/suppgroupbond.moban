@@ -1,4 +1,3 @@
-<!--<tagLib name="fanwe" />-->
 <div id="bdw" class="bdw">
 	<div id="bd" class="cf">
 		<div id="coupons">
@@ -6,54 +5,14 @@
 				<div class="box clear">
 					<div class="box-top"></div>
 					<div class="box-content">
-					<!--
-						<div class="head">
-							<h2>{$CFG.GROUPBOTH}{$lang.XY_SEARCH}</h2>
-							<ul class="filter">
-								<li class="label">{$lang.XY_CLASS_IFICATION} </li>
-								<li {if $status eq 1}class="current"{/if}><a href="{function name="a_u" a="Suppliers/groupbond" b="status-1"}">{$lang.XY_NO_USE}</a></li>
-								<li {if $status eq 2}class="current"{/if}><a href="{function name="a_u" a="Suppliers/groupbond" b="status-2"}">{$lang.XY_HAD_USE}</a></li>
-								<li {if $status eq 3}class="current"{/if}><a href="{function name="a_u" a="Suppliers/groupbond" b="status-3"}">{$lang.XY_BAD_USE}</a></li>
-								<li {if $status eq 0}class="current"{/if}><a href="{function name="a_u" a="Suppliers/groupbond" b="status-0"}">{$lang.XY_ALL}</a></li>
-							</ul>							
-						</div>
-						-->
 						<div class="head">
 							<div style="font-size:15px;font-weight:bolder;">
 								<form method="post">
-									<!--<span style="font-size:15px;font-weight:bolder;">{$lang.GROUP_BOND_INFO_007}：</span><br/>-->
 									{$lang.GROUP_BOND_INFO_009}&nbsp&nbsp<input id="su_group_bond_sn" name="su_group_bond_sn" class="f-input" value="" style="width:130px;"> 
 									<input class="formbutton" style="padding:0px 1em 0px; height:25px;margin-left:10px;" onclick = "return su_query_coupon_bus()" value="{$lang.GROUP_BOND_INFO_008}" type="button">
 								</form>
 							</div>
 						</div>
-						<!--
-						<div class="sect" style="height:100px;padding-bottom:0px;font-size:14px;">
-							//
-							<form name="reg_form" action="{$POST_URL}" method="get" >
-								<input type="hidden" name="m" value="Suppliers" />
-								<input type="hidden" name="a" value="groupbond" />		
-								<input type="hidden" name="status" value="{$status}" />			
-								<h3>{$lang.XY_GROUP_PROJECT}<select name="goods_id" id="goods_id" style="width:70%;overflow:hidden;" class="f-input">
-									<option value="">{$lang.PLEASE_SELECT}</option>
-									{foreach from="$goods_list" item="goods"}
-									<option value="{$goods.id}" {if $goods_id eq $goods.id}selected="selected"{/if} title="{$goods.name_1}">{if $goods.goods_short_name}{$goods.goods_short_name}{else}{$goods.name_1}{/if}</option>
-									{/foreach}
-								</select></h3>
-								<div style="height:3px;overflow: hidden;"></div>				
-								<h3>{$lang.XY_GROUPBOTH_SN}<input type = "text" name = "sn" value = "{$sn}" style="width:200px;" class="f-input"/> 
-								{$lang.XY_GROUPBOTH_ID}<input type = "text" name = "id" value = "{$id}" style="width:100px;" class="f-input"/> 
-								<input type="submit" class="formbutton" id="reset-submit" value="{$lang.XY_SEARCH}" style="margin-left:45px;height:25px;font-size:14px;padding-bottom: 0px;padding-top: 0px;"/></h2>
-								<div style="height:5px;overflow: hidden;"></div>		
-								<h3>{if $goods_id neq 0}{$lang.THIS_DEAL_HAVE}{/if}{if $status eq 1}{$lang.XY_NO_USE}{elseif $status eq 2}{$lang.XY_HAD_USE}{elseif $status eq 3}{$lang.XY_BAD_USE}{elseif $status eq 0}{$lang.XY_ALL}{/if}{$CFG.GROUPBOTH} <span class="red">{$total}</span></h2>
-							</form>	
-							//
-							<div class="blank"></div>
-							<div class="item" style="margin:0px auto;">
-								<h2>验证记录</h2>
-							</div>
-						</div>	
-						-->
 						<div class="sect">
 							<h2>验证记录</h2>
 							{if $groupbond_list}
@@ -66,8 +25,12 @@
 								</tr>
 								{foreach from="$groupbond_list" item="groupbond" name="groupbond"}
 								<tr {if $smarty.foreach.groupbond.index mod 2 eq 1}class="alt"{/if}>
-									<td style="text-align:left;"><a class="deal-title" href="<?php echo a_u('Goods/show','id-'.$this->_var['groupbond']['goods_id']) ?>" target="_blank">{$groupbond.goods_name}{if $groupbond.order_goods_number}&nbsp;[{$groupbond.order_goods_number}]{/if}</a></td>
-									<td>{$groupbond.sn}</td>
+									<td style="text-align:left;">
+										<a class="deal-title" href="<?php echo a_u('Goods/show','id-'.$this->_var['groupbond']['goods_id']) ?>" target="_blank">
+											{$groupbond.goods_name}{if $groupbond.order_goods_number}&nbsp;[{$groupbond.order_goods_number}]{/if}
+										</a>
+									</td>
+									<td class="snstyle">{$groupbond.sn}</td>
 									<td>{$groupbond.buy_time_format}</td>
 									<td>{$groupbond.use_time_format}</td>
 								</tr>
